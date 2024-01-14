@@ -1,0 +1,52 @@
+#titlescreen {
+    display: none;
+}
+
+#gamescreen {
+    display: none;
+}
+
+#shoppanel {
+    display: none;
+}
+
+#upgradeshoppanel {
+    display: none;
+}
+
+#statspanel {
+    display: none;
+}
+
+#achievementsscreen {
+    display: none;
+}
+
+#debuginputscreen {
+    display: none;
+}
+
+#debugscreen {
+    display: none;
+}
+
+body {
+    background: url("../img/background.jpg");
+}
+
+h1#ns {
+    font-size: 20px;
+    font-weight: 100;
+    font-family: courier, monospace;
+    position: fixed;
+    top: 17vw;
+    left: 15vw;
+}
+
+p#ns {
+    font-size: 18px;
+    font-family: courier, monospace;
+    position: fixed;
+    top: 20vw;
+    left: 35vw;
+}

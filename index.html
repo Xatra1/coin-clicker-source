@@ -1,0 +1,171 @@
+<!-- If you wish to view the source code, add "/main.js" to the end of the URL, replacing "/index.html" if applicable. -->
+<!-- If you wish to view the stylesheets, add any of the following to the end of the URL, replacing "/index.html" if applicable. -->
+<!-- "/css/style1920x1080.css" -->
+<!-- "/css/style1366x768.css" -->
+<!-- "/css/fallback.css" -->
+<!-- "/css/noJS.css" -->
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>Coin Clicker Beta v5</title>
+</head>
+
+<body onload="appendScr()">
+  <noscript>
+    <link rel="stylesheet" href="./css/noJS.css">
+    <h1 id="ns">This site makes extensive use of JavaScript, which you have disabled. Please enable it and refresh the
+      page.</h1>
+    <p id="ns">Unless you want to stare at the background, of course.</p>
+  </noscript>
+  <!-- jQuery Libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- Main script -->
+  <script>
+    function appendScr() {
+      const body = document.body;
+      const filePath = "./main.js";
+      const script = document.createElement("script");
+      script.src = filePath
+      body.appendChild(script);
+    }
+  </script>
+  <canvas id="borders"></canvas>
+  <div id="unsupportedremove">
+    <div id="titlescreen">
+      <p id="sourcenote">If you wish to view the source HTML used for this game, add "view-source:" before the "http://" in the URL.</p>
+      <p id="runningbrowserstring">detected browser:</p>
+      <p id="basedonbuildstring">based on code.org build 4.41b</p>
+      <h2 id="betastring">beta v5</h2>
+      <p id="buildstring">build</p>
+      <h1 id="title">coin clicker</h1>
+      <h2 id="updatestring">the update</h2>
+      <button class="buttons" id="startbutton">Start</button>
+    </div>
+    <div id="gamescreen">
+      <button id="coin"></button>
+      <p id="clickstring">Clicks: </p>
+      <p id="cpsstring">Clicks per Second: </p>
+      <p id="clickvaluestring">Click Value: </p>
+      <p id="unlockstring">Placeholder unlocked!</p>
+      <button id="savebutton">Save</button>
+      <p id="savingstring">Saving...</p>
+      <p id="saveinfo">Game autosaves every minute; Shortcut: S</p>
+      <button id="wipesavebutton">Wipe Save</button>
+      <div id="achievementsbtnhovercontainer">
+        <button id="achievementsbutton" class="hover-trigger"></button>
+        <p id="achievementslabel" class="hover-target">Achievements</p>
+      </div>
+    </div>
+    <div id="shoppanel">
+      <p id="shopstring">Shop</p>
+      <img id="shopicon" src="./img/shop/shoplogo.png" height="50px">
+      <button id="upgradebutton">Upgrades</button>
+      <div id="clickerhovercontainer">
+        <button id="clickerbuy" class="hover-trigger" src="img/shop/clicker.jpg"></button>
+        <p id="clickerinfo" class="hover-target">Your 0 clickers account for 0 (0%) CPS.</p>
+      </div>
+      <p id="clickerstring">clicker</p>
+      <p id="clickercpsstring">CPS: </p>
+      <p id="clickercoststring">Cost: </p>
+      <p id="clickersownedstring">Owned: </p>
+      <div id="superclicker">
+        <div id="superclickerhovercontainer">
+          <button id="superclickerbuy" class="hover-trigger"></button>
+          <p id="superclickerinfo" class="hover-target">Your 0 super clickers account for 0 (0%) CPS.</p>
+        </div>
+        <p id="superclickerstring">super clicker</p>
+        <P id="superclickercpsstring">CPS: </P>
+        <p id="superclickercoststring">Cost: </p>
+        <p id="superclickersownedstring">Owned: </p>
+      </div>
+      <div id="doublepointer">
+        <div id="doublepointerhovercontainer">
+          <button id="doublepointerbuy" class="hover-trigger"></button>
+          <p id="doublepointerinfo" class="hover-target">Your 0 double pointers account for 0 (0%) CPS.</p>
+        </div>
+        <p id="doublepointerstring">double pointer</p>
+        <p id="doublepointercpsstring">CPS: </p>
+        <p id="doublepointercoststring">Cost: </p>
+        <p id="doublepointersownedstring">Owned: </p>
+      </div>
+    </div>
+    <div id="upgradeshoppanel">
+      <p id="upgradestring">Upgrades</p>
+      <img id="upgradeshopicon" src="./img/shop/shoplogo.png" height="50px">
+      <button id="shopreturnbutton">Back</button>
+      <button id="cursorbuy"></button>
+      <p id="cursorstring">cursor</p>
+      <p id="cursorcpsstring">CPS: +50%</p>
+      <p id="cursorcoststring">Cost: 5,000,000</p>
+      <p id="cursorownedstring">Owned: </p>
+      <div id="supercursor">
+        <button id="supercursorbuy"></button>
+        <p id="supercursorstring">super cursor</p>
+        <p id="supercursorcpsstring">CPS: +75%</p>
+        <p id="supercursorcoststring">Cost: 500,000,000</p>
+        <p id="supercursorownedstring">Owned: </p>
+      </div>
+      <div id="employee">
+        <button id="employeebuy"></button>
+        <p id="employeestring">employee</p>
+        <p id="employeecpsstring">CPS: 10% (Stacks)</p>
+        <p id="employeecoststring">Cost: 50,000,000,000</p>
+        <p id="employeesownedstring">Owned: </p>
+      </div>
+      <div id="godfinger">
+        <button id="godfingerbuy"></button>
+        <p id="godfingerstring">god finger</p>
+        <p id="godfingerperkstring">Perk: +35% Click Value</p>
+        <p id="godfingercoststring">Cost: 5,000,000,000,000</p>
+        <p id="godfingerownedstring">Owned: </p>
+      </div>
+    </div>
+    <div id="statspanel">
+      <p id="statsstring">Stats</p>
+      <img id="statsicon" src="./img/stats/statslogo.png" height="50px">
+      <p id="timestring">You have played for 0 seconds.</p>
+      <p id="lifetimeclicksstring">You have obtained a total of 0 clicks.</p>
+      <p id="lifetimemanualclicksstring">You have gotten 0 clicks from clicking.</p>
+      <p id="coinclickcountstring">You have clicked the coin 0 times.</p>
+      <p id="totalclickhelpersstring">You have bought 0 items.</p>
+      <p id="achievementsunlockedstring" class="hover-trigger">You have unlocked 0 achievements.</p>
+    </div>
+    <div id="debuginputscreen">
+      <h1 id="debugscreenlabel">Debug Mode</h1>
+      <form id="debuginputfield">
+        <p id="dbip">Debug Access Key (Base64)</p>
+        <label id="dbilabel" for="debugkeyinput"></label>
+        <input type="text" name="debugkeyinput" placeholder="Input here..." id="debugkeyinput">
+        <button id="debugkeysubmit">Submit</button>
+      </form>
+      <p id="incorrectkeyentered">Incorrect key.</p>
+    </div>
+    <div id="debugscreen">
+      <textarea readonly id="debugconsole">Debug Console: </textarea>
+    </div>
+    <div id="achievementsscreen">
+      <h2 id="achievementsheader">Achievements</h2>
+      <p id="achievementnamestring">Journey Begins</p>
+      <p id="achievementdescriptionstring">Obtain 1 lifetime click.</p>
+      <p id="achievementunlockedstring">Unlocked: false</p>
+      <button id="journeybegins"></button>
+      <button id="agoodstart"></button>
+      <button id="gettingthere"></button>
+      <button id="millionare"></button>
+      <button id="coinpool"></button>
+      <button id="abundance"></button>
+      <button id="billionare"></button>
+      <button id="excess"></button>
+      <button id="planetofclicks"></button>
+      <button id="trillionare"></button>
+      <button id="pocketdimension"></button>
+      <button id="fartoomany"></button>
+      <button id="quadrillionare"></button>
+      <button id="backtogame">Back</button>
+    </div>
+  </div>
+</body>
+
+
+</html>
