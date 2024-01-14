@@ -1,6 +1,5 @@
 //Coin Clicker Update 5 Codename "Rewrite"
 //Build 3.11 Rewrite Beta
-//Note: Debug keygen is disabled in playtest builds of the game.
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
 //Initial checks (Browser, screen resolution, etc)
