@@ -1,5 +1,5 @@
 //Coin Clicker Update 5 Codename "Rewrite"
-//Build 3.2 Rewrite Beta
+//Build 3.21 Rewrite Beta
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
 //Initial checks (Browser, screen resolution, etc)
@@ -257,7 +257,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const quadrillionare = document.getElementById("quadrillionare");
 	const backToGame = document.getElementById("backtogame");
 	//Title screen variables
-	const buildNumber = "3.2rb";
+	const buildNumber = "3.21rb";
 	const updateName = "rewrite";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
@@ -334,7 +334,6 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var readyToSave = true;
 	const saveData = [];
 	var SHT;
-	var doNotLoadCheck = false;
 	//Buff variables
 	var buffRNG;
 	var buff = "none";
@@ -388,7 +387,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		doublePointerCostText, doublePointersOwnedText, employeeCostText, employeesOwnedText, clickerCPSWorthText, superClickerCPSWorthText,
 		doublePointerCPSWorthText, achievementsUnlockedText
 	];
-	const debug = true; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
+	const debug = false; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
 	if (debug) {
 		canvasDraw();
 		gameStarted = true;
@@ -412,7 +411,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	//Title screen content updates
 	buildString.textContent = ("build " + buildNumber);
 	updateString.textContent = ("the " + updateName + " update");
-	initialDataLoad(doNotLoadCheck);
+	initialDataLoad();
 	//Functions
 	function errorHandler(error) {
 		const eElement = document.createElement("p");
@@ -758,183 +757,76 @@ function script() { //NOTE: Every variable contained within this function is loc
 			errorHandler(error);
 		}
 	}
-	function initialDataLoad(doNotLoadCheck) {
+	function initialDataLoad() {
 		try {
 			if (localStorage.getItem('saveData', saveData) != null) {
 				const data = localStorage.getItem('saveData', saveData);
 				const loadData = JSON.parse(data);
-				if (doNotLoadCheck == false) {
-					var ldLeng = loadData.length - 1;
+				if (loadData[50] == buildNumber) {
+					journeyBeginsUnlocked = loadData[32];
+					aGoodStartUnlocked = loadData[33];
+					gettingThereUnlocked = loadData[34];
+					millionareUnlocked = loadData[35];
+					coinPoolUnlocked = loadData[36];
+					abundanceUnlocked = loadData[37];
+					billionareUnlocked = loadData[38];
+					excessUnlocked = loadData[39];
+					planetOfClicksUnlocked = loadData[40];
+					trillionareUnlocked = loadData[41];
+					pocketDimensionUnlocked = loadData[42];
+					farTooManyUnlocked = loadData[43];
+					quadrillionareUnlocked = loadData[47];
+					achArr = [journeyBeginsUnlocked, aGoodStartUnlocked, gettingThereUnlocked, millionareUnlocked, coinPoolUnlocked, abundanceUnlocked, billionareUnlocked,
+						excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked
+					];
+					clicks = loadData[0];
+					clickValue = loadData[1];
+					unbuffedCV = loadData[2];
+					cps = loadData[3];
+					unbuffedCPS = loadData[4];
+					timePlayed = loadData[5];
+					lifetimeClicks = loadData[6];
+					lifetimeManualClicks = loadData[7];
+					coinClickCount = loadData[8];
+					totalClickHelpers = loadData[9];
+					clickerCPS = loadData[10];
+					clickerCost = loadData[11];
+					clickersOwned = loadData[12];
+					superClickerUnlocked = loadData[13];
+					superClickerCPS = loadData[14];
+					superClickerCost = loadData[15];
+					superClickersOwned = loadData[16];
+					doublePointerUnlocked = loadData[17];
+					doublePointerCPS = loadData[18];
+					doublePointerCost = loadData[19];
+					doublePointersOwned = loadData[20];
+					cursorCost = loadData[21];
+					cursorOwned = loadData[22];
+					superCursorUnlocked = loadData[23];
+					superCursorCost = loadData[24];
+					superCursorOwned = loadData[25];
+					//volume = loadData[27];
+					//for (var i = 0; i > 2; i++) {
+					//  audioList[i].volume = volume;
+					//}
+					employeeUnlocked = loadData[26];
+					employeeCost = loadData[27];
+					employeesOwned = loadData[28];
+					godFingerUnlocked = loadData[29];
+					godFingerCost = loadData[30];
+					godFingerOwned = loadData[31];
+					clickerCPSWorth = loadData[44];
+					superClickerCPSWorth = loadData[45];
+					doublePointerCPSWorth = loadData[46];
+					buff = loadData[48];
+					unbuffedCPS = loadData[49];
+					if (buff == "cpsDouble") {
+						cps = unbuffedCPS;
+					}
 				} else {
-					var ldLeng = 100;
+					console.warn("Save is incompatible, it will not be loaded.");
+					debugConsole = debugConsole + "Save is incompatible, it will not be loaded." + "\n";
 				}
-				journeyBeginsUnlocked = loadData[32];
-				ldLeng--;
-				loadCheck(ldLeng);
-				aGoodStartUnlocked = loadData[33];
-				ldLeng--;
-				loadCheck(ldLeng);
-				gettingThereUnlocked = loadData[34];
-				ldLeng--;
-				loadCheck(ldLeng);
-				millionareUnlocked = loadData[35];
-				ldLeng--;
-				loadCheck(ldLeng);
-				coinPoolUnlocked = loadData[36];
-				ldLeng--;
-				loadCheck(ldLeng);
-				abundanceUnlocked = loadData[37];
-				ldLeng--;
-				loadCheck(ldLeng);
-				billionareUnlocked = loadData[38];
-				ldLeng--;
-				loadCheck(ldLeng);
-				excessUnlocked = loadData[39];
-				ldLeng--;
-				loadCheck(ldLeng);
-				planetOfClicksUnlocked = loadData[40];
-				ldLeng--;
-				loadCheck(ldLeng);
-				trillionareUnlocked = loadData[41];
-				ldLeng--;
-				loadCheck(ldLeng);
-				pocketDimensionUnlocked = loadData[42];
-				ldLeng--;
-				loadCheck(ldLeng);
-				farTooManyUnlocked = loadData[43];
-				ldLeng--;
-				loadCheck(ldLeng);
-				quadrillionareUnlocked = loadData[47];
-				ldLeng--;
-				loadCheck(ldLeng);
-				achArr = [journeyBeginsUnlocked, aGoodStartUnlocked, gettingThereUnlocked, millionareUnlocked, coinPoolUnlocked, abundanceUnlocked, billionareUnlocked,
-					excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked
-				];
-				clicks = loadData[0];
-				ldLeng--;
-				loadCheck(ldLeng);
-				clickValue = loadData[1];
-				ldLeng--;
-				loadCheck(ldLeng);
-				unbuffedCV = loadData[2];
-				ldLeng--;
-				loadCheck(ldLeng);
-				cps = loadData[3];
-				ldLeng--;
-				loadCheck(ldLeng);
-				unbuffedCPS = loadData[4];
-				ldLeng--;
-				loadCheck(ldLeng);
-				timePlayed = loadData[5];
-				ldLeng--;
-				loadCheck(ldLeng);
-				lifetimeClicks = loadData[6];
-				ldLeng--;
-				loadCheck(ldLeng);
-				lifetimeManualClicks = loadData[7];
-				ldLeng--;
-				loadCheck(ldLeng);
-				coinClickCount = loadData[8];
-				ldLeng--;
-				loadCheck(ldLeng);
-				totalClickHelpers = loadData[9];
-				ldLeng--;
-				loadCheck(ldLeng);
-				clickerCPS = loadData[10];
-				ldLeng--;
-				loadCheck(ldLeng);
-				clickerCost = loadData[11];
-				ldLeng--;
-				loadCheck(ldLeng);
-				clickersOwned = loadData[12];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superClickerUnlocked = loadData[13];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superClickerCPS = loadData[14];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superClickerCost = loadData[15];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superClickersOwned = loadData[16];
-				ldLeng--;
-				loadCheck(ldLeng);
-				doublePointerUnlocked = loadData[17];
-				ldLeng--;
-				loadCheck(ldLeng);
-				doublePointerCPS = loadData[18];
-				ldLeng--;
-				loadCheck(ldLeng);
-				doublePointerCost = loadData[19];
-				ldLeng--;
-				loadCheck(ldLeng);
-				doublePointersOwned = loadData[20];
-				ldLeng--;
-				loadCheck(ldLeng);
-				cursorCost = loadData[21];
-				ldLeng--;
-				loadCheck(ldLeng);
-				cursorOwned = loadData[22];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superCursorUnlocked = loadData[23];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superCursorCost = loadData[24];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superCursorOwned = loadData[25];
-				ldLeng--;
-				loadCheck(ldLeng);
-				//volume = loadData[27];
-				//for (var i = 0; i > 2; i++) {
-				//  audioList[i].volume = volume;
-				//}
-				employeeUnlocked = loadData[26];
-				ldLeng--;
-				loadCheck(ldLeng);
-				employeeCost = loadData[27];
-				ldLeng--;
-				loadCheck(ldLeng);
-				employeesOwned = loadData[28];
-				ldLeng--;
-				loadCheck(ldLeng);
-				godFingerUnlocked = loadData[29];
-				ldLeng--;
-				loadCheck(ldLeng);
-				godFingerCost = loadData[30];
-				ldLeng--;
-				loadCheck(ldLeng);
-				godFingerOwned = loadData[31];
-				ldLeng--;
-				loadCheck(ldLeng);
-				clickerCPSWorth = loadData[44];
-				ldLeng--;
-				loadCheck(ldLeng);
-				superClickerCPSWorth = loadData[45];
-				ldLeng--;
-				loadCheck(ldLeng);
-				doublePointerCPSWorth = loadData[46];
-				ldLeng--;
-				loadCheck(ldLeng);
-			}
-		} catch (error) {
-			errorHandler(error);
-		}
-	}
-	function loadCheck(ldLeng) {
-		try {
-			if (ldLeng == -1) {
-				console.group("Initial Data Reload");
-				console.log("Data index is at the proper value, performing save and reload.");
-				debugConsole = debugConsole + "Data index is at the proper value, performing save and reload." + "\n";
-				const needToSave = true;
-				manualSave = true;
-				saveGame(needToSave);
-				doNotLoadCheck = true;
-				initialDataLoad(doNotLoadCheck);
 			}
 		} catch (error) {
 			errorHandler(error);
@@ -995,6 +887,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveData.push(superClickerCPSWorth);
 				saveData.push(doublePointerCPSWorth);
 				saveData.push(quadrillionareUnlocked);
+				saveData.push(unbuffedCPS);
+				saveData.push(buff);
+				saveData.push(buildNumber);
 				saveGameP2(needToSave);
 			}
 		} catch (error) {
@@ -1071,10 +966,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 					unbuffedCPS = cps;
 					cps = Math.round(cps * 2);
 					buff = "cpsDouble";
+					console.log("Current buff is " + buff);
+					debugConsole = debugConsole + "Current buff is " + buff + "\n";
 					window.setTimeout(buffRemoval, 30000);
 				}
-				console.log("Current buff is " + buff);
-				debugConsole = debugConsole + "Current buff is " + buff + "\n";
 			}
 		} catch (error) {
 			errorHandler(error);
