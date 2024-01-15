@@ -376,7 +376,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var red = 0;
 	var green = 0;
 	//Debug mode variables
-	//var debugScreenState = "closed";
+	var debugScreenState = "closed";
 	//Miscellaneous variables
 	var intArray = [clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost,
 		clickersOwned, superClickerCPS, superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost, employeesOwned,
