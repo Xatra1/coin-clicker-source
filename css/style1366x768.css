@@ -232,6 +232,33 @@ body {
   cursor: pointer;
 }
 
+#settingsbtnhovercontainer .hover-target {
+  display: none;
+}
+
+#settingsbtnhovercontainer .hover-trigger:hover+.hover-target {
+  display: block;
+}
+
+#settingslabel {
+  text-align: center;
+  width: 95px;
+  position: fixed;
+  border: solid black 1px;
+}
+
+#settingsbutton {
+  background: transparent url("../img/settings/settings.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid black 1px;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 0.5vw;
+  left: 64.7vw;
+}
+
 /* Shop panel elements */
 #shopicon {
   position: fixed;
@@ -1065,6 +1092,50 @@ body {
 }
 
 #backtogame {
+  background: transparent;
+  height: 3vw;
+  width: 10vw;
+  border: solid 1px black;
+  font-family: courier, monospace;
+  font-size: 17px;
+  position: fixed;
+  top: 46vw;
+  left: 44vw;
+  cursor: pointer;
+}
+
+#settingsscreen {
+  display: none;
+}
+
+#settingsheader {
+  font-weight: 100;
+  font-size: 35px;
+  position: fixed;
+  top: 0vw;
+  left: 43.5vw;
+}
+
+#volumeinput {
+  height: 1vw;
+  width: 7vw;
+  font-family: courier, monospace;
+  font-size: 17px;
+  background: transparent;
+  border: solid 1px black;
+  position: fixed;
+  top: 5vw;
+  left: 56.3vw;
+}
+
+#volumestring {
+  font-size: 12.5px;
+  position: fixed;
+  top: 4.2vw;
+  left: 33.5vw;
+}
+
+#backtogame2 {
   background: transparent;
   height: 3vw;
   width: 10vw;
