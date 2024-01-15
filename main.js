@@ -826,11 +826,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 					}
 				} else {
 					console.warn("Save is incompatible, it will not be loaded.");
-					debugConsole = debugConsole + "Save is incompatible, it will not be loaded." + "\n";
+					debugConsole = debugConsole + "WARN: Save is incompatible, it will not be loaded." + "\n";
 				}
 			} else {
 				console.warn("There is no save to load.");
-				debugConsole = debugConsole + "There is no save to load" + "\n";
+				debugConsole = debugConsole + "WARN: There is no save to load." + "\n";
 			}
 			console.groupEnd();
 		} catch (error) {
