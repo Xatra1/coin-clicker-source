@@ -1,5 +1,5 @@
 //Coin Clicker Update 5 Codename "Rewrite"
-//Build 3.21 Rewrite Beta
+//Build 3.22 Rewrite Beta
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
 //Initial checks (Browser, screen resolution, etc)
@@ -257,7 +257,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const quadrillionare = document.getElementById("quadrillionare");
 	const backToGame = document.getElementById("backtogame");
 	//Title screen variables
-	const buildNumber = "3.21rb";
+	const buildNumber = "3.22rb";
 	const updateName = "rewrite";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
@@ -1390,6 +1390,6 @@ function script() { //NOTE: Every variable contained within this function is loc
 	setInterval(saveGame, 60000);
 	setInterval(timedLabelCount, 1);
 	setInterval(rgChange, 25);
-	setInterval(logDNPError, 65000);
+	setInterval(logDNPError, 120000);
 	setInterval(buffRNG, 1000);
 }
