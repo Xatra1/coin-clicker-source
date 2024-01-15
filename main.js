@@ -392,7 +392,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		doublePointerCostText, doublePointersOwnedText, employeeCostText, employeesOwnedText, clickerCPSWorthText, superClickerCPSWorthText,
 		doublePointerCPSWorthText, achievementsUnlockedText
 	];
-	const debug = true; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
+	const debug = false; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
 	if (debug) {
 		canvasDraw();
 		gameStarted = true;
