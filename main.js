@@ -759,6 +759,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function initialDataLoad() {
 		try {
+			console.group("Initial Data Load");
 			if (localStorage.getItem('saveData', saveData) != null) {
 				const data = localStorage.getItem('saveData', saveData);
 				const loadData = JSON.parse(data);
@@ -827,7 +828,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 					console.warn("Save is incompatible, it will not be loaded.");
 					debugConsole = debugConsole + "Save is incompatible, it will not be loaded." + "\n";
 				}
+			} else {
+				console.warn("There is no save to load.");
+				debugConsole = debugConsole + "There is no save to load" + "\n";
 			}
+			console.groupEnd();
 		} catch (error) {
 			errorHandler(error);
 		}
