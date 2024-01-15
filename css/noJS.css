@@ -30,6 +30,10 @@
     display: none;
 }
 
+#settingsscreen {
+    display: none;
+}
+
 body {
     background: url("../img/background.jpg");
 }

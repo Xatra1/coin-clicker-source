@@ -1,5 +1,5 @@
 //Coin Clicker Update 5 Codename "Rewrite"
-//Build 3.22 Rewrite Beta
+//Build 3.3 Rewrite Beta
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
 //Initial checks (Browser, screen resolution, etc)
@@ -256,8 +256,14 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const farTooMany = document.getElementById("fartoomany");
 	const quadrillionare = document.getElementById("quadrillionare");
 	const backToGame = document.getElementById("backtogame");
+	//Settings screen elements
+	const settingsButton = document.getElementById("settingsbutton");
+	const settingsLabel = document.getElementById("settingslabel");
+	const settingsPanel = document.getElementById("settingsscreen");
+	const backToGame2 = document.getElementById("backtogame2");
+	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.22rb";
+	const buildNumber = "3.3rb";
 	const updateName = "rewrite";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
@@ -365,12 +371,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 	];
 	var achStr = "none";
 	//Audio variables
-	//var volume = 1.0;
+	var volume = 1.0;
 	var sfx = new Audio("./snd/click.mp3");
 	var sfx2 = new Audio("./snd/shopunlock.mp3");
 	var sfx3 = new Audio("./snd/achievementunlock.mp3");
 	var sfx4 = new Audio("./snd/specialachievementunlocksfx.mp3");
-	//const sfxList = [sfx, sfx2, sfx3, sfx4];
 	//Color variables
 	var increase = true;
 	var red = 0;
@@ -387,7 +392,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		doublePointerCostText, doublePointersOwnedText, employeeCostText, employeesOwnedText, clickerCPSWorthText, superClickerCPSWorthText,
 		doublePointerCPSWorthText, achievementsUnlockedText
 	];
-	const debug = false; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
+	const debug = true; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
 	if (debug) {
 		canvasDraw();
 		gameStarted = true;
@@ -419,7 +424,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		const titlescreen = document.getElementById("titlescreen");
 		eElement.textContent = "Error in script: " + error;
 		console.error(error);
-		eElement.style.fontSize = "25px";
+		eElement.style.fontSize = "10px";
 		eElement.style.display = "block";
 		titlescreen.style.display = "none";
 		body.appendChild(eElement);
@@ -806,10 +811,6 @@ function script() { //NOTE: Every variable contained within this function is loc
 					superCursorUnlocked = loadData[23];
 					superCursorCost = loadData[24];
 					superCursorOwned = loadData[25];
-					//volume = loadData[27];
-					//for (var i = 0; i > 2; i++) {
-					//  audioList[i].volume = volume;
-					//}
 					employeeUnlocked = loadData[26];
 					employeeCost = loadData[27];
 					employeesOwned = loadData[28];
@@ -821,9 +822,20 @@ function script() { //NOTE: Every variable contained within this function is loc
 					doublePointerCPSWorth = loadData[46];
 					buff = loadData[48];
 					unbuffedCPS = loadData[49];
+					unbuffedCV = loadData[51];
 					if (buff == "cpsDouble") {
 						cps = unbuffedCPS;
+						buff = "none";
+					} else if (buff == "cv777%CPS") {
+						clickValue = unbuffedCV;
+						buff = "none";
 					}
+					volume = loadData[52];
+					sfx.volume = volume;
+					sfx2.volume = volume;
+					sfx3.volume = volume;
+					sfx4.volume = volume;
+					volumeInput.value = volume * 100;
 				} else {
 					console.warn("Save is incompatible, it will not be loaded.");
 					debugConsole = debugConsole + "WARN: Save is incompatible, it will not be loaded." + "\n";
@@ -869,7 +881,6 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveData.push(superCursorUnlocked);
 				saveData.push(superCursorCost);
 				saveData.push(superCursorOwned);
-				//saveData.push(volume);
 				saveData.push(employeeUnlocked);
 				saveData.push(employeeCost);
 				saveData.push(employeesOwned);
@@ -895,6 +906,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveData.push(unbuffedCPS);
 				saveData.push(buff);
 				saveData.push(buildNumber);
+				saveData.push(unbuffedCV);
+				saveData.push(volume);
 				saveGameP2(needToSave);
 			}
 		} catch (error) {
@@ -957,10 +970,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function buffRNG() {
 		try {
-			let max = 100;
+			let max = 200;
 			let min = 0;
 			if (debug && buff == "none") {
-				buffRNG = 100;
+				buffRNG = 200;
 			} else {
 				buffRNG = Math.floor((Math.random() * max) + min);
 			}
@@ -975,6 +988,17 @@ function script() { //NOTE: Every variable contained within this function is loc
 					debugConsole = debugConsole + "Current buff is " + buff + "\n";
 					window.setTimeout(buffRemoval, 30000);
 				}
+			} else if (buffRNG == 200) {
+				if (cps > 0) {
+					buffStr.textContent = "Your click value has been increased by 777% of your CPS for 10 seconds!";
+					buffStr.style.display = "block";
+					unbuffedCV = clickValue;
+					clickValue = clickValue + Math.round(cps * 7.77);
+					buff = "cv777%CPS";
+					console.log("Current buff is " + buff);
+					debugConsole = debugConsole + "Current buff is " + buff + "\n";
+					window.setTimeout(buffRemoval, 10000);
+				}
 			}
 		} catch (error) {
 			errorHandler(error);
@@ -982,10 +1006,15 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function buffRemoval() {
 		try {
+			buffStr.style.display = "none";
 			if (buff == "cpsDouble") {
-				buffStr.style.display = "none";
 				cps = Math.round(cps / 2);
 				buff = "none";
+			} else if (buff == "cv777%CPS") {
+				clickValue = clickValue - Math.round(cps * 7.77);
+				setTimeout(function () {
+					buff = "none";
+				}, 500);
 			}
 			console.log("Buff removed.");
 		} catch (error) {
@@ -1226,9 +1255,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - godFingerCost;
 			godFingerOwned = true;
 			clickValue = clickValue + Math.round(godFingerCV * clickValue);
-			//if (buff == "cv777%CPS") {
-			//  clickValue = clickValue + Math.round((godFingerCV * clickValue) * 7.77 * cps)
-			//}
+			if (buff == "cv777%CPS") {
+				clickValue = clickValue + Math.round((godFingerCV * clickValue) * 7.77 * cps)
+			}
 			godFingerCost = "Owned.";
 			totalClickHelpers++;
 		}
@@ -1291,6 +1320,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 		doublePointerInfo.style.top = top + 'px';
 		achievementsLabel.style.left = left + 'px';
 		achievementsLabel.style.top = top + 'px';
+		settingsLabel.style.left = left + 'px';
+		settingsLabel.style.top = top + 'px';
 	})
 	achievementsButton.addEventListener("click", function () {
 		sfx.play();
@@ -1382,6 +1413,27 @@ function script() { //NOTE: Every variable contained within this function is loc
 		achNameStr.textContent = achStrs[12];
 		achDescStr.textContent = achDescs[12];
 		achUnlockStr.textContent = "Unlocked: " + achArr[12];
+	});
+	settingsButton.addEventListener("click", function () {
+		sfx.play();
+		settingsPanel.style.display = "block";
+		game.style.display = "none";
+	});
+	backToGame2.addEventListener("click", function () {
+		sfx.play();
+		game.style.display = "block";
+		settingsPanel.style.display = "none";
+	});
+	volumeInput.addEventListener("change", function () {
+		if (volumeInput.value >= 0 && volumeInput.value <= 100) {
+			volume = volumeInput.value / 100;
+			sfx.volume = volume;
+			sfx2.volume = volume;
+			sfx3.volume = volume;
+			sfx4.volume = volume;
+		} else {
+			volumeInput.value = "";
+		}
 	});
 	//Function intervals
 	setInterval(updateScreen, 100);
