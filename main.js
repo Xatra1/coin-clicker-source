@@ -1072,7 +1072,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				var c = 30;
 				while (c > 0) {
 					c--;
-					var val = (Math.floor(Math.random() * 62) + 1);
+					var val = (Math.floor(Math.random() * 61) + 1);
 					generatedKey = generatedKey + addArray[val];
 					if (c == 0) {
 						console.log("Key generated.");
