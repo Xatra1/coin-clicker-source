@@ -1390,6 +1390,6 @@ function script() { //NOTE: Every variable contained within this function is loc
 	setInterval(saveGame, 60000);
 	setInterval(timedLabelCount, 1);
 	setInterval(rgChange, 25);
-	setInterval(logDNPError, 65000);
+	setInterval(logDNPError, 120000);
 	setInterval(buffRNG, 1000);
 }
