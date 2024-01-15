@@ -203,10 +203,18 @@ body {
 
 #saveinfo {
   font-size: 11px;
-  color: black;
   position: fixed;
   top: 3vw;
   left: 42vw;
+}
+
+#bufflabel {
+  display: none;
+  text-align: center;
+  width: 700px;
+  position: fixed;
+  top: 37vw;
+  left: 31vw;
 }
 
 #borders {

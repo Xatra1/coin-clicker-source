@@ -1,5 +1,5 @@
 //Coin Clicker Update 5 Codename "Rewrite"
-//Build 3.11 Rewrite Beta
+//Build 3.2 Rewrite Beta
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
 //Initial checks (Browser, screen resolution, etc)
@@ -132,7 +132,7 @@ function resolutionCheck(enableJS, width) { //There are currently only two suppo
 		head.appendChild(link);
 	}
 	if ($(window).width() > width || $(window).width() < "1366" || $(window).width() > "1366" && $(window).width() < width) {
-		link.href = "./css/fallback.css";
+		link.href = "./css/style1366x768.css";
 		curStySht = "Fallback";
 		console.warn("User has an unsupported window width. The window or zoom size may have changed, or their resolution is lower than supported. Using fallback for now.");
 		debugConsole = debugConsole + "WARN: User has an unsupported window width. The window or zoom size may have changed, or their resolution is lower than supported. Using fallback for now." + "\n";
@@ -154,15 +154,7 @@ function resolutionCheck(enableJS, width) { //There are currently only two suppo
 		try {
 			script();
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error)
 		}
 	} else {
 		div.appendChild(resWarn);
@@ -189,6 +181,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const saveButton = document.getElementById("savebutton");
 	const savingString = document.getElementById("savingstring");
 	const wipeSaveButton = document.getElementById("wipesavebutton");
+	const buffStr = document.getElementById("bufflabel");
 	//Shop panel elements
 	const shopPanel = document.getElementById("shoppanel");
 	const clickerBuy = document.getElementById("clickerbuy");
@@ -264,7 +257,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const quadrillionare = document.getElementById("quadrillionare");
 	const backToGame = document.getElementById("backtogame");
 	//Title screen variables
-	const buildNumber = "3.11rb";
+	const buildNumber = "3.2rb";
 	const updateName = "rewrite";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
@@ -343,8 +336,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var SHT;
 	var doNotLoadCheck = false;
 	//Buff variables
-	//var buffRNG;
-	//var buff = "none";
+	var buffRNG;
+	var buff = "none";
 	//var clicksAdded;
 	//Optimization variables
 	var upgradeShopOpen;
@@ -378,7 +371,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var sfx2 = new Audio("./snd/shopunlock.mp3");
 	var sfx3 = new Audio("./snd/achievementunlock.mp3");
 	var sfx4 = new Audio("./snd/specialachievementunlocksfx.mp3");
-	const sfxList = [sfx, sfx2, sfx3, sfx4];
+	//const sfxList = [sfx, sfx2, sfx3, sfx4];
 	//Color variables
 	var increase = true;
 	var red = 0;
@@ -395,7 +388,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		doublePointerCostText, doublePointersOwnedText, employeeCostText, employeesOwnedText, clickerCPSWorthText, superClickerCPSWorthText,
 		doublePointerCPSWorthText, achievementsUnlockedText
 	];
-	const debug = false; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
+	const debug = true; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
 	if (debug) {
 		canvasDraw();
 		gameStarted = true;
@@ -421,6 +414,17 @@ function script() { //NOTE: Every variable contained within this function is loc
 	updateString.textContent = ("the " + updateName + " update");
 	initialDataLoad(doNotLoadCheck);
 	//Functions
+	function errorHandler(error) {
+		const eElement = document.createElement("p");
+		const body = document.body;
+		const titlescreen = document.getElementById("titlescreen");
+		eElement.textContent = "Error in script: " + error;
+		console.error(error);
+		eElement.style.fontSize = "25px";
+		eElement.style.display = "block";
+		titlescreen.style.display = "none";
+		body.appendChild(eElement);
+	}
 	function updateScreen() {
 		try {
 			addNumberCommas();
@@ -485,15 +489,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			achievementsUnlockedString.textContent = "You have unlocked " + textArray[23] + " out of 13 achievements.";
 			shopUnlockedCheck();
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
 		}
 	}
 	function shopUnlockedCheck() {
@@ -556,15 +552,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			}
 			achievementUnlockCheck();
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
 		}
 	}
 	function achievementUnlockCheck() {
@@ -707,15 +695,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
 		}
 	}
 	function addNumberCommas() {
@@ -734,15 +714,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				}
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
 		}
 	}
 	function shopCostPulse() {
@@ -783,15 +755,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				godFingerCostString.style.color = "rgb(0, 0, 0)";
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
 		}
 	}
 	function initialDataLoad(doNotLoadCheck) {
@@ -957,27 +921,23 @@ function script() { //NOTE: Every variable contained within this function is loc
 				loadCheck(ldLeng);
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
 		}
 	}
 	function loadCheck(ldLeng) {
-		if (ldLeng == -1) {
-			console.group("Initial Data Reload");
-			console.log("Data index is at the proper value, performing save and reload.");
-			debugConsole = debugConsole + "Data index is at the proper value, performing save and reload." + "\n";
-			const needToSave = true;
-			manualSave = true;
-			saveGame(needToSave);
-			doNotLoadCheck = true;
-			initialDataLoad(doNotLoadCheck);
+		try {
+			if (ldLeng == -1) {
+				console.group("Initial Data Reload");
+				console.log("Data index is at the proper value, performing save and reload.");
+				debugConsole = debugConsole + "Data index is at the proper value, performing save and reload." + "\n";
+				const needToSave = true;
+				manualSave = true;
+				saveGame(needToSave);
+				doNotLoadCheck = true;
+				initialDataLoad(doNotLoadCheck);
+			}
+		} catch (error) {
+			errorHandler(error);
 		}
 	}
 	function saveGame(needToSave) {
@@ -1038,15 +998,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveGameP2(needToSave);
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error)
 		}
 	}
 	function saveGameP2(needToSave) {
@@ -1071,15 +1023,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error)
 		}
 	}
 	function wipeSave() {
@@ -1094,15 +1038,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				}
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error)
 		}
 	}
 	function timedLabelCount() {
@@ -1116,65 +1052,111 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT++;
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
+		}
+	}
+	function buffRNG() {
+		try {
+			let max = 100;
+			let min = 0;
+			if (debug && buff == "none") {
+				buffRNG = 100;
+			} else {
+				buffRNG = Math.floor((Math.random() * max) + min);
+			}
+			if (buffRNG == 100) {
+				if (cps > 0) {
+					buffStr.textContent = "Your CPS has been doubled for 30 seconds!";
+					buffStr.style.display = "block";
+					unbuffedCPS = cps;
+					cps = Math.round(cps * 2);
+					buff = "cpsDouble";
+					window.setTimeout(buffRemoval, 30000);
+				}
+				console.log("Current buff is " + buff);
+				debugConsole = debugConsole + "Current buff is " + buff + "\n";
+			}
+		} catch (error) {
+			errorHandler(error);
+		}
+	}
+	function buffRemoval() {
+		try {
+			if (buff == "cpsDouble") {
+				buffStr.style.display = "none";
+				cps = Math.round(cps / 2);
+				buff = "none";
+			}
+			console.log("Buff removed.");
+		} catch (error) {
+			errorHandler(error);
 		}
 	}
 	function timeIncrease() {
 		timePlayed = timePlayed + 1000;
 	}
 	function coinClick() {
-		sfx.play();
-		clicks = clicks + clickValue;
-		lifetimeClicks = lifetimeClicks + clickValue;
-		lifetimeManualClicks = lifetimeManualClicks + clickValue;
-		coinClickCount++;
+		try {
+			sfx.play();
+			clicks = clicks + clickValue;
+			lifetimeClicks = lifetimeClicks + clickValue;
+			lifetimeManualClicks = lifetimeManualClicks + clickValue;
+			coinClickCount++;
+		} catch (error) {
+			errorHandler(error);
+		}
 	}
 	function cpsClick() {
-		clicks = clicks + cps;
-		lifetimeClicks = lifetimeClicks + cps;
+		try {
+			clicks = clicks + cps;
+			lifetimeClicks = lifetimeClicks + cps;
+		} catch (error) {
+			errorHandler(error);
+		}
 	}
 	function rgChange() {
-		if (increase == true) {
-			red = red + 5;
-			green = green + 5;
-		} else if (increase == false) {
-			red = red - 5;
-			green = green - 5;
+		try {
+			if (increase == true) {
+				red = red + 5;
+				green = green + 5;
+			} else if (increase == false) {
+				red = red - 5;
+				green = green - 5;
+			}
+			if (green == 200) {
+				increase = false;
+			} else if (green == 0) {
+				increase = true;
+			}
+			quadrillionare.style.borderBlockColor = "rgb(" + red + ",0,0)";
+			quadrillionare.style.borderInlineColor = "rgb(" + red + ",0,0)";
+			shopCostPulse();
+		} catch (error) {
+			errorHandler(error);
 		}
-		if (green == 200) {
-			increase = false;
-		} else if (green == 0) {
-			increase = true;
-		}
-		quadrillionare.style.borderBlockColor = "rgb(" + red + ",0,0)";
-		quadrillionare.style.borderInlineColor = "rgb(" + red + ",0,0)";
-		shopCostPulse();
 	}
 	function canvasDraw() {
-		const canvas = document.getElementById("borders");
-		const ctx = canvas.getContext("2d");
-		const size = $(window).width();
-		const scale = window.devicePixelRatio;
-		if (navigator.userAgent.indexOf("OPR") == -1 && navigator.userAgent.indexOf("Edg") == -1) { //Edge and Opera do not support this style of canvas drawing, it will not be used.
-			canvas.style.width = "${size}px";
-			canvas.style.height = "${size}px";
-			canvas.height = Math.floor(size * scale);
-			canvas.width = Math.floor(size * scale);
-			ctx.scale(scale, scale);
-			if (size == 1920) {
-				ctx.fillRect(505, 0, 2, canvas.height);
-				ctx.fillRect(1350, 0, 2, canvas.height);
-			} else if (size == 1366) {
-				ctx.fillRect(405, 0, 2, canvas.height);
-				ctx.fillRect(925, 0, 2, canvas.height);
+		try {
+			const canvas = document.getElementById("borders");
+			const ctx = canvas.getContext("2d");
+			const size = $(window).width();
+			const scale = window.devicePixelRatio;
+			if (navigator.userAgent.indexOf("OPR") == -1 && navigator.userAgent.indexOf("Edg") == -1) { //Edge and Opera do not support this style of canvas drawing, it will not be used.
+				canvas.style.width = "${size}px";
+				canvas.style.height = "${size}px";
+				canvas.height = Math.floor(size * scale);
+				canvas.width = Math.floor(size * scale);
+				ctx.scale(scale, scale);
+				if (size == 1920) {
+					ctx.fillRect(505, 0, 2, canvas.height);
+					ctx.fillRect(1350, 0, 2, canvas.height);
+				} else if (size == 1366) {
+					ctx.fillRect(405, 0, 2, canvas.height);
+					ctx.fillRect(925, 0, 2, canvas.height);
+				}
 			}
+		} catch (error) {
+			errorHandler(error);
 		}
 	}
 	function createBase64Key() {
@@ -1208,15 +1190,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				}
 			}
 		} catch (error) {
-			const eElement = document.createElement("p");
-			const body = document.body;
-			const titlescreen = document.getElementById("titlescreen");
-			eElement.textContent = "Error in script: " + error;
-			console.error(error);
-			eElement.style.fontSize = "25px";
-			eElement.style.display = "block";
-			titlescreen.style.display = "none";
-			body.appendChild(eElement);
+			errorHandler(error);
 		}
 	}
 	function logDNPError() {
@@ -1251,9 +1225,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clickersOwned++;
 			cps = cps + clickerCPS;
 			clickerCPSWorth = clickerCPSWorth + clickerCPS;
-			//if (buff == "cpsDouble") {
-			//  cps = cps + (clickerCPS * 2);
-			//}
+			if (buff == "cpsDouble") {
+				cps = cps + (clickerCPS * 2);
+			}
 			clickerCPS = clickerCPS + Math.round(clickersOwned * 2 + (0.01 * cps) + (Math.floor(Math.random() * 15) + 3));
 			clickerCost = clickerCost + Math.round(clickersOwned + (5 * cps) + clickersOwned * 3 + (Math.floor(Math.random() * 200) + 100));
 			clickValue = clickValue + Math.round(clickersOwned * 0.5 + 0.05 * cps);
@@ -1267,9 +1241,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 			superClickersOwned++;
 			cps = cps + superClickerCPS;
 			superClickerCPSWorth = superClickerCPSWorth + superClickerCPS;
-			//if (buff == "cpsDouble") {
-			//  cps = cps + (superClickerCPS * 2);
-			//}
+			if (buff == "cpsDouble") {
+				cps = cps + (superClickerCPS * 2);
+			}
 			superClickerCPS = superClickerCPS + Math.round(superClickersOwned * 3 + (0.4 * cps));
 			superClickerCost = superClickerCost + Math.round(superClickerCost + (50 * cps) + superClickersOwned * 4 + (Math.floor(Math.random() * 50000) + 30000));
 			clickValue = clickValue + Math.round(superClickersOwned * 2 + 0.10 * cps);
@@ -1283,11 +1257,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 			doublePointersOwned++;
 			cps = cps + doublePointerCPS;
 			doublePointerCPSWorth = doublePoitnerCPSWorth + doublePointerCPS;
-			//if (buff == "cpsDouble") {
-			//  cps = cps + (doublePointerCPS * 2);
-			//}
+			if (buff == "cpsDouble") {
+				cps = cps + (doublePointerCPS * 2);
+			}
 			doublePointerCPS = doublePointerCPS + Math.round(doublePointersOwned * 5 + (0.6 * cps));
-			doublePointerCost = doublePointerCost + Math.round(doublePointersOwned + (100 * cps) + doublePointersOwned * 10 + (Math.floor(Math.random() * 1000000) + 500000));
+			doublePointerCost = doublePointerCost + Math.round(doublePointersOwned + (125 * cps) + doublePointersOwned * 10 + (Math.floor(Math.random() * 1000000) + 500000));
 			clickValue = clickValue + Math.round(doublePointersOwned * 3 + 0.12 * cps);
 			totalClickHelpers++;
 		}
@@ -1310,9 +1284,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - cursorCost;
 			cursorOwned = true;
 			cps = cps + Math.round(cps * cursorCPS);
-			//if (buff == "cpsDouble") {
-			//  cps = cps + Math.round(cps * (cursorCPS * 2));
-			//}
+			if (buff == "cpsDouble") {
+				cps = cps + Math.round(cps * (cursorCPS * 2));
+			}
 			cursorCost = "Owned.";
 			clickValue = clickValue + Math.round(0.07 * cps);
 			totalClickHelpers++;
@@ -1324,9 +1298,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - superCursorCost;
 			superCursorOwned = true;
 			cps = cps + Math.round(cps * superCursorCPS);
-			//if (buff == "cpsDouble") {
-			//  cps = cps + Math.round(cps * (superCursorCPS * 2));
-			//}
+			if (buff == "cpsDouble") {
+				cps = cps + Math.round(cps * (superCursorCPS * 2));
+			}
 			superCursorCost = "Owned.";
 			clickValue = clickValue + Math.round(0.12 * cps);
 			totalClickHelpers++;
@@ -1338,9 +1312,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - employeeCost;
 			employeesOwned++;
 			cps = cps + Math.round(cps * employeeCPS);
-			//if (buff == "cpsDouble") {
-			//  cps = cps + Math.round(cps * (employeeCPS * 2));
-			//}
+			if (buff == "cpsDouble") {
+				cps = cps + Math.round(cps * (employeeCPS * 2));
+			}
 			employeeCost = employeeCost + (employeesOwned * employeeCost);
 			employeeCPS = employeeCPS * 2;
 			totalClickHelpers++;
@@ -1419,6 +1393,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		achievementsLabel.style.top = top + 'px';
 	})
 	achievementsButton.addEventListener("click", function () {
+		sfx.play();
 		game.style.display = "none";
 		achievementsPanel.style.display = "block";
 		achNameStr.textContent = achStrs[0];
@@ -1426,70 +1401,84 @@ function script() { //NOTE: Every variable contained within this function is loc
 		achUnlockStr.textContent = "Unlocked: " + achArr[0];
 	});
 	backToGame.addEventListener("click", function () {
+		sfx.play();
 		game.style.display = "block";
 		achievementsPanel.style.display = "none";
 	});
 	journeyBegins.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[0];
 		achDescStr.textContent = achDescs[0];
 		achUnlockStr.textContent = "Unlocked: " + achArr[0];
 	});
 	aGoodStart.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[1];
 		achDescStr.textContent = achDescs[1];
 		achUnlockStr.textContent = "Unlocked: " + achArr[1];
 	});
 	gettingThere.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[2];
 		achDescStr.textContent = achDescs[2];
 		achUnlockStr.textContent = "Unlocked: " + achArr[2];
 	});
 	millionare.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[3];
 		achDescStr.textContent = achDescs[3];
 		achUnlockStr.textContent = "Unlocked: " + achArr[3];
 	});
 	coinPool.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[4];
 		achDescStr.textContent = achDescs[4];
 		achUnlockStr.textContent = "Unlocked: " + achArr[4];
 	});
 	abundance.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[5];
 		achDescStr.textContent = achDescs[5];
 		achUnlockStr.textContent = "Unlocked: " + achArr[5];
 	});
 	billionare.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[6];
 		achDescStr.textContent = achDescs[6];
 		achUnlockStr.textContent = "Unlocked: " + achArr[6];
 	});
 	excess.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[7];
 		achDescStr.textContent = achDescs[7];
 		achUnlockStr.textContent = "Unlocked: " + achArr[7];
 	});
 	planetOfClicks.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[8];
 		achDescStr.textContent = achDescs[8];
 		achUnlockStr.textCOntent = "Unlocked: " + achArr[8];
 	});
 	trillionare.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[9];
 		achDescStr.textContent = achDescs[9];
 		achUnlockStr.textContent = "Unlocked: " + achArr[9];
 	});
 	pocketDimension.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[10];
 		achDescStr.textContent = achDescs[10];
 		achUnlockStr.textContent = "Unlocked: " + achArr[10];
 	});
 	farTooMany.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[11];
 		achDescStr.textContent = achDescs[11];
 		achUnlockStr.textContent = "Unlocked: " + achArr[11];
 	});
 	quadrillionare.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[12];
 		achDescStr.textContent = achDescs[12];
 		achUnlockStr.textContent = "Unlocked: " + achArr[12];
@@ -1502,4 +1491,5 @@ function script() { //NOTE: Every variable contained within this function is loc
 	setInterval(timedLabelCount, 1);
 	setInterval(rgChange, 25);
 	setInterval(logDNPError, 65000);
+	setInterval(buffRNG, 1000);
 }

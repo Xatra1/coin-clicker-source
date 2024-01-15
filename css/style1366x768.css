@@ -188,6 +188,16 @@ body {
   left: 30.5vw;
 }
 
+#bufflabel {
+  font-size: 15px;
+  display: none;
+  text-align: center;
+  width: 500px;
+  position: fixed;
+  top: 35vw;
+  left: 31vw;
+}
+
 #borders {
   position: fixed;
   top: -0.1vw;
