@@ -1,5 +1,5 @@
 //Coin Clicker Update 6 Codename "Abundance"
-//Build 3.53 Rewrite Beta
+//Build 3.54 Rewrite Beta
 //NOTE: The features present in this update of the game (especially debug autoplay) are still being heavily tested. The buff system may still have issues.
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -277,7 +277,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.53rb";
+	const buildNumber = "3.54rb";
 	const updateName = "abundance";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
