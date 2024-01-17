@@ -1053,6 +1053,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		try {
 			let max = 300;
 			let min = 0;
+			buffRNG = 0;
 			if (forceBuff && buff == "none") {
 				console.log(forceBuff);
 				buffRNG = 300;
