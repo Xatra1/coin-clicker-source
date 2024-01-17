@@ -1,5 +1,6 @@
 //Coin Clicker Update 6 Codename "Abundance"
 //Build 3.51 Rewrite Beta
+//NOTE: The features present in this update of the game (especially debug autoplay) are still being heavily tested. The buff system may still have issues.
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
 //Error handler
