@@ -817,6 +817,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			var costArraySP = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
 			for (var i = -1; i < costArraySP.length; i++) {
 				if (clicks >= costArraySP[i]) costStringArr[i].style.color = "rgb(0," + green + ",0)";
+				else costStringArr[i].style.color = "rgb(0, 0, 0)";
 			}
 		} catch (error) {
 			errorHandler(error);
