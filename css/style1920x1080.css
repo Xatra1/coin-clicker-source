@@ -229,10 +229,12 @@ body {
 }
 
 #saveinfo {
+  text-align: center;
+  width: 500px;
   font-size: 11px;
   position: fixed;
   top: 3vw;
-  left: 42vw;
+  left: 36vw;
 }
 
 #bufflabel {

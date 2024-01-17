@@ -1,5 +1,5 @@
-//Coin Clicker Update 5 Codename "Rewrite"
-//Build 3.41 Rewrite Beta
+//Coin Clicker Update 6 Codename "Abundance"
+//Build 3.51 Rewrite Beta
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
 //Error handler
@@ -192,6 +192,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const unlockString = document.getElementById("unlockstring");
 	const saveButton = document.getElementById("savebutton");
 	const savingString = document.getElementById("savingstring");
+	const saveInfoString = document.getElementById("saveinfo");
 	const wipeSaveButton = document.getElementById("wipesavebutton");
 	const buffStr = document.getElementById("bufflabel");
 	//Shop panel elements
@@ -275,8 +276,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.41rb";
-	const updateName = "rewrite";
+	const buildNumber = "3.51rb";
+	const updateName = "abundance";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
 	console.groupEnd();
@@ -353,11 +354,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const saveData = [];
 	var SHT;
 	//Buff variables
-	var buffRNG;
+	var buffRNG = 0;
+	var alreadyLogged = false;
 	var buff = "none";
-	var itemBuffRNG;
-	var itemBuff = 0;
-	var itemBuffName = "none";
 	var clicksAdded;
 	//Optimization variables
 	var upgradeShopOpen;
@@ -391,31 +390,25 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var sfx2 = new Audio("./snd/shopunlock.mp3");
 	var sfx3 = new Audio("./snd/achievementunlock.mp3");
 	var sfx4 = new Audio("./snd/specialachievementunlocksfx.mp3");
+	var sfx5 = new Audio("./snd//shopbuy.mp3");
 	//Color variables
 	var increase = true;
 	var red = 0;
 	var green = 0;
 	//Debug mode variables
 	var debugScreenState = "closed";
-	//Miscellaneous variables
-	var intArray = [clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost,
-		clickersOwned, superClickerCPS, superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost, employeesOwned,
-		clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked
-	];
-	var textArray = [clicksText, clickValueText, cpsText, lifetimeClicksText, lifetimeManualClicksText, coinClickCountText, totalClickHelpersText,
-		clickerCPSText, clickerCostText, clickersOwnedText, superClickerCPSText, superClickerCostText, superClickersOwnedText, doublePointerCPSText,
-		doublePointerCostText, doublePointersOwnedText, employeeCostText, employeesOwnedText, clickerCPSWorthText, superClickerCPSWorthText,
-		doublePointerCPSWorthText, achievementsUnlockedText
-	];
-	const debug = false; //This const is purely for quickly testing added code, this will not affect anything within the normal game and should be set to "false"
+	console.group("Debug");
+	var debug = true; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
+	var debugAutoplay = true; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
+	var forceBuff = false; //This boolean determines if the buff RNG value listed in buffRNGCalc() is forced or if it's always random. It should be set to false in released builds.
 	if (debug) {
 		canvasDraw();
 		gameStarted = true;
 		title.style.display = "none";
-		sourceNote.textContent = "Debug const is " + debug;
+		sourceNote.textContent = "Debug boolean and debug autoplay states are " + debug + " and " + debugAutoplay;
 		game.appendChild(sourceNote);
 		sourceNote.style.position = "fixed";
-		sourceNote.style.top = "-0.5vw";
+		sourceNote.style.top = "47vw";
 		runningBrowserString.style.display = "none";
 		basedOnBuildString.style.display = "none";
 		updateString.style.display = "none";
@@ -430,12 +423,76 @@ function script() { //NOTE: Every variable contained within this function is loc
 		godFingerUnlocked = true;
 		statsPanel.style.display = "block";
 		bmbarNote.style.display = "none";
+		console.log("Debug boolean is enabled. Titlescreen will be skipped and all shop items will be unlocked from the start.");
+		debugConsole = debugConsole + "Debug boolean is enabled. Titlescreen will be skipped and all shop items will be unlocked from the start." + "\n";
 	}
+	if (debugAutoplay) {
+		sourceNote.textContent = "Debug boolean and debug autoplay states are " + debug + " and " + debugAutoplay;
+		sourceNote.style.position = "fixed";
+		sourceNote.style.top = "47vw";
+		console.warn("Debug autoplay is enabled. User input will be automated, but the current save will be destroyed on next load. (Autosave is disabled)");
+		debugConsole = debugConsole + "WARN: Debug autoplay is enabled. User input will be automated, but the current save will be destroyed on next load. (Autosave is disabled)" + "\n";
+	}
+	console.groupEnd();
+	//Miscellaneous variables
+	var intArray = [clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost,
+		clickersOwned, superClickerCPS, superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost, employeesOwned,
+		clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked
+	];
+	var textArray = [clicksText, clickValueText, cpsText, lifetimeClicksText, lifetimeManualClicksText, coinClickCountText, totalClickHelpersText,
+		clickerCPSText, clickerCostText, clickersOwnedText, superClickerCPSText, superClickerCostText, superClickersOwnedText, doublePointerCPSText,
+		doublePointerCostText, doublePointersOwnedText, employeeCostText, employeesOwnedText, clickerCPSWorthText, superClickerCPSWorthText,
+		doublePointerCPSWorthText, achievementsUnlockedText
+	];
 	//Title screen content updates
 	buildString.textContent = ("build " + buildNumber);
 	updateString.textContent = ("the " + updateName + " update");
 	initialDataLoad();
 	//Functions
+	function autoplay() {
+		try {
+			if (debugAutoplay && readyToSave) {
+				manualSave = true;
+				saveGame();
+				readyToSave = false;
+			} else if (debugAutoplay) {
+				saveInfoString.textContent = "Saving is disabled.";
+				sfx.volume = 0;
+				coin.click();
+				if (clicks >= clickerCost) {
+					clickerBuy.click();
+				}
+				if (clicks >= superClickerCost && superClickerUnlocked) {
+					superClickerBuy.click();
+				}
+				if (clicks >= doublePointerCost && doublePointerUnlocked) {
+					doublePointerBuy.click();
+				}
+				if (clicks >= cursorCost) {
+					upgradeButton.click();
+					cursorBuy.click();
+					upgradeRTS.click();
+				}
+				if (clicks >= superCursorCost && superCursorUnlocked) {
+					upgradeButton.click();
+					superCursorBuy.click();
+					upgradeRTS.click();
+				}
+				if (clicks >= employeeCost && employeeUnlocked) {
+					upgradeButton.click();
+					employeeBuy.click();
+					upgradeRTS.click();
+				}
+				if (clicks >= godFingerCost && godFingerUnlocked) {
+					upgradeButton.click();
+					godFingerBuy.click();
+					upgradeRTS.click();
+				}
+			}
+		} catch (error) {
+			errorHandler(error);
+		}
+	}
 	function updateScreen() {
 		try {
 			addNumberCommas();
@@ -775,83 +832,91 @@ function script() { //NOTE: Every variable contained within this function is loc
 			if (localStorage.getItem('saveData', saveData) != null) {
 				const data = localStorage.getItem('saveData', saveData);
 				const loadData = JSON.parse(data);
+				console.log("Data being loaded: ");
+				console.log(loadData);
 				if (loadData[50] == buildNumber) {
-					journeyBeginsUnlocked = loadData[32];
-					aGoodStartUnlocked = loadData[33];
-					gettingThereUnlocked = loadData[34];
-					millionareUnlocked = loadData[35];
-					coinPoolUnlocked = loadData[36];
-					abundanceUnlocked = loadData[37];
-					billionareUnlocked = loadData[38];
-					excessUnlocked = loadData[39];
-					planetOfClicksUnlocked = loadData[40];
-					trillionareUnlocked = loadData[41];
-					pocketDimensionUnlocked = loadData[42];
-					farTooManyUnlocked = loadData[43];
-					quadrillionareUnlocked = loadData[47];
-					achArr = [journeyBeginsUnlocked, aGoodStartUnlocked, gettingThereUnlocked, millionareUnlocked, coinPoolUnlocked, abundanceUnlocked, billionareUnlocked,
-						excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked
-					];
-					clicks = loadData[0];
-					clickValue = loadData[1];
-					unbuffedCV = loadData[2];
-					cps = loadData[3];
-					unbuffedCPS = loadData[4];
-					timePlayed = loadData[5];
-					lifetimeClicks = loadData[6];
-					lifetimeManualClicks = loadData[7];
-					coinClickCount = loadData[8];
-					totalClickHelpers = loadData[9];
-					clickerCPS = loadData[10];
-					clickerCost = loadData[11];
-					clickersOwned = loadData[12];
-					superClickerUnlocked = loadData[13];
-					superClickerCPS = loadData[14];
-					superClickerCost = loadData[15];
-					superClickersOwned = loadData[16];
-					doublePointerUnlocked = loadData[17];
-					doublePointerCPS = loadData[18];
-					doublePointerCost = loadData[19];
-					doublePointersOwned = loadData[20];
-					cursorCost = loadData[21];
-					cursorOwned = loadData[22];
-					superCursorUnlocked = loadData[23];
-					superCursorCost = loadData[24];
-					superCursorOwned = loadData[25];
-					employeeUnlocked = loadData[26];
-					employeeCost = loadData[27];
-					employeesOwned = loadData[28];
-					godFingerUnlocked = loadData[29];
-					godFingerCost = loadData[30];
-					godFingerOwned = loadData[31];
-					clickerCPSWorth = loadData[44];
-					superClickerCPSWorth = loadData[45];
-					doublePointerCPSWorth = loadData[46];
-					buff = loadData[49];
-					unbuffedCPS = loadData[48];
-					unbuffedCV = loadData[51];
-					if (buff == "cpsDouble") {
-						cps = unbuffedCPS;
-						buff = "none";
-					} else if (buff == "cv777%CPS") {
-						clickValue = unbuffedCV;
-						buff = "none";
+					if (!loadData[53]) {
+						journeyBeginsUnlocked = loadData[32];
+						aGoodStartUnlocked = loadData[33];
+						gettingThereUnlocked = loadData[34];
+						millionareUnlocked = loadData[35];
+						coinPoolUnlocked = loadData[36];
+						abundanceUnlocked = loadData[37];
+						billionareUnlocked = loadData[38];
+						excessUnlocked = loadData[39];
+						planetOfClicksUnlocked = loadData[40];
+						trillionareUnlocked = loadData[41];
+						pocketDimensionUnlocked = loadData[42];
+						farTooManyUnlocked = loadData[43];
+						quadrillionareUnlocked = loadData[47];
+						achArr = [journeyBeginsUnlocked, aGoodStartUnlocked, gettingThereUnlocked, millionareUnlocked, coinPoolUnlocked, abundanceUnlocked, billionareUnlocked,
+							excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked
+						];
+						clicks = loadData[0];
+						clickValue = loadData[1];
+						unbuffedCV = loadData[2];
+						cps = loadData[3];
+						unbuffedCPS = loadData[4];
+						timePlayed = loadData[5];
+						lifetimeClicks = loadData[6];
+						lifetimeManualClicks = loadData[7];
+						coinClickCount = loadData[8];
+						totalClickHelpers = loadData[9];
+						clickerCPS = loadData[10];
+						clickerCost = loadData[11];
+						clickersOwned = loadData[12];
+						superClickerUnlocked = loadData[13];
+						superClickerCPS = loadData[14];
+						superClickerCost = loadData[15];
+						superClickersOwned = loadData[16];
+						doublePointerUnlocked = loadData[17];
+						doublePointerCPS = loadData[18];
+						doublePointerCost = loadData[19];
+						doublePointersOwned = loadData[20];
+						cursorCost = loadData[21];
+						cursorOwned = loadData[22];
+						superCursorUnlocked = loadData[23];
+						superCursorCost = loadData[24];
+						superCursorOwned = loadData[25];
+						employeeUnlocked = loadData[26];
+						employeeCost = loadData[27];
+						employeesOwned = loadData[28];
+						godFingerUnlocked = loadData[29];
+						godFingerCost = loadData[30];
+						godFingerOwned = loadData[31];
+						clickerCPSWorth = loadData[44];
+						superClickerCPSWorth = loadData[45];
+						doublePointerCPSWorth = loadData[46];
+						buff = loadData[49];
+						unbuffedCPS = loadData[48];
+						unbuffedCV = loadData[51];
+						if (buff == "cpsDouble") {
+							cps = unbuffedCPS;
+							buff = "none";
+						} else if (buff == "cv777%CPS") {
+							clickValue = unbuffedCV;
+							buff = "none";
+						}
+						volume = loadData[52];
+						sfx.volume = volume;
+						sfx2.volume = volume;
+						sfx3.volume = volume;
+						sfx4.volume = volume;
+						volumeInput.value = volume * 100;
+					} else {
+						console.warn("Debug autoplay was enabled on the last save, it will be destroyed.");
+						debugConsole = debugConsole + "WARN: Debug autoplay was enabled on the last save, it will be destroyed." + "\n";
+						localStorage.removeItem('saveData', saveData);
 					}
-					volume = loadData[52];
-					sfx.volume = volume;
-					sfx2.volume = volume;
-					sfx3.volume = volume;
-					sfx4.volume = volume;
-					volumeInput.value = volume * 100;
-					console.log("Data being loaded: ");
-					console.log(loadData);
 				} else {
 					console.warn("Save is incompatible, it will not be loaded.");
 					debugConsole = debugConsole + "WARN: Save is incompatible, it will not be loaded." + "\n";
 				}
 			} else {
-				console.warn("There is no save to load.");
-				debugConsole = debugConsole + "WARN: There is no save to load." + "\n";
+				console.warn("There is no save to load. Creating one now.");
+				debugConsole = debugConsole + "WARN: There is no save to load. Creating one now." + "\n";
+				var needToSave = true;
+				saveGame(needToSave);
 			}
 			console.groupEnd();
 		} catch (error) {
@@ -917,7 +982,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveData.push(buildNumber);
 				saveData.push(unbuffedCV);
 				saveData.push(volume);
+				saveData.push(debugAutoplay);
 				saveGameP2(needToSave);
+			} else if (!readyToSave && manualSave) {
+				console.warn("Not ready to save, or saving is disabled!");
+				debugConsole = debugConsole + "Not ready to save, or saving is disabled!" + "\n";
 			}
 		} catch (error) {
 			errorHandler(error)
@@ -970,7 +1039,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 				savingString.textContent = "";
 				unlockString.textContent = "";
 				incorrectKeyLabel.textContent = "";
-				readyToSave = true;
+				if (!debugAutoplay) {
+					readyToSave = true;
+				}
 				SHT++;
 			}
 		} catch (error) {
@@ -981,9 +1052,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 		try {
 			let max = 300;
 			let min = 0;
-			if (debug && buff == "none") {
+			if (forceBuff && buff == "none") {
+				console.log(forceBuff);
 				buffRNG = 300;
-			} else if (buff == "none") {
+			} else if (!forceBuff && buff == "none") {
 				buffRNG = Math.floor((Math.random() * max) + min);
 			}
 			if (buffRNG == 100) {
@@ -1015,7 +1087,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 					window.setTimeout(buffRemoval, 2000);
 				}
 			}
-			if (buff != "none") {
+			if (buff != "none" && !alreadyLogged) {
+				alreadyLogged = true;
 				console.log("Current buff is " + buff);
 				debugConsole = debugConsole + "Current buff is " + buff + "\n";
 			}
@@ -1040,6 +1113,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		} catch (error) {
 			errorHandler(error);
 		}
+		alreadyLogged = false;
 	}
 	function timeIncrease() {
 		timePlayed = timePlayed + 1000;
@@ -1112,7 +1186,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function createBase64Key() {
 		try {
-			if (!gameStarted) {
+			if (!gameStarted || debug) {
 				generatedKey = "debug";
 				console.group("Debug Key Status");
 				console.log("Generating key...");
@@ -1145,7 +1219,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		}
 	}
 	function logDNPError() {
-		console.error("Stop! Do NOT paste anything here. If you are told to do so, it is likely that someone is attempting to mess up your save.");
+		console.warn("Stop! Do NOT paste anything here. If you are told to do so, it is likely that someone is attempting to mess up your save.");
 	}
 	//Event listeners
 	startButton.addEventListener("click", function () {
@@ -1172,6 +1246,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	clickerBuy.addEventListener("click", function () {
 		sfx.play();
 		if (clicks >= clickerCost) {
+			sfx5.play();
 			clicks = clicks - clickerCost;
 			clickersOwned++;
 			cps = cps + clickerCPS;
@@ -1188,6 +1263,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	superClickerBuy.addEventListener("click", function () {
 		sfx.play();
 		if (clicks >= superClickerCost) {
+			sfx5.play();
 			clicks = clicks - superClickerCost;
 			superClickersOwned++;
 			cps = cps + superClickerCPS;
@@ -1204,10 +1280,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 	doublePointerBuy.addEventListener("click", function () {
 		sfx.play();
 		if (clicks >= doublePointerCost) {
+			sfx5.play();
 			clicks = clicks - doublePointerCost;
 			doublePointersOwned++;
 			cps = cps + doublePointerCPS;
-			doublePointerCPSWorth = doublePoitnerCPSWorth + doublePointerCPS;
+			doublePointerCPSWorth = doublePointerCPSWorth + doublePointerCPS;
 			if (buff == "cpsDouble") {
 				cps = cps + (doublePointerCPS * 2);
 			}
@@ -1232,6 +1309,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	cursorBuy.addEventListener("click", function () {
 		sfx.play();
 		if (clicks >= cursorCost) {
+			sfx5.play();
 			clicks = clicks - cursorCost;
 			cursorOwned = true;
 			cps = cps + Math.round(cps * cursorCPS);
@@ -1246,6 +1324,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	superCursorBuy.addEventListener("click", function () {
 		sfx.play();
 		if (clicks >= superCursorCost) {
+			sfx5.play();
 			clicks = clicks - superCursorCost;
 			superCursorOwned = true;
 			cps = cps + Math.round(cps * superCursorCPS);
@@ -1260,6 +1339,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	employeeBuy.addEventListener("click", function () {
 		sfx.play();
 		if (clicks >= employeeCost) {
+			sfx5.play();
 			clicks = clicks - employeeCost;
 			employeesOwned++;
 			cps = cps + Math.round(cps * employeeCPS);
@@ -1274,6 +1354,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	godFingerBuy.addEventListener("click", function () {
 		sfx.play();
 		if (clicks >= godFingerCost) {
+			sfx5.play();
 			clicks = clicks - godFingerCost;
 			godFingerOwned = true;
 			clickValue = clickValue + Math.round(godFingerCV * clickValue);
@@ -1457,13 +1538,19 @@ function script() { //NOTE: Every variable contained within this function is loc
 			volumeInput.value = "";
 		}
 	});
+	document.addEventListener("click", function () {
+		if (debugAutoplay) {
+			sfx.volume = volume;
+		}
+	})
 	//Function intervals
+	setInterval(timedLabelCount, 1); //This function will be removed in the future.
+	setInterval(autoplay, 25);
+	setInterval(rgChange, 25);
 	setInterval(updateScreen, 100);
 	setInterval(cpsClick, 250);
+	setInterval(buffRNGCalc, 1000);
 	setInterval(timeIncrease, 1000);
 	setInterval(saveGame, 60000);
-	setInterval(timedLabelCount, 1);
-	setInterval(rgChange, 25);
 	setInterval(logDNPError, 300000);
-	setInterval(buffRNGCalc, 1000);
 }
