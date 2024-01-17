@@ -398,8 +398,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 	//Debug mode variables
 	var debugScreenState = "closed";
 	console.group("Debug");
-	var debug = true; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
-	var debugAutoplay = true; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
+	var debug = false; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
+	var debugAutoplay = false; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
 	var forceBuff = false; //This boolean determines if the buff RNG value listed in buffRNGCalc() is forced or if it's always random. It should be set to false in released builds.
 	if (debug) {
 		canvasDraw();
