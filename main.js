@@ -802,7 +802,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				if (navigator.userAgent.indexOf("Edg") == -1) { //Edge does not support Number.prototype.toLocaleString, it will not be used.
 					if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a precision of 3 if value is over 100 quadrillion.
 					else if (intArray[i] != Infinity) textArray[i] = intArray[i].toLocaleString(); //Only use Number.prototype.toLocaleString if the given value is finite.
-					else throw ("A value has become infinite, which means you've beaten the game! There is no reason to continute from here, and it may break even more things if you do.");
+					else throw ("A value has become infinite, which means you've beaten the game! There is no reason to continue from here, and it may break even more things if you do.");
 				}
 				else textArray[i] = intArray[i];
 			}
