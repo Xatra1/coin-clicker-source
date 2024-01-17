@@ -1,5 +1,5 @@
 //Coin Clicker Update 6 Codename "Abundance"
-//Build 3.52 Rewrite Beta
+//Build 3.53 Rewrite Beta
 //NOTE: The features present in this update of the game (especially debug autoplay) are still being heavily tested. The buff system may still have issues.
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -277,7 +277,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.52rb";
+	const buildNumber = "3.53rb";
 	const updateName = "abundance";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
@@ -400,8 +400,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var debugScreenState = "closed";
 	console.group("Debug");
 	var debug = false; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
-	var debugAutoplay = false; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
+	var debugAutoplay = true; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
 	var forceBuff = false; //This boolean determines if the buff RNG value listed in buffRNGCalc() is forced or if it's always random. It should be set to false in released builds.
+	var screenSwitch = true; //Related to debugAutoplay, this boolean determines which screen to switch (either the regular shop or the upgrade shop) during autoplay. It is automatically changed every 30 seconds.
 	if (debug) {
 		canvasDraw();
 		gameStarted = true;
@@ -470,24 +471,16 @@ function script() { //NOTE: Every variable contained within this function is loc
 					doublePointerBuy.click();
 				}
 				if (clicks >= cursorCost) {
-					upgradeButton.click();
 					cursorBuy.click();
-					upgradeRTS.click();
 				}
 				if (clicks >= superCursorCost && superCursorUnlocked) {
-					upgradeButton.click();
 					superCursorBuy.click();
-					upgradeRTS.click();
 				}
 				if (clicks >= employeeCost && employeeUnlocked) {
-					upgradeButton.click();
 					employeeBuy.click();
-					upgradeRTS.click();
 				}
 				if (clicks >= godFingerCost && godFingerUnlocked) {
-					upgradeButton.click();
 					godFingerBuy.click();
-					upgradeRTS.click();
 				}
 			}
 		} catch (error) {
@@ -512,8 +505,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 			if (upgradeShopOpen == true) {
 				cursorOwnedString.textContent = "Owned: " + cursorOwned;
 				superCursorOwnedString.textContent = "Owned: " + superCursorOwned;
-				employeeCostString.textcontent = "Cost: " + textArray[17];
-				employeesOwnedString.textContent = "Owned: " + textArray[18];
+				employeeCostString.textcontent = "Cost: " + textArray[16];
+				employeesOwnedString.textContent = "Owned: " + textArray[17];
 				godFingerOwnedString.textContent = "Owned: " + godFingerOwned;
 				if (cursorOwned) {
 					cursorCostString.textContent = "Cannot buy again.";
@@ -1551,7 +1544,16 @@ function script() { //NOTE: Every variable contained within this function is loc
 	setInterval(cpsClick, 250);
 	setInterval(buffRNGCalc, 1000);
 	setInterval(timeIncrease, 1000);
-	setInterval(function() {
+	setInterval(function () {
+		if (debugAutoplay && screenSwitch) {
+			upgradeButton.click();
+			screenSwitch = false;
+		} else if (debugAutoplay && !screenSwitch) {
+			upgradeRTS.click();
+			screenSwitch = true;
+		}
+	}, 5000);
+	setInterval(function () {
 		manualSave = false;
 		saveGame();
 	}, 60000);
