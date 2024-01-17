@@ -1,6 +1,6 @@
 /*
 Coin Clicker Update 6 Codename "Abundance"
-Build 3.76 Rewrite Beta
+Build 3.77 Rewrite Beta
 */
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -284,7 +284,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.76ab";
+	const buildNumber = "3.77ab";
 	const updateName = "abundance";
 	var gameStarted = false;
 	//Stat variables
