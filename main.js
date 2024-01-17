@@ -1055,12 +1055,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 			let min = 0;
 			buffRNG = 0;
 			if (forceBuff && buff == "none") {
-				console.log(forceBuff);
 				buffRNG = 300;
 			} else if (!forceBuff && buff == "none") {
 				buffRNG = Math.floor((Math.random() * max) + min);
 			}
-			if (buffRNG == 100) {
+			if (buffRNG == 100 && buff == "none") {
 				if (cps > 0) {
 					buffStr.textContent = "Your CPS has been doubled for 30 seconds!";
 					buffStr.style.display = "block";
@@ -1069,17 +1068,16 @@ function script() { //NOTE: Every variable contained within this function is loc
 					buff = "cpsDouble";
 					window.setTimeout(buffRemoval, 30000);
 				}
-			} else if (buffRNG == 200) {
+			} else if (buffRNG == 200 && buff == "none") {
 				if (cps > 0) {
 					buffStr.textContent = "Your click value has been increased by 777% of your CPS for 5 seconds!";
 					buffStr.style.display = "block";
 					unbuffedCV = clickValue;
-					console.log(unbuffedCV);
 					clickValue = clickValue + Math.round(cps * 7.77);
 					buff = "cv777%CPS";
 					window.setTimeout(buffRemoval, 5000);
 				}
-			} else if (buffRNG == 300) {
+			} else if (buffRNG == 300 && buff == "none") {
 				if (cps > 0 && clicks > 0) {
 					clicksAdded = Math.round(0.3 * cps + 0.1 * clicks);
 					clicks = clicks + clicksAdded;
