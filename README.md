@@ -4,7 +4,9 @@ git clone https://github.com/Xatra1/coin-clicker-source.git
 cd coin-clicker-source
 ```
 This will put you into the folder that contains "index.html", which is how you will open the game.  
-   
+  
+  Or, if you simply don't want to bother with that, you can play the game [here](xatra1.github.io/coin-clicker-source)
+  
 Icons made by Font Awesome, with the exception of the (currently unused) "octillionachievements.png", which is made by IconsMind.  
 Sound effects obtained from Pixabay.  
   
