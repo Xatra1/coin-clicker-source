@@ -1,6 +1,6 @@
 /*
 Coin Clicker Update 6 Codename "Abundance"
-Build 3.77 Rewrite Beta
+Build 3.78 Rewrite Beta
 */
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -284,7 +284,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.77ab";
+	const buildNumber = "3.78ab";
 	const updateName = "abundance";
 	var gameStarted = false;
 	//Stat variables
@@ -401,7 +401,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var generatedKey = "debug";
 	var debugScreenState = "closed";
 	var debug = false; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
-	var debugAutoplay = false; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
+	var debugAutoplay = true; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
 	var forceBuff = false; //This boolean determines if the buff RNG value listed in buffRNGCalc() is forced or if it's always random. It should be set to false in released builds.
 	var performScreenSwitch = false; //Related to debugAutoplay, this boolean determines whether or not the user would like to have the shop panels alternate between each other every 5 seconds.
 	var screenSwitch = true; //Related to debugAutoplay, this boolean determines which screen to switch (either the regular shop or the upgrade shop) during autoplay. It is automatically changed every 5 seconds.
@@ -797,11 +797,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 				clickersOwned, superClickerCPS, superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost,
 				employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked
 			];
-			var i = -1;
-			while (i < intArray.length - 1) {
-				i++;
+			for (var i = 0; i < intArray.length; i++) {
 				if (Math.sign(intArray[i]) == -1) intArray[i] = intArray[i] * -1; //Convert all negative numbers to positive numbers.
-				if (intArray[i] == 1) intArray[i] = BigInt(intArray[i]); //Convert all integers to BigInts to prevent potential issues.
 				if (navigator.userAgent.indexOf("Edg") == -1) { //Edge does not support Number.prototype.toLocaleString, it will not be used.
 					if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a precision of 3 if value is over 100 quadrillion.
 					else if (intArray[i] != Infinity) textArray[i] = intArray[i].toLocaleString(); //Only use Number.prototype.toLocaleString if the given value is finite.
