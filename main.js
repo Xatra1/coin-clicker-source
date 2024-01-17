@@ -1,7 +1,19 @@
 //Coin Clicker Update 5 Codename "Rewrite"
-//Build 3.3 Rewrite Beta
+//Build 3.41 Rewrite Beta
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
+//Error handler
+function errorHandler(error) {
+	const eElement = document.createElement("p");
+	const body = document.body;
+	const titlescreen = document.getElementById("titlescreen");
+	eElement.textContent = "Error in script: " + error;
+	console.error(error);
+	eElement.style.fontSize = "10px";
+	eElement.style.display = "block";
+	titlescreen.style.display = "none";
+	body.appendChild(eElement);
+}
 //Initial checks (Browser, screen resolution, etc)
 console.group("Initial Checks");
 var debugConsole = document.getElementById("debugconsole").textContent;
@@ -263,7 +275,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.3rb";
+	const buildNumber = "3.41rb";
 	const updateName = "rewrite";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
@@ -343,7 +355,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 	//Buff variables
 	var buffRNG;
 	var buff = "none";
-	//var clicksAdded;
+	var itemBuffRNG;
+	var itemBuff = 0;
+	var itemBuffName = "none";
+	var clicksAdded;
 	//Optimization variables
 	var upgradeShopOpen;
 	//Achievement screen variables
@@ -397,7 +412,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 		canvasDraw();
 		gameStarted = true;
 		title.style.display = "none";
-		sourceNote.style.display = "none";
+		sourceNote.textContent = "Debug const is " + debug;
+		game.appendChild(sourceNote);
+		sourceNote.style.position = "fixed";
+		sourceNote.style.top = "-0.5vw";
 		runningBrowserString.style.display = "none";
 		basedOnBuildString.style.display = "none";
 		updateString.style.display = "none";
@@ -418,17 +436,6 @@ function script() { //NOTE: Every variable contained within this function is loc
 	updateString.textContent = ("the " + updateName + " update");
 	initialDataLoad();
 	//Functions
-	function errorHandler(error) {
-		const eElement = document.createElement("p");
-		const body = document.body;
-		const titlescreen = document.getElementById("titlescreen");
-		eElement.textContent = "Error in script: " + error;
-		console.error(error);
-		eElement.style.fontSize = "10px";
-		eElement.style.display = "block";
-		titlescreen.style.display = "none";
-		body.appendChild(eElement);
-	}
 	function updateScreen() {
 		try {
 			addNumberCommas();
@@ -498,7 +505,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function shopUnlockedCheck() {
 		try {
-			if (clickersOwned >= 25 && superClickerUnlocked == false) {
+			if (clickersOwned >= 25 && !superClickerUnlocked) {
 				sfx2.play();
 				unlockString.textContent = "Super Clicker unlocked!";
 				unlockString.style.display = "block";
@@ -511,37 +518,37 @@ function script() { //NOTE: Every variable contained within this function is loc
 				superClickerCostString.textContent = "Cost: " + textArray[11];
 				superClickersOwnedString.textContent = "Owned: " + textArray[12];
 			}
-			if (clickersOwned >= 75 && superClickersOwned >= 5 && doublePointerUnlocked == false) {
+			if (clickersOwned >= 75 && superClickersOwned >= 5 && !doublePointerUnlocked) {
 				sfx2.play();
 				unlockString.textContent = "Double Pointer unlocked!";
 				unlockString.style.display = "block";
 				doublePointerGroup.style.display = "block";
 				doublePointerUnlocked = true;
 				SHT = 500;
-			} else if (doublePointerUnlocked == true) {
+			} else if (doublePointerUnlocked) {
 				doublePointerGroup.style.display = "block";
 				doublePointerCPSString.textContent = "CPS: +" + textArray[13];
 				doublePointerCostString.textContent = "Cost: " + textArray[14];
 				doublePointersOwnedString.textContent = "Owned: " + textArray[15];
 			}
-			if (cursorOwned && superCursorUnlocked == false) {
+			if (cursorOwned && !superCursorUnlocked) {
 				sfx2.play();
 				unlockString.textContent = "Super Cursor unlocked!";
 				unlockString.style.display = "block";
 				superCursorGroup.style.display = "block";
 				superCursorUnlocked = true;
 				SHT = 500;
-			} else if (superCursorUnlocked == true) {
+			} else if (superCursorUnlocked) {
 				superCursorGroup.style.display = "block";
 			}
-			if (cursorOwned && superCursorOwned && employeeUnlocked == false) {
+			if (cursorOwned && superCursorOwned && !employeeUnlocked) {
 				sfx2.play();
 				unlockString.textContent = "Employee unlocked!";
 				unlockString.style.display = "block";
 				employeeGroup.style.display = "block";
 				employeeUnlocked = true;
 				SHT = 500;
-			} else if (employeeUnlocked == true) {
+			} else if (employeeUnlocked) {
 				employeeGroup.style.display = "block";
 			}
 			if (clickersOwned >= 125 && superClickersOwned >= 10 && doublePointersOwned >= 3 && cursorOwned && superCursorOwned && godFingerUnlocked == false) {
@@ -551,7 +558,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				godFingerGroup.style.display = "block";
 				godFingerUnlocked = true;
 				SHT = 500;
-			} else if (godFingerUnlocked == true) {
+			} else if (godFingerUnlocked) {
 				godFingerGroup.style.display = "block";
 			}
 			achievementUnlockCheck();
@@ -561,7 +568,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function achievementUnlockCheck() {
 		try {
-			if (lifetimeClicks >= 1 && achArr[0] == false) {
+			if (lifetimeClicks >= 1 && !achArr[0]) {
 				if (gameStarted) {
 					sfx3.play();
 				}
@@ -572,7 +579,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 10000 && achArr[1] == false) {
+			if (lifetimeClicks >= 10000 && !achArr[1]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -583,7 +590,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 100000 && achArr[2] == false) {
+			if (lifetimeClicks >= 100000 && !achArr[2]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -594,7 +601,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 1000000 && achArr[3] == false) {
+			if (lifetimeClicks >= 1000000 && !achArr[3]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -605,7 +612,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 10000000 && achArr[4] == false) {
+			if (lifetimeClicks >= 10000000 && !achArr[4]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -616,7 +623,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 100000000 && achArr[5] == false) {
+			if (lifetimeClicks >= 100000000 && !achArr[5]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -627,7 +634,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 1000000000 && achArr[6] == false) {
+			if (lifetimeClicks >= 1000000000 && !achArr[6]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -638,7 +645,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 10000000000 && achArr[7] == false) {
+			if (lifetimeClicks >= 10000000000 && !achArr[7]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -648,7 +655,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.textContent = achStr;
 				unlockString.style.display = "block";
 			}
-			if (lifetimeClicks >= 100000000000 && achArr[8] == false) {
+			if (lifetimeClicks >= 100000000000 && !achArr[8]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -658,7 +665,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.textContent = achStr;
 				unlockString.style.display = "block";
 			}
-			if (lifetimeClicks >= 1000000000000 && achArr[9] == false) {
+			if (lifetimeClicks >= 1000000000000 && !achArr[9]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -668,7 +675,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.textContent = achStr;
 				unlockString.style.display = "block";
 			}
-			if (lifetimeClicks >= 10000000000000 && achArr[10] == false) {
+			if (lifetimeClicks >= 10000000000000 && !achArr[10]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -678,7 +685,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.textContent = achStr;
 				unlockString.style.display = "block";
 			}
-			if (lifetimeClicks >= 100000000000000 && achArr[11] == false) {
+			if (lifetimeClicks >= 100000000000000 && !achArr[11]) {
 				if (gameStarted) {
 					sfx3.play();
 				};
@@ -688,7 +695,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.textContent = achStr;
 				unlockString.style.display = "block";
 			}
-			if (lifetimeClicks >= 1000000000000000 && achArr1[12] == false) {
+			if (lifetimeClicks >= 1000000000000000 && !achArr[12]) {
 				if (gameStarted) {
 					sfx4.play();
 				};
@@ -820,8 +827,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 					clickerCPSWorth = loadData[44];
 					superClickerCPSWorth = loadData[45];
 					doublePointerCPSWorth = loadData[46];
-					buff = loadData[48];
-					unbuffedCPS = loadData[49];
+					buff = loadData[49];
+					unbuffedCPS = loadData[48];
 					unbuffedCV = loadData[51];
 					if (buff == "cpsDouble") {
 						cps = unbuffedCPS;
@@ -836,6 +843,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 					sfx3.volume = volume;
 					sfx4.volume = volume;
 					volumeInput.value = volume * 100;
+					console.log("Data being loaded: ");
+					console.log(loadData);
 				} else {
 					console.warn("Save is incompatible, it will not be loaded.");
 					debugConsole = debugConsole + "WARN: Save is incompatible, it will not be loaded." + "\n";
@@ -921,7 +930,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveData.pop();
 			}
 			if (saveData.length == 0) {
-				if (manualSave == true) {
+				if (manualSave) {
 					savingString.textContent = "Game saved.";
 					console.log("Game saved @ playtime " + timePlayed + "ms");
 					debugConsole = debugConsole + ("Game saved @ playtime " + timePlayed + "ms" + "\n");
@@ -941,7 +950,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function wipeSave() {
 		try {
-			if (readyToSave == true) {
+			if (readyToSave) {
 				readyToSave = false;
 				if (confirm("This is completely irreversible and wiping your save will also refresh the page! Are you sure you wish to continue?")) {
 					localStorage.removeItem("saveData");
@@ -968,13 +977,13 @@ function script() { //NOTE: Every variable contained within this function is loc
 			errorHandler(error);
 		}
 	}
-	function buffRNG() {
+	function buffRNGCalc() {
 		try {
-			let max = 200;
+			let max = 300;
 			let min = 0;
 			if (debug && buff == "none") {
-				buffRNG = 200;
-			} else {
+				buffRNG = 300;
+			} else if (buff == "none") {
 				buffRNG = Math.floor((Math.random() * max) + min);
 			}
 			if (buffRNG == 100) {
@@ -984,21 +993,31 @@ function script() { //NOTE: Every variable contained within this function is loc
 					unbuffedCPS = cps;
 					cps = Math.round(cps * 2);
 					buff = "cpsDouble";
-					console.log("Current buff is " + buff);
-					debugConsole = debugConsole + "Current buff is " + buff + "\n";
 					window.setTimeout(buffRemoval, 30000);
 				}
 			} else if (buffRNG == 200) {
 				if (cps > 0) {
-					buffStr.textContent = "Your click value has been increased by 777% of your CPS for 10 seconds!";
+					buffStr.textContent = "Your click value has been increased by 777% of your CPS for 5 seconds!";
 					buffStr.style.display = "block";
 					unbuffedCV = clickValue;
+					console.log(unbuffedCV);
 					clickValue = clickValue + Math.round(cps * 7.77);
 					buff = "cv777%CPS";
-					console.log("Current buff is " + buff);
-					debugConsole = debugConsole + "Current buff is " + buff + "\n";
-					window.setTimeout(buffRemoval, 10000);
+					window.setTimeout(buffRemoval, 5000);
 				}
+			} else if (buffRNG == 300) {
+				if (cps > 0 && clicks > 0) {
+					clicksAdded = Math.round(0.3 * cps + 0.1 * clicks);
+					clicks = clicks + clicksAdded;
+					buffStr.textContent = "You got " + clicksAdded + " additional clicks!";
+					buffStr.style.display = "block";
+					buff = "bonusClicks";
+					window.setTimeout(buffRemoval, 2000);
+				}
+			}
+			if (buff != "none") {
+				console.log("Current buff is " + buff);
+				debugConsole = debugConsole + "Current buff is " + buff + "\n";
 			}
 		} catch (error) {
 			errorHandler(error);
@@ -1008,13 +1027,14 @@ function script() { //NOTE: Every variable contained within this function is loc
 		try {
 			buffStr.style.display = "none";
 			if (buff == "cpsDouble") {
-				cps = Math.round(cps / 2);
+				cps = unbuffedCPS;
 				buff = "none";
 			} else if (buff == "cv777%CPS") {
-				clickValue = clickValue - Math.round(cps * 7.77);
-				setTimeout(function () {
-					buff = "none";
-				}, 500);
+				clickValue = unbuffedCV;
+				buff = "none";
+			} else if (buff == "bonusClicks") {
+				clicksAdded = 0;
+				buff = "none";
 			}
 			console.log("Buff removed.");
 		} catch (error) {
@@ -1037,18 +1057,20 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function cpsClick() {
 		try {
-			clicks = clicks + cps;
-			lifetimeClicks = lifetimeClicks + cps;
+			clicks = clicks + cps * 0.25;
+			clicks = Math.round(clicks);
+			lifetimeClicks = lifetimeClicks + cps * 0.25;
+			lifetimeClicks = Math.round(lifetimeClicks);
 		} catch (error) {
 			errorHandler(error);
 		}
 	}
 	function rgChange() {
 		try {
-			if (increase == true) {
+			if (increase) {
 				red = red + 5;
 				green = green + 5;
-			} else if (increase == false) {
+			} else if (!increase) {
 				red = red - 5;
 				green = green - 5;
 			}
@@ -1090,7 +1112,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function createBase64Key() {
 		try {
-			if (gameStarted == false) {
+			if (!gameStarted) {
 				generatedKey = "debug";
 				console.group("Debug Key Status");
 				console.log("Generating key...");
@@ -1437,11 +1459,11 @@ function script() { //NOTE: Every variable contained within this function is loc
 	});
 	//Function intervals
 	setInterval(updateScreen, 100);
-	setInterval(cpsClick, 1000);
+	setInterval(cpsClick, 250);
 	setInterval(timeIncrease, 1000);
 	setInterval(saveGame, 60000);
 	setInterval(timedLabelCount, 1);
 	setInterval(rgChange, 25);
-	setInterval(logDNPError, 120000);
-	setInterval(buffRNG, 1000);
+	setInterval(logDNPError, 300000);
+	setInterval(buffRNGCalc, 1000);
 }
