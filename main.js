@@ -430,6 +430,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 		excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked, coinVortexUnlocked,
 		coinShapedBlackHoleUnlocked, quintillionareUnlocked, clickBeyondUnlocked, distantBeginningUnlocked, sextillionareUnlocked, breakpointUnlocked
 	];
+	var costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString,
+		employeeCostString, godFingerCostString];
+	var costArraySP = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
 	//Initial run updates and calls
 	debugKeyInput.value = "";
 	console.group("Build Info");
@@ -812,12 +815,13 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function shopCostPulse() {
 		try {
-			var costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString,
-				employeeCostString, godFingerCostString];
-			var costArraySP = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
-			for (var i = -1; i < costArraySP.length; i++) {
-				if (clicks >= costArraySP[i]) costStringArr[i].style.color = "rgb(0," + green + ",0)";
-				else costStringArr[i].style.color = "rgb(0, 0, 0)";
+			costArraySP = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
+			for (var i = 0; i < costArraySP.length; i++) {
+				if (clicks >= costArraySP[i]) {
+					costStringArr[i].style.color = "rgb(0," + green + ",0)";
+				} else {
+					costStringArr[i].style.color = "rgb(0, 0, 0)";
+				}
 			}
 		} catch (error) {
 			errorHandler(error);
