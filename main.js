@@ -400,7 +400,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var debugScreenState = "closed";
 	console.group("Debug");
 	var debug = false; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
-	var debugAutoplay = false; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
+	var debugAutoplay = true; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
 	var forceBuff = false; //This boolean determines if the buff RNG value listed in buffRNGCalc() is forced or if it's always random. It should be set to false in released builds.
 	var screenSwitch = true; //Related to debugAutoplay, this boolean determines which screen to switch (either the regular shop or the upgrade shop) during autoplay. It is automatically changed every 5 seconds.
 	if (debug) {
@@ -461,27 +461,13 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveInfoString.textContent = "Saving is disabled.";
 				sfx.volume = 0;
 				coin.click();
-				if (clicks >= clickerCost) {
-					clickerBuy.click();
-				}
-				if (clicks >= superClickerCost && superClickerUnlocked) {
-					superClickerBuy.click();
-				}
-				if (clicks >= doublePointerCost && doublePointerUnlocked) {
-					doublePointerBuy.click();
-				}
-				if (clicks >= cursorCost) {
-					cursorBuy.click();
-				}
-				if (clicks >= superCursorCost && superCursorUnlocked) {
-					superCursorBuy.click();
-				}
-				if (clicks >= employeeCost && employeeUnlocked) {
-					employeeBuy.click();
-				}
-				if (clicks >= godFingerCost && godFingerUnlocked) {
-					godFingerBuy.click();
-				}
+				if (clicks >= clickerCost) clickerBuy.click();
+				if (clicks >= superClickerCost && superClickerUnlocked) superClickerBuy.click();
+				if (clicks >= doublePointerCost && doublePointerUnlocked) doublePointerBuy.click();
+				if (clicks >= cursorCost) cursorBuy.click();
+				if (clicks >= superCursorCost && superCursorUnlocked) superCursorBuy.click();
+				if (clicks >= employeeCost && employeeUnlocked) employeeBuy.click();
+				if (clicks >= godFingerCost && godFingerUnlocked) godFingerBuy.click();
 			}
 		} catch (error) {
 			errorHandler(error);
@@ -518,36 +504,20 @@ function script() { //NOTE: Every variable contained within this function is loc
 					godFingerCostString.textContent = "Cannot buy again.";
 				}
 			}
-			if (timePlayed == 1000) {
-				timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 1000) + " second.";
-			} else if (timePlayed >= 60000 && timePlayed < 900000) {
-				timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 60000) + " minute.";
-			} else if (timePlayed >= 3600000 && timePlayed < 5400000) {
-				timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 3600000) + " hour.";
-			}
-			if (timePlayed > 1000 && timePlayed < 60000) {
-				timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 1000) + " seconds.";
-			} else if (timePlayed > 90000 && timePlayed < 5400000) {
-				timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 60000) + " minutes.";
-			} else if (timePlayed > 5400000) {
-				timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 3600000) + " hours.";
-			}
+			if (timePlayed == 1000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 1000) + " second.";
+			else if (timePlayed >= 60000 && timePlayed < 900000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 60000) + " minute.";
+			else if (timePlayed >= 3600000 && timePlayed < 5400000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 3600000) + " hour.";
+			if (timePlayed > 1000 && timePlayed < 60000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 1000) + " seconds.";
+			else if (timePlayed > 90000 && timePlayed < 5400000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 60000) + " minutes.";
+			else if (timePlayed > 5400000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 3600000) + " hours.";
 			lifetimeClicksString.textContent = "You have obtained a total of " + textArray[3] + " clicks.";
-			if (lifetimeClicks == 1) {
-				lifetimeClicksString.textContent = "You have obtained a total of " + textArray[3] + " click.";
-			}
+			if (lifetimeClicks == 1) lifetimeClicksString.textContent = "You have obtained a total of " + textArray[3] + " click.";
 			lifetimeManualClicksString.textContent = "You have gotten " + textArray[4] + " clicks from clicking.";
-			if (lifetimeManualClicks == 1) {
-				lifetimeManualClicksString.textContent = "You have gotten " + textArray[4] + " click from clicking.";
-			}
+			if (lifetimeManualClicks == 1) lifetimeManualClicksString.textContent = "You have gotten " + textArray[4] + " click from clicking.";
 			coinClickCountString.textContent = "You have clicked the coin " + textArray[5] + " times.";
-			if (coinClickCount == 1) {
-				coinClickCountString.textContent = "You have clicked the coin " + textArray[5] + " time.";
-			}
+			if (coinClickCount == 1) coinClickCountString.textContent = "You have clicked the coin " + textArray[5] + " time.";
 			totalClickHelpersString.textContent = "You have bought " + textArray[6] + " items.";
-			if (totalClickHelpers == 1) {
-				totalClickHelpersString.textContent = "You have bought " + textArray[6] + " item.";
-			}
+			if (totalClickHelpers == 1) totalClickHelpersString.textContent = "You have bought " + textArray[6] + " item.";
 			achievementsUnlockedString.textContent = "You have unlocked " + textArray[23] + " out of 13 achievements.";
 			shopUnlockedCheck();
 		} catch (error) {
@@ -589,9 +559,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				superCursorGroup.style.display = "block";
 				superCursorUnlocked = true;
 				SHT = 500;
-			} else if (superCursorUnlocked) {
-				superCursorGroup.style.display = "block";
-			}
+			} else if (superCursorUnlocked) superCursorGroup.style.display = "block";
 			if (cursorOwned && superCursorOwned && !employeeUnlocked) {
 				sfx2.play();
 				unlockString.textContent = "Employee unlocked!";
@@ -599,9 +567,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				employeeGroup.style.display = "block";
 				employeeUnlocked = true;
 				SHT = 500;
-			} else if (employeeUnlocked) {
-				employeeGroup.style.display = "block";
-			}
+			} else if (employeeUnlocked) employeeGroup.style.display = "block";
 			if (clickersOwned >= 125 && superClickersOwned >= 10 && doublePointersOwned >= 3 && cursorOwned && superCursorOwned && godFingerUnlocked == false) {
 				sfx2.play();
 				unlockString.textContent = "God Finger unlocked!";
@@ -609,9 +575,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				godFingerGroup.style.display = "block";
 				godFingerUnlocked = true;
 				SHT = 500;
-			} else if (godFingerUnlocked) {
-				godFingerGroup.style.display = "block";
-			}
+			} else if (godFingerUnlocked) godFingerGroup.style.display = "block";
 			achievementUnlockCheck();
 		} catch (error) {
 			errorHandler(error);
@@ -620,9 +584,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	function achievementUnlockCheck() {
 		try {
 			if (lifetimeClicks >= 1 && !achArr[0]) {
-				if (gameStarted) {
-					sfx3.play();
-				}
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Journey Begins";
 				achArr[0] = true;
 				achievementsUnlocked++;
@@ -631,9 +593,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 			if (lifetimeClicks >= 10000 && !achArr[1]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: A Good Start";
 				achArr[1] = true;
 				achievementsUnlocked++;
@@ -642,9 +602,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 			if (lifetimeClicks >= 100000 && !achArr[2]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Getting There";
 				achArr[2] = true;
 				achievementsUnlocked++;
@@ -653,9 +611,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 			if (lifetimeClicks >= 1000000 && !achArr[3]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Millionare";
 				achArr[3] = true;
 				achievementsUnlocked++;
@@ -664,9 +620,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 			if (lifetimeClicks >= 10000000 && !achArr[4]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Coin Pool";
 				achArr[4] = true;
 				achievementsUnlocked++;
@@ -675,9 +629,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 			if (lifetimeClicks >= 100000000 && !achArr[5]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Abundance";
 				achArr[5] = true;
 				achievementsUnlocked++;
@@ -686,9 +638,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 			if (lifetimeClicks >= 1000000000 && !achArr[6]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Billionare";
 				achArr[6] = true;
 				achievementsUnlocked++;
@@ -697,9 +647,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				SHT = 500;
 			}
 			if (lifetimeClicks >= 10000000000 && !achArr[7]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Excess";
 				achArr[7] = true;
 				achievementsUnlocked++;
@@ -707,9 +655,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 			}
 			if (lifetimeClicks >= 100000000000 && !achArr[8]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Planet of Clicks";
 				achArr[8] = true;
 				achievementsUnlocked++;
@@ -717,9 +663,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 			}
 			if (lifetimeClicks >= 1000000000000 && !achArr[9]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Trillionare";
 				achArr[9] = true;
 				achievementsUnlocked++;
@@ -727,9 +671,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 			}
 			if (lifetimeClicks >= 10000000000000 && !achArr[10]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Pocket Dimension";
 				achArr[10] = true;
 				achievementsUnlocked++;
@@ -737,9 +679,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 			}
 			if (lifetimeClicks >= 100000000000000 && !achArr[11]) {
-				if (gameStarted) {
-					sfx3.play();
-				};
+				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Far Too Many";
 				achArr[11] = true;
 				achievementsUnlocked++;
@@ -747,9 +687,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 			}
 			if (lifetimeClicks >= 1000000000000000 && !achArr[12]) {
-				if (gameStarted) {
-					sfx4.play();
-				};
+				if (gameStarted) sfx4.play();
 				achStr = "Special Achievement Unlocked: Quadrillionare";
 				achArr[12] = true;
 				achievementsUnlocked++;
@@ -769,11 +707,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 			var i = -1;
 			while (i < intArray.length - 1) {
 				i++;
-				if (navigator.userAgent.indexOf("Edg") == -1) { //Edge does not support Number.prototype.toLocaleString, it will not be used
-					textArray[i] = intArray[i].toLocaleString();
-				} else {
-					textArray[i] = intArray[i];
-				}
+				if (navigator.userAgent.indexOf("Edg") == -1) textArray[i] = intArray[i].toLocaleString(); //Edge does not support Number.prototype.toLocaleString, it will not be use 
+				else textArray[i] = intArray[i];
 			}
 		} catch (error) {
 			errorHandler(error);
@@ -781,41 +716,20 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function shopCostPulse() {
 		try {
-			if (clicks >= clickerCost) {
-				clickerCostString.style.color = "rgb(0," + green + ",0)";
-			} else {
-				clickerCostString.style.color = "rgb(0, 0, 0)";
-			}
-			if (clicks >= superClickerCost) {
-				superClickerCostString.style.color = "rgb(0," + green + ",0)";
-			} else {
-				superClickerCostString.style.color = "rgb(0, 0, 0)";
-			}
-			if (clicks >= doublePointerCost) {
-				doublePointerCostString.style.color = "rgb(0," + green + ",0)";
-			} else {
-				doublePointerCostString.style.color = "rgb(0, 0, 0)";
-			}
-			if (clicks >= cursorCost) {
-				cursorCostString.style.color = "rgb(0," + green + ",0)";
-			} else {
-				cursorCostString.style.color = "rgb(0, 0, 0)";
-			}
-			if (clicks >= superCursorCost) {
-				superCursorCostString.style.color = "rgb(0," + green + ",0)";
-			} else {
-				superCursorCostString.style.color = "rgb(0, 0, 0)";
-			}
-			if (clicks >= employeeCost) {
-				employeeCostString.style.color = "rgb(0," + green + ",0)";
-			} else {
-				employeeCostString.style.color = "rgb(0, 0, 0)";
-			}
-			if (clicks >= godFingerCost) {
-				godFingerCostString.style.color = "rgb(0," + green + ",0)";
-			} else {
-				godFingerCostString.style.color = "rgb(0, 0, 0)";
-			}
+			if (clicks >= clickerCost) clickerCostString.style.color = "rgb(0," + green + ",0)";
+			else clickerCostString.style.color = "rgb(0, 0, 0)";
+			if (clicks >= superClickerCost) superClickerCostString.style.color = "rgb(0," + green + ",0)";
+			else superClickerCostString.style.color = "rgb(0, 0, 0)";
+			if (clicks >= doublePointerCost) doublePointerCostString.style.color = "rgb(0," + green + ",0)";
+			else doublePointerCostString.style.color = "rgb(0, 0, 0)";
+			if (clicks >= cursorCost) cursorCostString.style.color = "rgb(0," + green + ",0)";
+			else cursorCostString.style.color = "rgb(0, 0, 0)";
+			if (clicks >= superCursorCost) superCursorCostString.style.color = "rgb(0," + green + ",0)";
+			else superCursorCostString.style.color = "rgb(0, 0, 0)";
+			if (clicks >= employeeCost) employeeCostString.style.color = "rgb(0," + green + ",0)";
+			else employeeCostString.style.color = "rgb(0, 0, 0)";
+			if (clicks >= godFingerCost) godFingerCostString.style.color = "rgb(0," + green + ",0)";
+			else godFingerCostString.style.color = "rgb(0, 0, 0)";
 		} catch (error) {
 			errorHandler(error);
 		}
@@ -888,7 +802,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 							cps = unbuffedCPS;
 							buff = "none";
 						} else if (buff == "cv777%CPS") {
-							clickValue = unbuffedCV;
+							clickValue = unbuffedCV
 							buff = "none";
 						}
 						volume = loadData[52];
@@ -989,9 +903,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	function saveGameP2(needToSave) {
 		try {
 			localStorage.setItem('saveData', JSON.stringify(saveData));
-			while (saveData.length > 0) {
-				saveData.pop();
-			}
+			while (saveData.length > 0) saveData.pop();
 			if (saveData.length == 0) {
 				if (manualSave) {
 					savingString.textContent = "Game saved.";
@@ -1002,9 +914,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 					console.log("Game autosaved @ playtime " + timePlayed + "ms");
 					debugConsole = debugConsole + ("Game autosaved @ playtime " + timePlayed + "ms" + "\n");
 				}
-				if (needToSave) {
-					console.groupEnd();
-				}
+				if (needToSave) console.groupEnd();
 				SHT = 500;
 			}
 		} catch (error) {
@@ -1033,9 +943,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				savingString.textContent = "";
 				unlockString.textContent = "";
 				incorrectKeyLabel.textContent = "";
-				if (!debugAutoplay) {
-					readyToSave = true;
-				}
+				if (!debugAutoplay) readyToSave = true;
 				SHT++;
 			}
 		} catch (error) {
@@ -1047,11 +955,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 			let max = 300;
 			let min = 0;
 			buffRNG = 0;
-			if (forceBuff && buff == "none") {
-				buffRNG = 300;
-			} else if (!forceBuff && buff == "none") {
-				buffRNG = Math.floor((Math.random() * max) + min);
-			}
+			if (forceBuff && buff == "none") buffRNG = 300;
+			else if (!forceBuff && buff == "none") buffRNG = Math.floor((Math.random() * max) + min);
 			if (buffRNG == 100 && buff == "none") {
 				if (cps > 0) {
 					buffStr.textContent = "Your CPS has been doubled for 30 seconds!";
@@ -1111,6 +1016,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	function timeIncrease() {
 		timePlayed = timePlayed + 1000;
 	}
+
 	function coinClick() {
 		try {
 			sfx.play();
@@ -1141,11 +1047,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 				red = red - 5;
 				green = green - 5;
 			}
-			if (green == 200) {
-				increase = false;
-			} else if (green == 0) {
-				increase = true;
-			}
+			if (green == 200) increase = false;
+			else if (green == 0) increase = true;
 			quadrillionare.style.borderBlockColor = "rgb(" + red + ",0,0)";
 			quadrillionare.style.borderInlineColor = "rgb(" + red + ",0,0)";
 			shopCostPulse();
@@ -1218,9 +1121,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	startButton.addEventListener("click", function () {
 		gameStarted = true;
 		sfx.play();
-		if (generatedKey != "debug") {
-			key.style.display = "none";
-		}
+		if (generatedKey != "debug") key.style.display = "none";
 		sourceNote.style.display = "none";
 		startButton.style.display = "none";
 		title.style.display = "none";
@@ -1244,9 +1145,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clickersOwned++;
 			cps = cps + clickerCPS;
 			clickerCPSWorth = clickerCPSWorth + clickerCPS;
-			if (buff == "cpsDouble") {
-				cps = cps + (clickerCPS * 2);
-			}
+			if (buff == "cpsDouble") cps = cps + (clickerCPS * 2);
 			clickerCPS = clickerCPS + Math.round(clickersOwned * 2 + (0.01 * cps) + (Math.floor(Math.random() * 15) + 3));
 			clickerCost = clickerCost + Math.round(clickersOwned + (5 * cps) + clickersOwned * 3 + (Math.floor(Math.random() * 200) + 100));
 			clickValue = clickValue + Math.round(clickersOwned * 0.5 + 0.05 * cps);
@@ -1261,9 +1160,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			superClickersOwned++;
 			cps = cps + superClickerCPS;
 			superClickerCPSWorth = superClickerCPSWorth + superClickerCPS;
-			if (buff == "cpsDouble") {
-				cps = cps + (superClickerCPS * 2);
-			}
+			if (buff == "cpsDouble") cps = cps + (superClickerCPS * 2);
 			superClickerCPS = superClickerCPS + Math.round(superClickersOwned * 3 + (0.4 * cps));
 			superClickerCost = superClickerCost + Math.round(superClickerCost + (50 * cps) + superClickersOwned * 4 + (Math.floor(Math.random() * 50000) + 30000));
 			clickValue = clickValue + Math.round(superClickersOwned * 2 + 0.10 * cps);
@@ -1278,9 +1175,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			doublePointersOwned++;
 			cps = cps + doublePointerCPS;
 			doublePointerCPSWorth = doublePointerCPSWorth + doublePointerCPS;
-			if (buff == "cpsDouble") {
-				cps = cps + (doublePointerCPS * 2);
-			}
+			if (buff == "cpsDouble") cps = cps + (doublePointerCPS * 2);
 			doublePointerCPS = doublePointerCPS + Math.round(doublePointersOwned * 5 + (0.6 * cps));
 			doublePointerCost = doublePointerCost + Math.round(doublePointersOwned + (125 * cps) + doublePointersOwned * 10 + (Math.floor(Math.random() * 1000000) + 500000));
 			clickValue = clickValue + Math.round(doublePointersOwned * 3 + 0.12 * cps);
@@ -1306,9 +1201,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - cursorCost;
 			cursorOwned = true;
 			cps = cps + Math.round(cps * cursorCPS);
-			if (buff == "cpsDouble") {
-				cps = cps + Math.round(cps * (cursorCPS * 2));
-			}
+			if (buff == "cpsDouble") cps = cps + Math.round(cps * (cursorCPS * 2));
 			cursorCost = "Owned.";
 			clickValue = clickValue + Math.round(0.07 * cps);
 			totalClickHelpers++;
@@ -1321,9 +1214,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - superCursorCost;
 			superCursorOwned = true;
 			cps = cps + Math.round(cps * superCursorCPS);
-			if (buff == "cpsDouble") {
-				cps = cps + Math.round(cps * (superCursorCPS * 2));
-			}
+			if (buff == "cpsDouble") cps = cps + Math.round(cps * (superCursorCPS * 2));
 			superCursorCost = "Owned.";
 			clickValue = clickValue + Math.round(0.12 * cps);
 			totalClickHelpers++;
@@ -1336,9 +1227,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - employeeCost;
 			employeesOwned++;
 			cps = cps + Math.round(cps * employeeCPS);
-			if (buff == "cpsDouble") {
-				cps = cps + Math.round(cps * (employeeCPS * 2));
-			}
+			if (buff == "cpsDouble") cps = cps + Math.round(cps * (employeeCPS * 2));
 			employeeCost = employeeCost + (employeesOwned * employeeCost);
 			employeeCPS = employeeCPS * 2;
 			totalClickHelpers++;
@@ -1351,9 +1240,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clicks = clicks - godFingerCost;
 			godFingerOwned = true;
 			clickValue = clickValue + Math.round(godFingerCV * clickValue);
-			if (buff == "cv777%CPS") {
-				clickValue = clickValue + Math.round((godFingerCV * clickValue) * 7.77 * cps)
-			}
+			if (buff == "cv777%CPS") clickValue = clickValue + Math.round((godFingerCV * clickValue) * 7.77 * cps);
 			godFingerCost = "Owned.";
 			totalClickHelpers++;
 		}
@@ -1372,9 +1259,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 		if (s.key == "s") {
 			manualSave = true;
 			saveGame();
-		} else if (s.key == "y" && s.ctrlKey) {
-			createBase64Key();
-		} else if (s.key == "y" && s.altKey) {
+		} else if (s.key == "y" && s.ctrlKey) createBase64Key();
+		else if (s.key == "y" && s.altKey) {
 			if (gameStarted && debugScreenState == "closed") {
 				debugScreenState = "open";
 				game.style.display = "none";
@@ -1527,14 +1413,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 			sfx2.volume = volume;
 			sfx3.volume = volume;
 			sfx4.volume = volume;
-		} else {
-			volumeInput.value = "";
-		}
+		} else volumeInput.value = "";
 	});
 	document.addEventListener("click", function () {
-		if (debugAutoplay) {
-			sfx.volume = volume;
-		}
+		if (debugAutoplay) sfx.volume = volume;
 	})
 	//Function intervals
 	setInterval(timedLabelCount, 1); //This function will be removed in the future.
