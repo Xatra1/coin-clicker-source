@@ -1,5 +1,5 @@
 //Coin Clicker Update 6 Codename "Abundance"
-//Build 3.51 Rewrite Beta
+//Build 3.52 Rewrite Beta
 //NOTE: The features present in this update of the game (especially debug autoplay) are still being heavily tested. The buff system may still have issues.
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -277,7 +277,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.51rb";
+	const buildNumber = "3.52rb";
 	const updateName = "abundance";
 	console.group("Build Info");
 	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
@@ -391,7 +391,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var sfx2 = new Audio("./snd/shopunlock.mp3");
 	var sfx3 = new Audio("./snd/achievementunlock.mp3");
 	var sfx4 = new Audio("./snd/specialachievementunlocksfx.mp3");
-	var sfx5 = new Audio("./snd//shopbuy.mp3");
+	var sfx5 = new Audio("./snd/shopbuy.mp3");
 	//Color variables
 	var increase = true;
 	var red = 0;
@@ -1551,6 +1551,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 	setInterval(cpsClick, 250);
 	setInterval(buffRNGCalc, 1000);
 	setInterval(timeIncrease, 1000);
-	setInterval(saveGame, 60000);
+	setInterval(function() {
+		manualSave = false;
+		saveGame();
+	}, 60000);
 	setInterval(logDNPError, 300000);
 }
