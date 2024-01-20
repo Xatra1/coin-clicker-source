@@ -1456,7 +1456,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 		if (volumeInput.value >= 0 && volumeInput.value <= 100) {
 			volume = volumeInput.value / 100;
 			let sfxArray = [sfx, sfx2, sfx3, sfx4, sfx5]
-			for (let i = 0; i > 5; i++) {
+			for (let i = 0; i < 5; i++) {
 				sfxArray[i].volume = volume;
 			}
 		} else volumeInput.value = "";
