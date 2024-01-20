@@ -1,6 +1,6 @@
 /*
 Coin Clicker Update 6 Codename "Abundance"
-Build 3.78 Rewrite Beta
+Build 3.8 Rewrite Beta
 */
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -284,7 +284,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.78ab";
+	const buildNumber = "3.8ab";
 	const updateName = "abundance";
 	var gameStarted = false;
 	//Stat variables
@@ -432,7 +432,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	];
 	var costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString,
 		employeeCostString, godFingerCostString];
-	var costArraySP = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
+	costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
 	//Initial run updates and calls
 	debugKeyInput.value = "";
 	console.group("Build Info");
@@ -487,12 +487,12 @@ function script() { //NOTE: Every variable contained within this function is loc
 				saveGame();
 				readyToSave = false;
 			} else if (debugAutoplay) {
-				var costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
-				var buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy];
+				costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
+				let buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy];
 				saveInfoString.textContent = "Saving is disabled.";
 				sfx.volume = 0;
 				coin.click();
-				for (var i = -1; i < costArray.length; i++) {
+				for (let i = -1; i < costArray.length; i++) {
 					if (clicks >= costArray[i]) buttonArray[i].click();
 				}
 			}
@@ -797,7 +797,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				clickersOwned, superClickerCPS, superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost,
 				employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked
 			];
-			for (var i = 0; i < intArray.length; i++) {
+			for (let i = 0; i < intArray.length; i++) {
 				if (Math.sign(intArray[i]) == -1) intArray[i] = intArray[i] * -1; //Convert all negative numbers to positive numbers.
 				if (navigator.userAgent.indexOf("Edg") == -1) { //Edge does not support Number.prototype.toLocaleString, it will not be used.
 					if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a precision of 3 if value is over 100 trillion.
@@ -812,9 +812,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function shopCostPulse() {
 		try {
-			costArraySP = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
-			for (var i = 0; i < costArraySP.length; i++) {
-				if (clicks >= costArraySP[i]) {
+			costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
+			for (let i = 0; i < costArray.length; i++) {
+				if (clicks >= costArray[i]) {
 					costStringArr[i].style.color = "rgb(0," + green + ",0)";
 				} else {
 					costStringArr[i].style.color = "rgb(0, 0, 0)";
@@ -828,95 +828,53 @@ function script() { //NOTE: Every variable contained within this function is loc
 		try {
 			console.group("Initial Data Load");
 			if (localStorage.getItem('saveData', saveData) != null) {
-				const data = localStorage.getItem('saveData', saveData);
-				const loadData = JSON.parse(data);
+				let data = localStorage.getItem('saveData', saveData);
+				let loadData = JSON.parse(data);
+				let toLoad = 0;
 				console.log("Data being loaded: ");
 				console.log(loadData);
-				if (loadData[50] == buildNumber) {
-					if (!loadData[53]) {
-						journeyBeginsUnlocked = loadData[32];
-						aGoodStartUnlocked = loadData[33];
-						gettingThereUnlocked = loadData[34];
-						millionareUnlocked = loadData[35];
-						coinPoolUnlocked = loadData[36];
-						abundanceUnlocked = loadData[37];
-						billionareUnlocked = loadData[38];
-						excessUnlocked = loadData[39];
-						planetOfClicksUnlocked = loadData[40];
-						trillionareUnlocked = loadData[41];
-						pocketDimensionUnlocked = loadData[42];
-						farTooManyUnlocked = loadData[43];
-						quadrillionareUnlocked = loadData[47];
-						coinVortexUnlocked = loadData[54];
-						coinShapedBlackHoleUnlocked = loadData[55];
-						quintillionareUnlocked = loadData[56];
-						clickBeyondUnlocked = loadData[57];
-						distantBeginningUnlocked = loadData[58];
-						sextillionareUnlocked = loadData[59];
-						breakpointUnlocked = loadData[60];
-						achArr = [journeyBeginsUnlocked, aGoodStartUnlocked, gettingThereUnlocked, millionareUnlocked, coinPoolUnlocked, abundanceUnlocked, billionareUnlocked,
-							excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked, coinVortexUnlocked,
-							coinShapedBlackHoleUnlocked, quintillionareUnlocked, clickBeyondUnlocked, distantBeginningUnlocked, sextillionareUnlocked, breakpointUnlocked
-						];
-						clicks = loadData[0];
-						clickValue = loadData[1];
-						unbuffedCV = loadData[2];
-						cps = loadData[3];
-						unbuffedCPS = loadData[4];
-						timePlayed = loadData[5];
-						lifetimeClicks = loadData[6];
-						lifetimeManualClicks = loadData[7];
-						coinClickCount = loadData[8];
-						totalClickHelpers = loadData[9];
-						clickerCPS = loadData[10];
-						clickerCost = loadData[11];
-						clickersOwned = loadData[12];
-						superClickerUnlocked = loadData[13];
-						superClickerCPS = loadData[14];
-						superClickerCost = loadData[15];
-						superClickersOwned = loadData[16];
-						doublePointerUnlocked = loadData[17];
-						doublePointerCPS = loadData[18];
-						doublePointerCost = loadData[19];
-						doublePointersOwned = loadData[20];
-						cursorCost = loadData[21];
-						cursorOwned = loadData[22];
-						superCursorUnlocked = loadData[23];
-						superCursorCost = loadData[24];
-						superCursorOwned = loadData[25];
-						employeeUnlocked = loadData[26];
-						employeeCost = loadData[27];
-						employeesOwned = loadData[28];
-						godFingerUnlocked = loadData[29];
-						godFingerCost = loadData[30];
-						godFingerOwned = loadData[31];
-						clickerCPSWorth = loadData[44];
-						superClickerCPSWorth = loadData[45];
-						doublePointerCPSWorth = loadData[46];
-						buff = loadData[49];
-						unbuffedCPS = loadData[48];
-						unbuffedCV = loadData[51];
-						if (buff == "cpsDouble") {
-							cps = unbuffedCPS;
-							buff = "none";
-						} else if (buff == "cv777%CPS") {
-							clickValue = unbuffedCV;
-							buff = "none";
+				if (loadData[0] == "3.8ab") {
+					if (!loadData[1]) {
+						let intsToPull = [clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost, clickersOwned, superClickerCPS,
+							superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost, employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth,
+							superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked];
+						for (let i = 0; i < intsToPull.length; i++) {
+							if (loadData[i + 2] != undefined) {
+								clicks = loadData[2];
+								clickValue = loadData[3];
+								cps = loadData[4];
+								lifetimeClicks = loadData[5];
+								lifetimeManualClicks = loadData[6];
+								coinClickCount = loadData[7];
+								totalClickHelpers = loadData[8];
+								clickerCPS = loadData[9];
+								clickerCost = loadData[10];
+								clickersOwned = loadData[11];
+								superClickerCPS = loadData[12];
+								superClickerCost = loadData[13];
+								superClickersOwned = loadData[14];
+								doublePointerCPS = loadData[15];
+								doublePointerCost = loadData[16];
+								doublePointersOwned = loadData[17];
+								employeeCost = loadData[18];
+								employeesOwned = loadData[19];
+								unbuffedCV = loadData[20];
+								unbuffedCPS = loadData[21];
+								clickerCPSWorth = loadData[22];
+								superClickerCPSWorth = loadData[23];
+								doublePointerCPSWorth = loadData[24];
+								achievementsUnlocked = loadData[25];
+							}
 						}
-						volume = loadData[52];
-						sfx.volume = volume;
-						sfx2.volume = volume;
-						sfx3.volume = volume;
-						sfx4.volume = volume;
-						volumeInput.value = volume * 100;
+						timePlayed = loadData[loadData.length - 1];
 					} else {
 						console.warn("Debug autoplay was enabled on the last save, it will be destroyed.");
 						debugConsole = debugConsole + "WARN: Debug autoplay was enabled on the last save, it will be destroyed." + "\n";
 						localStorage.removeItem('saveData', saveData);
 					}
 				} else {
-					console.warn("Save is incompatible, it will not be loaded.");
-					debugConsole = debugConsole + "WARN: Save is incompatible, it will not be loaded." + "\n";
+					console.warn("Save is using an invalid format from a previous release. It will be deleted.");
+					localStorage.removeItem('saveData', saveData);
 				}
 			} else {
 				console.warn("There is no save to load. Creating one now.");
@@ -935,67 +893,13 @@ function script() { //NOTE: Every variable contained within this function is loc
 				readyToSave = false;
 				savingString.textContent = "Saving...";
 				savingString.style.display = "block";
-				saveData.push(clicks);
-				saveData.push(clickValue);
-				saveData.push(unbuffedCV);
-				saveData.push(cps);
-				saveData.push(unbuffedCPS);
-				saveData.push(timePlayed);
-				saveData.push(lifetimeClicks);
-				saveData.push(lifetimeManualClicks);
-				saveData.push(coinClickCount);
-				saveData.push(totalClickHelpers);
-				saveData.push(clickerCPS);
-				saveData.push(clickerCost);
-				saveData.push(clickersOwned);
-				saveData.push(superClickerUnlocked);
-				saveData.push(superClickerCPS);
-				saveData.push(superClickerCost);
-				saveData.push(superClickersOwned);
-				saveData.push(doublePointerUnlocked);
-				saveData.push(doublePointerCPS);
-				saveData.push(doublePointerCost);
-				saveData.push(doublePointersOwned);
-				saveData.push(cursorCost);
-				saveData.push(cursorOwned);
-				saveData.push(superCursorUnlocked);
-				saveData.push(superCursorCost);
-				saveData.push(superCursorOwned);
-				saveData.push(employeeUnlocked);
-				saveData.push(employeeCost);
-				saveData.push(employeesOwned);
-				saveData.push(godFingerUnlocked);
-				saveData.push(godFingerCost);
-				saveData.push(godFingerOwned);
-				saveData.push(journeyBeginsUnlocked);
-				saveData.push(aGoodStartUnlocked);
-				saveData.push(gettingThereUnlocked);
-				saveData.push(millionareUnlocked);
-				saveData.push(coinPoolUnlocked);
-				saveData.push(abundanceUnlocked);
-				saveData.push(billionareUnlocked);
-				saveData.push(excessUnlocked);
-				saveData.push(planetOfClicksUnlocked);
-				saveData.push(trillionareUnlocked);
-				saveData.push(pocketDimensionUnlocked);
-				saveData.push(farTooManyUnlocked);
-				saveData.push(clickerCPSWorth);
-				saveData.push(superClickerCPSWorth);
-				saveData.push(doublePointerCPSWorth);
-				saveData.push(quadrillionareUnlocked);
-				saveData.push(unbuffedCPS);
-				saveData.push(buff);
-				saveData.push(buildNumber);
-				saveData.push(unbuffedCV);
-				saveData.push(volume);
-				saveData.push(debugAutoplay);
-				saveData.push(coinVortexUnlocked);
-				saveData.push(coinShapedBlackHoleUnlocked);
-				saveData.push(quintillionareUnlocked);
-				saveData.push(clickBeyondUnlocked);
-				saveData.push(distantBeginningUnlocked);
-				saveData.push(sextillionareUnlocked);
-				saveData.push(breakpointUnlocked);
+				let intsToPush = [buildNumber, debugAutoplay, clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost,
+					clickersOwned, superClickerCPS, superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost,
+					employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked, timePlayed
+				];
+				for (let i = 0; i < intsToPush.length; i++) {
+					saveData.push(intsToPush[i]);
+				}
 				saveGameP2(needToSave);
 			} else if (!readyToSave && manualSave) {
 				console.warn("Not ready to save, or saving is disabled!");
@@ -1008,20 +912,17 @@ function script() { //NOTE: Every variable contained within this function is loc
 	function saveGameP2(needToSave) {
 		try {
 			localStorage.setItem('saveData', JSON.stringify(saveData));
-			while (saveData.length > 0) saveData.pop();
-			if (saveData.length == 0) {
-				if (manualSave) {
-					savingString.textContent = "Game saved.";
-					console.log("Game saved @ playtime " + timePlayed + "ms");
-					debugConsole = debugConsole + ("Game saved @ playtime " + timePlayed + "ms" + "\n");
-				} else {
-					savingString.textContent = "Game autosaved.";
-					console.log("Game autosaved @ playtime " + timePlayed + "ms");
-					debugConsole = debugConsole + ("Game autosaved @ playtime " + timePlayed + "ms" + "\n");
-				}
-				if (needToSave) console.groupEnd();
-				SHT = 500;
+			if (manualSave) {
+				savingString.textContent = "Game saved.";
+				console.log("Game saved @ playtime " + timePlayed + "ms");
+				debugConsole = debugConsole + ("Game saved @ playtime " + timePlayed + "ms" + "\n");
+			} else {
+				savingString.textContent = "Game autosaved.";
+				console.log("Game autosaved @ playtime " + timePlayed + "ms");
+				debugConsole = debugConsole + ("Game autosaved @ playtime " + timePlayed + "ms" + "\n");
 			}
+			if (needToSave) console.groupEnd();
+			SHT = 500;
 		} catch (error) {
 			errorHandler(error)
 		}
@@ -1033,9 +934,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				if (confirm("This is completely irreversible and wiping your save will also refresh the page! Are you sure you wish to continue?")) {
 					localStorage.removeItem("saveData");
 					location.reload();
-				} else {
-					readyToSave = true;
-				}
+				} else readyToSave = true;
 			}
 		} catch (error) {
 			errorHandler(error)
@@ -1168,10 +1067,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 	}
 	function canvasDraw() {
 		try {
-			const canvas = document.getElementById("borders");
-			const ctx = canvas.getContext("2d");
-			const size = $(window).width();
-			const scale = window.devicePixelRatio;
+			let canvas = document.getElementById("borders");
+			let ctx = canvas.getContext("2d");
+			let size = $(window).width();
+			let scale = window.devicePixelRatio;
 			if (navigator.userAgent.indexOf("OPR") == -1 && navigator.userAgent.indexOf("Edg") == -1) { //Edge and Opera do not support this style of canvas drawing, it will not be used.
 				canvas.style.width = "${size}px";
 				canvas.style.height = "${size}px";
@@ -1197,18 +1096,16 @@ function script() { //NOTE: Every variable contained within this function is loc
 				console.group("Debug Key Status");
 				console.log("Generating key...");
 				debugConsole = debugConsole + "Generating key..." + "\n";
-				const addArray = ["a", "A", "b", "B", "c", "C", "d", "D", "e", "E", "f", "F", "g", "G", "h", "H", "i", "I", "j", "J", "k", "K", "l", "L", "m", "M",
+				let addArray = ["a", "A", "b", "B", "c", "C", "d", "D", "e", "E", "f", "F", "g", "G", "h", "H", "i", "I", "j", "J", "k", "K", "l", "L", "m", "M",
 					"n", "N", "o", "O", "p", "P", "q", "Q", "r", "R", "s", "S", "t", "T", "u", "U", "v", "V", "w", "W", "x", "X", "y", "Y", "z", "Z", "0", "1", "2",
 					"3", "4", "5", "6", "7", "8", "9"];
-				var c = 30;
-				while (c > 0) {
-					c--;
-					var val = (Math.floor(Math.random() * 61) + 1);
+				for (let i = 30; i > 0; i--) {
+					let val = (Math.floor(Math.random() * 61) + 1);
 					generatedKey = generatedKey + addArray[val];
-					if (c == 0) {
+					if (i > 0) {
 						console.log("Key generated.");
 						debugConsole = debugConsole + "Key generated." + "\n";
-						const base64key = btoa(generatedKey);
+						let base64key = btoa(generatedKey);
 						key.textContent = base64key;
 						key.style.fontFamily = "courier";
 						key.style.display = "block";
@@ -1254,7 +1151,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 			clickerCPSWorth = clickerCPSWorth + clickerCPS;
 			if (buff == "cpsDouble") cps = cps + (clickerCPS * 2);
 			clickerCPS = clickerCPS + Math.round(clickersOwned * 2 + (0.01 * cps) + (Math.floor(Math.random() * 15) + 3));
-			clickerCost = clickerCost + Math.round(clickersOwned + (25 * cps) + clickersOwned * 3 + (Math.floor(Math.random() * 200) + 100));
+			clickerCost = clickerCost + Math.round(clickersOwned + (15 * cps) + clickersOwned * 3 + (Math.floor(Math.random() * 200) + 100));
 			clickValue = clickValue + Math.round(clickersOwned * 0.5 + 0.01 * cps);
 			totalClickHelpers++;
 		}
@@ -1383,7 +1280,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	debugKeySubmit.addEventListener("click", function (event) {
 		event.preventDefault();
 		try {
-			var dmkInput = atob(debugKeyInput.value);
+			let dmkInput = atob(debugKeyInput.value);
 		} catch (error) {
 			console.warn("Debug Access Key input is not encoded. Using raw input as value.");
 			debugConsole = debugConsole + "WARN: Debug access key input is not encoded. Using raw input as value." + "\n";
@@ -1504,36 +1401,43 @@ function script() { //NOTE: Every variable contained within this function is loc
 		achUnlockStr.textContent = "Unlocked: " + achArr[12];
 	});
 	coinVortex.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[13];
 		achDescStr.textContent = achDescs[13];
 		achUnlockStr.textContent = "Unlocked: " + achArr[13];
 	});
 	coinShapedBlackHole.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[14];
 		achDescStr.textContent = achDescs[14];
 		achUnlockStr.textContent = "Unlocked: " + achArr[14];
 	});
 	quintillionare.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[15];
 		achDescStr.textContent = achDescs[15];
 		achUnlockStr.textContent = "Unlocked: " + achArr[15];
 	});
 	clickBeyond.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[16];
 		achDescStr.textContent = achDescs[16];
 		achUnlockStr.textContent = "Unlocked: " + achArr[16];
 	});
 	distantBeginning.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[17];
 		achDescStr.textContent = achDescs[17];
 		achUnlockStr.textContent = "Unlocked: " + achArr[17];
 	});
 	sextillionare.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[18];
 		achDescStr.textContent = achDescs[18];
 		achUnlockStr.textContent = "Unlocked; " + achArr[18];
 	});
 	breakpoint.addEventListener("click", function () {
+		sfx.play();
 		achNameStr.textContent = achStrs[19];
 		achDescStr.textContent = achDescs[19];
 		achUnlockStr.textContent = "Unlocked: " + achArr[19];
@@ -1551,10 +1455,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 	volumeInput.addEventListener("change", function () {
 		if (volumeInput.value >= 0 && volumeInput.value <= 100) {
 			volume = volumeInput.value / 100;
-			sfx.volume = volume;
-			sfx2.volume = volume;
-			sfx3.volume = volume;
-			sfx4.volume = volume;
+			let sfxArray = [sfx, sfx2, sfx3, sfx4, sfx5]
+			for (let i = 0; i > 5; i++) {
+				sfxArray[i].volume = volume;
+			}
 		} else volumeInput.value = "";
 	});
 	document.addEventListener("click", function () {
