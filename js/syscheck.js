@@ -7,8 +7,7 @@ const resWarn = document.createElement("p");
 const runningBrowserString = document.getElementById("runningbrowserstring");
 const div = document.getElementById("unsupportedremove");
 var enableJS = true;
-console.group("Navigator Information");
-console.groupCollapsed();
+console.groupCollapsed("Navigator Information");
 console.log(window.navigator);
 console.groupEnd();
 function sysCheck() {
