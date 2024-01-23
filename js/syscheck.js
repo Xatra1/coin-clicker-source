@@ -24,8 +24,8 @@ function sysCheck() {
   if (index > -1) browserStr = browsers[index];
   if (userAgentData != undefined) os = userAgentData.platform; //Use userAgentData to find client. operating system.
   else {
-    var osIndex = oses.length - 1;
     const oses = ["X11", "Windows", "Mac", "Linux"];
+    var osIndex = oses.length - 1;
     while (osIndex > -1 && userAgent.indexOf(oses[osIndex]) == -1) { //Loop through possible UA strings to detect client operating system, this only triggers if the userAgentData method is unsupported.
       osIndex--;
     }
