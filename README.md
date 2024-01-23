@@ -7,7 +7,7 @@ This will put you into the folder that contains "index.html", which is how you w
   
 Or, if you don't want to bother with that, you can also play the game [here.](https://xatra1.github.io/coin-clicker-source) (Note that this uses the latest version of the code by default and may also be unstable.)
   
-Icons made by Font Awesome, with the exception of the (currently unused) "octillionachievements.png", which is made by IconsMind.  
+Icons made by Font Awesome, with the exception of "octillionachievements.png", which is made by IconsMind.  
 Sound effects obtained from Pixabay.  
   
 ~~Note: Saves are not compatible between different versions of the game. If you attempt to play a newer version of the game with an older save, it will not load.~~ This is no longer true, however all saves created prior to the release of build 3.8ab will not load in newer releases of the game.

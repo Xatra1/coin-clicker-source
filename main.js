@@ -1,6 +1,6 @@
 /*
 Coin Clicker Update 6 Codename "Abundance"
-Build 3.8 Rewrite Beta
+Build 4.01 Rewrite Beta
 */
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -29,26 +29,27 @@ var enableJS = false; //The only browser that this applies to is IE, any other b
 uaSniffer();
 function uaSniffer() {
 	const browsers = ["MSIE", "Firefox", "Safari", "Chrome", "OPR", "Edg"];
+	const oses = ["Windows", "Mac", "Linux"];
 	const userAgent = navigator.userAgent;
 	var index = browsers.length - 1;
 	var browserStr = "Undetected";
+	var os = "Undetected";
+	var osIndex = oses.length - 1;
 	while (index > -1 && userAgent.indexOf(browsers[index]) == -1) { //Loop through possible UA strings to detect client browser
 		index--;
 	}
-	if (index > -1) {
-		browserStr = browsers[index];
+	if (index > -1) browserStr = browsers[index];
+	while (index > -1 && userAgent.indexOf(oses[osIndex]) == -1) { //Loop through possible UA strings to detect client's operating system.
+		index--;
 	}
+	if (index > -1) os = oses[osIndex];
 	//Normalize UA strings
-	if (browserStr == "Edg") {
-		browserStr = "Edge";
-	} else if (browserStr == "OPR") {
-		browserStr = "Opera";
-	} else if (browserStr == "MSIE") {
-		browserStr = "Internet Explorer";
-	}
+	if (browserStr == "Edg") browserStr = "Edge";
+	else if (browserStr == "OPR") browserStr = "Opera";
+	else if (browserStr == "MSIE") browserStr = "Internet Explorer";
 	const browserVer = userAgent.indexOf(browsers[index]); //Detect version of running browser
-	runningBrowserString.textContent = "detected browser: " + browserStr + " v" + browserVer;
-	console.log(browserStr + " " + browserVer)
+	runningBrowserString.textContent = browserStr + " v" + browserVer + " running on " + os;
+	console.log(browserStr + " " + browserVer + " running on " + os);
 	const unsupportedString = document.createElement("p");
 	unsupportedString.style.position = "absolute";
 	unsupportedString.style.fontSize = "25px";
@@ -67,9 +68,9 @@ function uaSniffer() {
 		throw ("Detected browser is unsupported, JavaScript will not be used past this point.");
 	} else if (browserStr == "Chrome") { //Chrome is supported, but it is recommended to disable the bookmarks bar.
 		enableJS = true;
-		width = "1905";
-		console.log("User is using either Chrome or a Chromium-based browser, width will be 1905, and displaying bookmarks bar notice.");
-		debugConsole = debugConsole + "User is using either Chrome or a Chromium-based browser, width will be 1905, and displaying bookmarks bar notice." + "\n";
+		width = "1903";
+		console.log("User is using either Chrome or a Chromium-based browser, width will be 1903, and displaying bookmarks bar notice.");
+		debugConsole = debugConsole + "User is using either Chrome or a Chromium-based browser, width will be 1903, and displaying bookmarks bar notice." + "\n";
 		bmbarNote.style.position = "static";
 		bmbarNote.style.fontSize = "13px";
 		bmbarNote.textContent = "Note: If you cannot see the build string in the bottom left, you may need to disable the bookmarks bar to see everything correctly.";
@@ -152,7 +153,7 @@ function resolutionCheck(enableJS, width) { //There are currently only two suppo
 		debugConsole = debugConsole + "WARN: User has an unsupported window width. The window or zoom size may have changed, or their resolution is lower than supported. Using fallback for now." + "\n";
 		resWarn.style.position = "static";
 		resWarn.style.fontSize = "13px";
-		resWarn.textContent = "Your current browser width is unsupported! This may be caused by an unmaximized browser window, zoomed in/zoomed out browser window, or your screen resolution.";
+		resWarn.textContent = "Your current browser width (" + $(window).width() + "px) is unsupported! This may be caused by an unmaximized browser window, zoomed in/zoomed out browser window, or your screen resolution.";
 		resWarn.style.display = "block";
 		head.appendChild(link);
 		body.appendChild(resWarn);
@@ -170,11 +171,9 @@ function resolutionCheck(enableJS, width) { //There are currently only two suppo
 		} catch (error) {
 			errorHandler(error)
 		}
-	} else {
-		div.appendChild(resWarn);
-	}
+	} else div.appendChild(resWarn);
 }
-function script() { //NOTE: Every variable contained within this function is local, and will need extra work done to be logged to the console.
+function script() {
 	console.groupEnd();
 	//Title screen
 	const sourceNote = document.getElementById("sourcenote");
@@ -275,6 +274,12 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const clickBeyond = document.getElementById("clickbeyond");
 	const distantBeginning = document.getElementById("distantbeginning");
 	const sextillionare = document.getElementById("sextillionare");
+	const numberOverflow = document.getElementById("numberoverflow");
+	const coinUniverse = document.getElementById("coinuniverse");
+	const octillionare = document.getElementById("octillionare");
+	const why = document.getElementById("why");
+	const twentyFingers = document.getElementById("twentyfingers");
+	const forTheWorthy = document.getElementById("fortheworthy");
 	const breakpoint = document.getElementById("breakpoint");
 	const backToGame = document.getElementById("backtogame");
 	//Settings screen
@@ -284,7 +289,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 	const backToGame2 = document.getElementById("backtogame2");
 	const volumeInput = document.getElementById("volumeinput");
 	//Title screen variables
-	const buildNumber = "3.8ab";
+	const buildStr = "4.01ab";
+	const buildNumber = 4.01;
 	const updateName = "abundance";
 	var gameStarted = false;
 	//Stat variables
@@ -384,6 +390,12 @@ function script() { //NOTE: Every variable contained within this function is loc
 	var clickBeyondUnlocked = false;
 	var distantBeginningUnlocked = false;
 	var sextillionareUnlocked = false;
+	var numberOverflowUnlocked = false;
+	var coinUniverseUnlocked = false;
+	var octillionareUnlocked = false;
+	var whyUnlocked = false;
+	var twentyFingersUnlocked = false;
+	var forTheWorthyUnlocked = false;
 	var breakpointUnlocked = false;
 	var achStr = "none";
 	//Audio variables
@@ -419,26 +431,28 @@ function script() { //NOTE: Every variable contained within this function is loc
 	];
 	const achStrs = ["Journey Begins", "A Good Start", "Getting There", "Millionare", "Coin Pool", "Abundance", "Billionare", "Excess", "Planet of Clicks",
 		"Trillionare", "Pocket Dimension", "Far Too Many", "Quadrillionare", "Coin Vortex", "Coin-Shaped Black Hole", "Quintillionare", "Click Beyond",
-		"Distant Beginning", "Sextillionare", "Breakpoint"];
+		"Distant Beginning", "Sextillionare", "Breakpoint", "Number Overflow", "Coin Universe", "Octillionare", "Why?", "20 Fingers", "For the Worthy"];
 	const achDescs = ["Obtain 1 lifetime click.", "Obtain 10,000 lifetime clicks.", "Obtain 100,000 lifetime clicks.", "Obtain 1,000,000 lifetime clicks.",
 		"Obtain 10,000,000 lifetime clicks.", "Obtain 100,000,000 lifetime clicks.", "Obtain 1,000,000,000 lifetime clicks.", "Obtain 10,000,000,000 lifetime clicks.",
 		"Obtain 100,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000 lifetime clicks.", "Obtain 10,000,000,000,000 lifeitme clicks.",
 		"Obtain 100,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000 lifetime clicks.", "Obtain 10,000,000,000,000,000 lifetime clicks.",
 		"Obtain 100,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000 lifetime clicks.", "Obtain 10,000,000,000,000,000,000 lifetime clicks.",
-		"Obtain 100,000,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000,000 lifetime clicks.", "Obtain infinite lifetime clicks, breaking the game."];
+		"Obtain 100,000,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000,000 lifetime clicks.", "Obtain infinite lifetime clicks, breaking the game.",
+		"Obtain 10,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 100,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000,000,000 lifetime clicks.",
+		"Obtain 10,000,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 100,000,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000,000,000,000 lifetime clicks."];
 	var achArr = [journeyBeginsUnlocked, aGoodStartUnlocked, gettingThereUnlocked, millionareUnlocked, coinPoolUnlocked, abundanceUnlocked, billionareUnlocked,
 		excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked, coinVortexUnlocked,
-		coinShapedBlackHoleUnlocked, quintillionareUnlocked, clickBeyondUnlocked, distantBeginningUnlocked, sextillionareUnlocked, breakpointUnlocked
-	];
+		coinShapedBlackHoleUnlocked, quintillionareUnlocked, clickBeyondUnlocked, distantBeginningUnlocked, sextillionareUnlocked, breakpointUnlocked,
+		numberOverflowUnlocked, coinUniverseUnlocked, octillionareUnlocked, whyUnlocked, twentyFingersUnlocked, forTheWorthyUnlocked];
 	var costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString,
 		employeeCostString, godFingerCostString];
 	costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
 	//Initial run updates and calls
 	debugKeyInput.value = "";
 	console.group("Build Info");
-	console.log("Running update 5 codename " + updateName + " build " + buildNumber);
+	console.log("Running update 5 codename " + updateName + " build " + buildStr);
 	console.groupEnd();
-	buildString.textContent = ("build " + buildNumber);
+	buildString.textContent = ("build " + buildStr);
 	updateString.textContent = ("the " + updateName + " update");
 	console.group("Debug");
 	if (autoplaySpeed == "slow") autoplayInterval = 150;
@@ -539,9 +553,9 @@ function script() { //NOTE: Every variable contained within this function is loc
 			if (coinClickCount == 1) coinClickCountString.textContent = "You have clicked the coin " + textArray[5] + " time.";
 			totalClickHelpersString.textContent = "You have bought " + textArray[6] + " items.";
 			if (totalClickHelpers == 1) totalClickHelpersString.textContent = "You have bought " + textArray[6] + " item.";
-			achievementsUnlockedString.textContent = "You have unlocked " + textArray[23] + " out of 19 achievements.";
+			achievementsUnlockedString.textContent = "You have unlocked " + textArray[23] + " out of 25 achievements.";
 			if (achArr[19]) {
-				achievementsUnlockedString.textContent = "You have unlocked " + textArray[23] + " (+1) out of 20 achievements.";
+				achievementsUnlockedString.textContent = "You have unlocked " + textArray[23] + " (+1) out of 26 achievements.";
 				breakpoint.style.display = "block";
 			}
 			shopUnlockedCheck();
@@ -761,7 +775,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 100000000000000000000n && achArr[17]) {
+			if (lifetimeClicks >= 100000000000000000000n && !achArr[17]) {
 				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Distant Beginning";
 				achArr[17] = true;
@@ -770,7 +784,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				unlockString.style.display = "block";
 				SHT = 500;
 			}
-			if (lifetimeClicks >= 1000000000000000000000n && achArr[18]) {
+			if (lifetimeClicks >= 1000000000000000000000n && !achArr[18]) {
 				if (gameStarted) sfx3.play();
 				achStr = "Achievement Unlocked: Sextillionare";
 				achArr[18] = true;
@@ -783,6 +797,60 @@ function script() { //NOTE: Every variable contained within this function is loc
 				if (gameStarted) sfx4.play();
 				achStr = "Hidden Achievement Unlocked: Breakpoint";
 				achArr[19] = true;
+				unlockString.textContent = achStr;
+				unlockString.style.display = "block";
+				SHT = 500;
+			}
+			if (lifetimeClicks >= 10000000000000000000000n && !achArr[20]) {
+				if (gameStarted) sfx3.play();
+				achStr = "Achievement Unlocked: Number Overflow";
+				achArr[20] = true;
+				achievementsUnlocked++;
+				unlockString.textContent = achStr;
+				unlockString.style.display = "block";
+				SHT = 500;
+			}
+			if (lifetimeClicks >= 100000000000000000000000n && !achArr[21]) {
+				if (gameStarted) sfx3.play();
+				achStr= "Achievement Unlocked: Coin Universe";
+				achArr[21] = true;
+				achievementsUnlocked++;
+				unlockString.textContent = achStr;
+				unlockString.style.display = "block";
+				SHT = 500;
+			}
+			if (lifetimeClicks >= 1000000000000000000000000n && !achArr[22]) {
+				if (gameStarted) sfx3.play();
+				achStr = "Achievement Unlocked: Octillionare";
+				achArr[22] = true;
+				achievementsUnlocked++;
+				unlockString.textContent = achStr;
+				unlockString.style.display = "block";
+				SHT = 500;
+			}
+			if (lifetimeClicks >= 10000000000000000000000000n && !achArr[23]) {
+				if (gameStarted) sfx3.play();
+				achStr = "Achievement Unlocked: Why?";
+				achArr[23] = true;
+				achievementsUnlocked++;
+				unlockString.textContent = achStr;
+				unlockString.style.display = "block";
+				SHT = 500;
+			}
+			if (lifetimeClicks >= 100000000000000000000000000n && !achArr[24]) {
+				if (gameStarted) sfx3.play();
+				achStr = "Achievement Unlocked: Twenty Fingers";
+				achArr[24] = true;
+				achievementsUnlocked++;
+				unlockString.textContent = achStr;
+				unlockString.style.display = "block";
+				SHT = 500;
+			}
+			if (lifetimeClicks >= 1000000000000000000000000000n && !achArr[25]) {
+				if (gameStarted) sfx4.play();
+				achStr = "Special Achievement Unlocked; For The Worthy";
+				achArr[25] = true;
+				achievementsUnlocked++;
 				unlockString.textContent = achStr;
 				unlockString.style.display = "block";
 				SHT = 500;
@@ -816,8 +884,10 @@ function script() { //NOTE: Every variable contained within this function is loc
 			for (let i = 0; i < costArray.length; i++) {
 				if (clicks >= costArray[i]) {
 					costStringArr[i].style.color = "rgb(0," + green + ",0)";
+					if (i >= 3) upgradeButton.color = "rgb(0," + green + ",0)";
 				} else {
 					costStringArr[i].style.color = "rgb(0, 0, 0)";
+					if (i >= 3) upgradeButton.color = "rgb(0, 0, 0)";
 				}
 			}
 		} catch (error) {
@@ -833,13 +903,12 @@ function script() { //NOTE: Every variable contained within this function is loc
 				let toLoad = 0;
 				console.log("Data being loaded: ");
 				console.log(loadData);
-				if (loadData[0] == "3.8ab") {
+				if (loadData[0] >= 3.8) {
 					if (!loadData[1]) {
 						let intsToPull = [clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost, clickersOwned, superClickerCPS,
 							superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost, employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth,
 							superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked];
 						for (let i = 0; i < intsToPull.length; i++) {
-							if (loadData[i + 2] != undefined) {
 								clicks = loadData[2];
 								clickValue = loadData[3];
 								cps = loadData[4];
@@ -863,10 +932,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 								clickerCPSWorth = loadData[22];
 								superClickerCPSWorth = loadData[23];
 								doublePointerCPSWorth = loadData[24];
-								achievementsUnlocked = loadData[25];
-							}
+								timePlayed = loadData[25];
 						}
-						timePlayed = loadData[loadData.length - 1];
 					} else {
 						console.warn("Debug autoplay was enabled on the last save, it will be destroyed.");
 						debugConsole = debugConsole + "WARN: Debug autoplay was enabled on the last save, it will be destroyed." + "\n";
@@ -895,7 +962,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				savingString.style.display = "block";
 				let intsToPush = [buildNumber, debugAutoplay, clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost,
 					clickersOwned, superClickerCPS, superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost,
-					employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked, timePlayed
+					employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, timePlayed
 				];
 				for (let i = 0; i < intsToPush.length; i++) {
 					saveData.push(intsToPush[i]);
@@ -912,6 +979,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	function saveGameP2(needToSave) {
 		try {
 			localStorage.setItem('saveData', JSON.stringify(saveData));
+			while (saveData.length > 0) saveData.pop();
 			if (manualSave) {
 				savingString.textContent = "Game saved.";
 				console.log("Game saved @ playtime " + timePlayed + "ms");
@@ -1058,6 +1126,8 @@ function script() { //NOTE: Every variable contained within this function is loc
 			}
 			if (green == 200) increase = false;
 			else if (green == 0) increase = true;
+			forTheWorthy.style.borderInlineColor = "rgb(" + red + ", 0, 0)";
+			forTheWorthy.style.borderBlockColor = "rgb(" + red + ", 0, 0)";
 			breakpoint.style.borderInlineColor = "rgb(" + red + ", 0, 0)";
 			breakpoint.style.borderBlockColor = "rgb(" + red + ", 0, 0)";
 			shopCostPulse();
@@ -1102,7 +1172,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 				for (let i = 30; i > 0; i--) {
 					let val = (Math.floor(Math.random() * 61) + 1);
 					generatedKey = generatedKey + addArray[val];
-					if (i > 0) {
+					if (i == 1) {
 						console.log("Key generated.");
 						debugConsole = debugConsole + "Key generated." + "\n";
 						let base64key = btoa(generatedKey);
@@ -1280,7 +1350,7 @@ function script() { //NOTE: Every variable contained within this function is loc
 	debugKeySubmit.addEventListener("click", function (event) {
 		event.preventDefault();
 		try {
-			let dmkInput = atob(debugKeyInput.value);
+			var dmkInput = atob(debugKeyInput.value);
 		} catch (error) {
 			console.warn("Debug Access Key input is not encoded. Using raw input as value.");
 			debugConsole = debugConsole + "WARN: Debug access key input is not encoded. Using raw input as value." + "\n";
@@ -1441,6 +1511,42 @@ function script() { //NOTE: Every variable contained within this function is loc
 		achNameStr.textContent = achStrs[19];
 		achDescStr.textContent = achDescs[19];
 		achUnlockStr.textContent = "Unlocked: " + achArr[19];
+	});
+	numberOverflow.addEventListener("click", function() {
+		sfx.play();
+		achNameStr.textContent = achStrs[20];
+		achDescStr.textContent = achDescs[20];
+		achUnlockStr.textContent = "Unlocked: " + achArr[20];
+	});
+	coinUniverse.addEventListener("click", function() {
+		sfx.play();
+		achNameStr.textContent = achStrs[21];
+		achDescStr.textContent = achDescs[21];
+		achUnlockStr.textContent = "Unlocked: " + achArr[21];
+	});
+	octillionare.addEventListener("click", function() {
+		sfx.play();
+		achNameStr.textContent = achStrs[22];
+		achDescStr.textContent = achDescs[22];
+		achUnlockStr.textContent = "Unlocked: " + achArr[22];
+	});
+	why.addEventListener("click", function() {
+		sfx.play();
+		achNameStr.textContent = achStrs[23];
+		achDescStr.textContent = achDescs[23];
+		achUnlockStr.textContent = "Unlocked: " + achArr[23];
+	});
+	twentyFingers.addEventListener("click", function() {
+		sfx.play();
+		achNameStr.textContent = achStrs[24];
+		achDescStr.textContent = achDescs[24];
+		achUnlockStr.textContent = "Unlocked: " + achArr[24];
+	});
+	forTheWorthy.addEventListener("click", function() {
+		sfx.play();
+		achNameStr.textContent = achStrs[25];
+		achDescStr.textContent = achDescs[25];
+		achUnlockStr.textContent = "Unlocked: " +achArr[25];
 	});
 	settingsButton.addEventListener("click", function () {
 		sfx.play();

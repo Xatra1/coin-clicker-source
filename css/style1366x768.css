@@ -24,10 +24,10 @@ body {
 
 #runningbrowserstring {
   text-align: center;
-  width: 400px;
+  width: 1000px;
   position: fixed;
   top: 48.5vw;
-  left: 34vw;
+  left: 12.5vw;
 }
 
 #title {
@@ -1176,6 +1176,84 @@ body {
   cursor: pointer;
 }
 
+#numberoverflow {
+  background: transparent url("../img/achievements/sextillionachievements.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid 1px black;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 16vw;
+  left: 52.5vw;
+  cursor: pointer;
+}
+
+#coinuniverse {
+  background: transparent url("../img/achievements/sextillionachievements.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid 1px black;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 16vw;
+  left: 55.5vw;
+  cursor: pointer;
+}
+
+#octillionare {
+  background: transparent url("../img/achievements/octillionachievements.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid 1px black;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 16vw;
+  left: 58.5vw;
+  cursor: pointer;
+}
+
+#why {
+  background: transparent url("../img/achievements/octillionachievements.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid 1px black;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 16vw;
+  left: 61.5vw;
+  cursor: pointer;
+}
+
+#twentyfingers {
+  background: transparent url("../img/achievements/octillionachievements.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid 1px black;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 16vw;
+  left: 64.5vw;
+  cursor: pointer;
+}
+
+#fortheworthy {
+  background: transparent url("../img/achievements/specialachievements.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid 2px black;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 19vw;
+  left: 48vw;
+  cursor: pointer;
+}
+
 #breakpoint {
   background: transparent url("../img/achievements/specialachievements.png") no-repeat;
   display: none;
@@ -1185,8 +1263,8 @@ body {
   height: 3vw;
   width: 3vw;
   position: fixed;
-  top: 16vw;
-  left: 52.5vw;
+  top: 22vw;
+  left: 48vw;
   cursor: pointer;
 }
 
