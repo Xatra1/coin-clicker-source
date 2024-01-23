@@ -1,9 +1,3 @@
-<!-- If you wish to view the source code, add "/main.js" to the end of the URL, replacing "/index.html" if applicable. -->
-<!-- If you wish to view the stylesheets, add any of the following to the end of the URL, replacing "/index.html" if applicable. -->
-<!-- "/css/style1920x1080.css" -->
-<!-- "/css/style1366x768.css" -->
-<!-- "/css/fallback.css" -->
-<!-- "/css/noJS.css" -->
 <!DOCTYPE html>
 <html lang="en-US">
 
@@ -20,16 +14,7 @@
   </noscript>
   <!-- jQuery Libraries -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <!-- Main script -->
-  <script>
-    function appendScr() {
-      const body = document.body;
-      const filePath = "./main.js";
-      const script = document.createElement("script");
-      script.src = filePath
-      body.appendChild(script);
-    }
-  </script>
+  <script src="append.js"></script>
   <canvas id="borders"></canvas>
   <div id="unsupportedremove">
     <div id="titlescreen">
@@ -115,7 +100,7 @@
       <div id="employee">
         <button id="employeebuy"></button>
         <p id="employeestring">employee</p>
-        <p id="employeecpsstring">CPS: 10% (Stacks)</p>
+        <p id="employeecpsstring">CPS: +0.5% (Stacks)</p>
         <p id="employeecoststring">Cost: 50,000,000,000</p>
         <p id="employeesownedstring">Owned: </p>
       </div>
@@ -176,7 +161,7 @@
       <button id="sextillionare"></button>
       <button id="numberoverflow"></button>
       <button id="coinuniverse"></button>
-      <button id="octillionare"></button>
+      <button id="septillionare"></button>
       <button id="why"></button>
       <button id="twentyfingers"></button>
       <button id="fortheworthy"></button>

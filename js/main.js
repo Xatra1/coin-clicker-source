@@ -1,178 +1,27 @@
 /*
 Coin Clicker Update 6 Codename "Abundance"
-Build 4.01 Rewrite Beta
+Build 4.11 Rewrite Beta
 */
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
+const eElement = document.createElement("p");
 function errorHandler(error) {
-  const eElement = document.createElement("p");
   const body = document.body;
   const titlescreen = document.getElementById("titlescreen");
+  bmbarNote.style.display = "none";
   eElement.textContent = "Error in script: " + error;
   console.error(error);
   eElement.style.position = "fixed";
   eElement.style.top = "-0.5vw";
-  eElement.style.fontSize = "10px";
+  eElement.style.fontSize = "15px";
   eElement.style.display = "block";
   titlescreen.style.display = "none";
   body.appendChild(eElement);
 }
-console.group("Initial Checks");
-var debugConsole = document.getElementById("debugconsole").textContent;
-debugConsole = debugConsole + "\n";
-const link = document.createElement("link");
-const bmbarNote = document.createElement("p");
-const resWarn = document.createElement("p");
-const runningBrowserString = document.getElementById("runningbrowserstring");
-const div = document.getElementById("unsupportedremove");
-var enableJS = false; //The only browser that this applies to is IE, any other browser will set this to true
-uaSniffer();
-function uaSniffer() {
-  const browsers = ["MSIE", "Firefox", "Safari", "Chrome", "OPR", "Edg"];
-  const oses = ["Windows", "Mac", "Linux"];
-  const userAgent = navigator.userAgent;
-  var index = browsers.length - 1;
-  var browserStr = "Undetected";
-  var os = "Undetected";
-  var osIndex = oses.length - 1;
-  while (index > -1 && userAgent.indexOf(browsers[index]) == -1) { //Loop through possible UA strings to detect client browser
-    index--;
-  }
-  if (index > -1) browserStr = browsers[index];
-  while (index > -1 && userAgent.indexOf(oses[osIndex]) == -1) { //Loop through possible UA strings to detect client operating system.
-    index--;
-  }
-  if (osIndex > -1) os = oses[osIndex];
-  //Normalize UA strings
-  if (browserStr == "Edg") browserStr = "Edge";
-  else if (browserStr == "OPR") browserStr = "Opera";
-  else if (browserStr == "MSIE") browserStr = "Internet Explorer";
-  const browserVer = userAgent.indexOf(browsers[index]); //Detect version of running browser
-  runningBrowserString.textContent = browserStr + " v" + browserVer + " running on " + os;
-  console.log(browserStr + " " + browserVer + " running on " + os);
-  console.log("User Agent String: " + userAgent);
-  const unsupportedString = document.createElement("p");
-  unsupportedString.style.position = "absolute";
-  unsupportedString.style.fontSize = "25px";
-  unsupportedString.style.fontFamily = "courier";
-  unsupportedString.style.top = "22vw";
-  unsupportedString.style.left = "11vw";
-  unsupportedString.style.display = "none";
-  document.body.style.background = "url(./img/background.jpg)";
-  document.body.appendChild(unsupportedString);
-  if (browserStr == "Internet Explorer") { //IE is not supported at all, and support is not planned.
-    const html = document.getElementById("unsupportedremove");
-    document.body.removeChild(html);
-    unsupportedString.textContent = "The browser you are using, " + browserStr + ", is not supported. Please use a different browser.";
-    unsupportedString.style.display = "block";
-    resolutionCheck(enableJS);
-    throw ("Detected browser is unsupported, JavaScript will not be used past this point.");
-  } else if (browserStr == "Chrome") { //Chrome is supported, but it is recommended to disable the bookmarks bar.
-    enableJS = true;
-    width = "1903";
-    console.log("User is using either Chrome or a Chromium-based browser, width will be 1903, and displaying bookmarks bar notice.");
-    debugConsole = debugConsole + "User is using either Chrome or a Chromium-based browser, width will be 1903, and displaying bookmarks bar notice." + "\n";
-    bmbarNote.style.position = "static";
-    bmbarNote.style.fontSize = "13px";
-    bmbarNote.textContent = "Note: If you cannot see the build string in the bottom left, you may need to disable the bookmarks bar to see everything correctly.";
-    document.body.appendChild(bmbarNote);
-    bmbarNote.style.display = "block";
-    document.getElementById("titlescreen").style.display = "block";
-    resolutionCheck(enableJS, width);
-  } else if (browserStr == "Firefox") { //Firefox is supported without issues.
-    console.log("User is using Firefox, width will be 1920.");
-    debugConsole = debugConsole + ("User is using Firefox, width will be 1920." + "\n");
-    const width = "1920";
-    enableJS = true;
-    const bs = document.getElementById("buildstring").style;
-    const bobs = document.getElementById("basedonbuildstring").style;
-    const rbs = document.getElementById("runningbrowserstring").style;
-    const sb = document.getElementById("startbutton").style;
-    const wsb = document.getElementById("wipesavebutton").style;
-    const usb = document.getElementById("upgradebutton").style;
-    const rtsb = document.getElementById("shopreturnbutton").style;
-    bs.top = "48vw";
-    bobs.top = "48vw";
-    rbs.top = "48vw";
-    sb.top = "45.5vw";
-    wsb.top = "45.5vw";
-    usb.top = "45.5vw";
-    rtsb.top = "45.5vw";
-    document.getElementById("titlescreen").style.display = "block";
-    resolutionCheck(enableJS, width);
-  } else if (browserStr == "Opera") { //Opera is supported, but shop and stat panel borders cannot be drawn.
-    width = "1903";
-    console.log("User is using Opera, width will be 1903, and game borders will not be drawn.");
-    debugConsole = debugConsole + "User is using Opera, width will be 1903, and game borders will not be drawn." + "\n";
-    bmbarNote.style.position = "static";
-    bmbarNote.style.fontSize = "13px";
-    bmbarNote.textContent = "Note: Opera does not support the way in-game borders are drawn.";
-    document.body.appendChild(bmbarNote);
-    bmbarNote.style.display = "block";
-    document.getElementById("titlescreen").style.display = "block";
-    enableJS = true;
-    resolutionCheck(enableJS, width);
-  } else if (browserStr == "Edge") { //Edge is supported, but toLocaleString will not be utilized, and shop and stat panel borders cannot be drawn.
-    width = "1897";
-    console.log("User is using Edge, width will be 1897, numbers will not be formatted, and game borders will not be drawn.");
-    debugConsole = debugConsole + "User is using Edge, width will be 1897, numbers will not be formatted, and game borders will not be drawn." + "\n";
-    bmbarNote.style.position = "static";
-    bmbarNote.style.fontSize = "13px";
-    bmbarNote.textContent = "Note: Edge does not support the number formatting system this game uses, and the way in-game borders are drawn.";
-    document.body.appendChild(bmbarNote);
-    bmbarNote.style.display = "block";
-    document.getElementById("titlescreen").style.display = "block";
-    enableJS = true;
-    resolutionCheck(enableJS, width);
-  } else {
-    const width = "1920";
-    enableJS = true;
-    document.getElementById("titlescreen").style.display = "block";
-    resolutionCheck(enableJS, width);
-  }
-}
-function resolutionCheck(enableJS, width) { //There are currently only two supported resolutions, 1920x1080, and 1366x768. A different stylesheet is loaded based on browser width. It is recommended that you play the game in a maximized browser window at default zoom (100%).
-  console.log(enableJS, width);
-  var curStySht = "";
-  const head = document.head;
-  const body = document.body;
-  link.rel = "stylesheet";
-  link.type = "text/css";
-  if ($(window).width() > "1366" && $(window).width() <= width) {
-    link.href = "./css/style1920x1080.css";
-    curStySht = "1920x1080";
-    head.appendChild(link);
-  } else if ($(window).width() >= "1366" && $(window).width() <= "1366") {
-    link.href = "./css/style1366x768.css";
-    curStySht = "1366x768";
-    head.appendChild(link);
-  }
-  if ($(window).width() > width || $(window).width() < "1366" || $(window).width() > "1366" && $(window).width() < width) {
-    link.href = "./css/style1366x768.css";
-    curStySht = "Fallback";
-    console.warn("User has an unsupported window width. The window or zoom size may have changed, or their resolution is lower than supported. Using fallback for now.");
-    debugConsole = debugConsole + "WARN: User has an unsupported window width. The window or zoom size may have changed, or their resolution is lower than supported. Using fallback for now." + "\n";
-    resWarn.style.position = "static";
-    resWarn.style.fontSize = "13px";
-    resWarn.textContent = "Your current browser width (" + $(window).width() + "px) is unsupported! This may be caused by an unmaximized browser window, zoomed in/zoomed out browser window, or your screen resolution.";
-    resWarn.style.display = "block";
-    head.appendChild(link);
-    body.appendChild(resWarn);
-  }
-  if (curStySht != "Fallback") {
-    console.log("Using stylesheet " + curStySht);
-    debugConsole = debugConsole + "Using stylesheet " + curStySht + "\n";
-  } else {
-    console.log("Using fallback sheet, detected resolution is currently " + $(window).width() + "x" + $(window).height());
-    debugConsole = debugConsole + "Using fallback sheet, detacted resolution is currently " + $(window).width() + "x" + $(window).height() + "\n";
-  }
-  if (enableJS) {
-    try {
-      script();
-    } catch (error) {
-      errorHandler(error)
-    }
-  } else div.appendChild(resWarn);
+try {
+  sysCheck(); //Check syscheck.js for more info.
+} catch (error) {
+  errorHandler(error);
 }
 function script() {
   console.groupEnd();
@@ -277,7 +126,7 @@ function script() {
   const sextillionare = document.getElementById("sextillionare");
   const numberOverflow = document.getElementById("numberoverflow");
   const coinUniverse = document.getElementById("coinuniverse");
-  const octillionare = document.getElementById("octillionare");
+  const septillionare = document.getElementById("septillionare");
   const why = document.getElementById("why");
   const twentyFingers = document.getElementById("twentyfingers");
   const forTheWorthy = document.getElementById("fortheworthy");
@@ -290,8 +139,8 @@ function script() {
   const backToGame2 = document.getElementById("backtogame2");
   const volumeInput = document.getElementById("volumeinput");
   //Title screen variables
-  const buildStr = "4.01ab";
-  const buildNumber = 4.01;
+  const buildStr = "4.11ab";
+  const buildNumber = 4.11;
   const updateName = "abundance";
   var gameStarted = false;
   //Stat variables
@@ -317,17 +166,19 @@ function script() {
   //Shop variables
   var clickerCPS = 5;
   var clickerCPSText = "5";
-  var clickerCost = 15;
-  var clickerCostText = "15";
+  var clickerCost = 100;
+  var clickerCostText = "100";
+  var clickerScale = 0.005;
   var clickersOwned = 0;
   var clickersOwnedText = "0";
   var clickerCPSWorth = 0;
   var clickerCPSWorthText = "0";
   var superClickerUnlocked = false;
-  var superClickerCPS = 2000;
-  var superClickerCPSText = "2,000";
-  var superClickerCost = 500000;
-  var superClickerCostText = "500,000";
+  var superClickerCPS = 7500;
+  var superClickerCPSText = "7,500";
+  var superClickerCost = 2000000;
+  var superClickerCostText = "2,000,000";
+  var superClickerScale = 0.01;
   var superClickersOwned = 0;
   var superClickersOwnedText = "0";
   var superClickerCPSWorth = 0;
@@ -335,8 +186,9 @@ function script() {
   var doublePointerUnlocked = false;
   var doublePointerCPS = 25000000;
   var doublePointerCPSText = "25,000,000";
-  var doublePointerCost = 750000000;
-  var doublePointerCostText = "750,000,000";
+  var doublePointerCost = 5000000000000000;
+  var doublePointerCostText = "5,000,000,000,000";
+  var doublePointerScale = 0.09;
   var doublePointersOwned = 0;
   var doublePointersOwnedText = "0";
   var doublePointerCPSWorth = 0;
@@ -350,7 +202,7 @@ function script() {
   var superCursorCost = 500000000;
   var superCursorOwned = false;
   var employeeUnlocked = false;
-  var employeeCPS = 0.01;
+  var employeeCPS = 0.005;
   var employeeCost = 50000000000;
   var employeeCostText = "50,000,000,000";
   var employeesOwned = 0;
@@ -393,7 +245,7 @@ function script() {
   var sextillionareUnlocked = false;
   var numberOverflowUnlocked = false;
   var coinUniverseUnlocked = false;
-  var octillionareUnlocked = false;
+  var septillionareUnlocked = false;
   var whyUnlocked = false;
   var twentyFingersUnlocked = false;
   var forTheWorthyUnlocked = false;
@@ -401,11 +253,11 @@ function script() {
   var achStr = "none";
   //Audio variables
   var volume = 1.0;
-  var sfx = new Audio("./snd/click.mp3");
-  var sfx2 = new Audio("./snd/shopunlock.mp3");
-  var sfx3 = new Audio("./snd/achievementunlock.mp3");
-  var sfx4 = new Audio("./snd/specialachievementunlocksfx.mp3");
-  var sfx5 = new Audio("./snd/shopbuy.mp3");
+  var sfx = new Audio("../snd/click.mp3");
+  var sfx2 = new Audio("../snd/shopunlock.mp3");
+  var sfx3 = new Audio("../snd/achievementunlock.mp3");
+  var sfx4 = new Audio("../snd/specialachievementunlocksfx.mp3");
+  var sfx5 = new Audio("../snd/shopbuy.mp3");
   //Color variables
   var increase = true;
   var red = 0;
@@ -432,22 +284,22 @@ function script() {
   ];
   const achStrs = ["Journey Begins", "A Good Start", "Getting There", "Millionare", "Coin Pool", "Abundance", "Billionare", "Excess", "Planet of Clicks",
     "Trillionare", "Pocket Dimension", "Far Too Many", "Quadrillionare", "Coin Vortex", "Coin-Shaped Black Hole", "Quintillionare", "Click Beyond",
-    "Distant Beginning", "Sextillionare", "Breakpoint", "Number Overflow", "Coin Universe", "Octillionare", "Why?", "20 Fingers", "For the Worthy"];
+    "Distant Beginning", "Sextillionare", "Breakpoint", "Number Overflow", "Coin Universe", "Septillionare", "Why?", "20 Fingers", "For the Worthy"];
   const achDescs = ["Obtain 1 lifetime click.", "Obtain 10,000 lifetime clicks.", "Obtain 100,000 lifetime clicks.", "Obtain 1,000,000 lifetime clicks.",
     "Obtain 10,000,000 lifetime clicks.", "Obtain 100,000,000 lifetime clicks.", "Obtain 1,000,000,000 lifetime clicks.", "Obtain 10,000,000,000 lifetime clicks.",
     "Obtain 100,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000 lifetime clicks.", "Obtain 10,000,000,000,000 lifeitme clicks.",
-    "Obtain 100,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000 lifetime clicks.", "Obtain 10,000,000,000,000,000 lifetime clicks.",
-    "Obtain 100,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000 lifetime clicks.", "Obtain 10,000,000,000,000,000,000 lifetime clicks.",
-    "Obtain 100,000,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000,000 lifetime clicks.", "Obtain infinite lifetime clicks, breaking the game.",
-    "Obtain 10,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 100,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000,000,000 lifetime clicks.",
-    "Obtain 10,000,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 100,000,000,000,000,000,000,000,000 lifetime clicks.", "Obtain 1,000,000,000,000,000,000,000,000,000 lifetime clicks."];
+    "Obtain 1.000e14 (100 trillion) lifetime clicks.", "Obtain 1.000e15 (1 quadrillion) lifetime clicks.", "Obtain 1.000e16 (10 quadrillion) lifetime clicks.",
+    "Obtain 1.000e17 (100 quadrillion) lifetime clicks.", "Obtain 1.000e18 (1 quintillion) lifetime clicks.", "Obtain 1.000e19 (10 quadrillion) lifetime clicks.",
+    "Obtain 1.000e20 (100 quintillion) lifetime clicks.", "Obtain 1.000e21 (1 sextillion) lifetime clicks.", "Obtain infinite lifetime clicks, breaking the game.",
+    "Obtain 1.000e22 (10 sextillion) lifetime clicks.", "Obtain 1.000e23 (100 sextillion) lifetime clicks.", "Obtain 1.000e24 (1 septillion) lifetime clicks.",
+    "Obtain 1.000e25 (10 septillion) lifetime clicks.", "Obtain 1.000e26 (100 septillion) lifetime clicks.", "Obtain 1.000e27 (1 octillion) lifetime clicks."];
   var achArr = [journeyBeginsUnlocked, aGoodStartUnlocked, gettingThereUnlocked, millionareUnlocked, coinPoolUnlocked, abundanceUnlocked, billionareUnlocked,
     excessUnlocked, planetOfClicksUnlocked, trillionareUnlocked, pocketDimensionUnlocked, farTooManyUnlocked, quadrillionareUnlocked, coinVortexUnlocked,
     coinShapedBlackHoleUnlocked, quintillionareUnlocked, clickBeyondUnlocked, distantBeginningUnlocked, sextillionareUnlocked, breakpointUnlocked,
-    numberOverflowUnlocked, coinUniverseUnlocked, octillionareUnlocked, whyUnlocked, twentyFingersUnlocked, forTheWorthyUnlocked];
+    numberOverflowUnlocked, coinUniverseUnlocked, septillionareUnlocked, whyUnlocked, twentyFingersUnlocked, forTheWorthyUnlocked];
   var costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString,
     employeeCostString, godFingerCostString];
-  costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
+  var costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
   //Initial run updates and calls
   debugKeyInput.value = "";
   console.group("Build Info");
@@ -468,7 +320,7 @@ function script() {
     game.appendChild(sourceNote);
     sourceNote.style.position = "fixed";
     sourceNote.style.top = "47vw";
-    runningBrowserString.style.display = "none";
+    runningBrowserString.textContent = navigator.userAgent
     basedOnBuildString.style.display = "none";
     updateString.style.display = "none";
     betaString.style.display = "none";
@@ -822,7 +674,7 @@ function script() {
       }
       if (lifetimeClicks >= 1000000000000000000000000n && !achArr[22]) {
         if (gameStarted) sfx3.play();
-        achStr = "Achievement Unlocked: Octillionare";
+        achStr = "Achievement Unlocked: septillionare";
         achArr[22] = true;
         achievementsUnlocked++;
         unlockString.textContent = achStr;
@@ -867,7 +719,7 @@ function script() {
         employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked
       ];
       for (let i = 0; i < intArray.length; i++) {
-        if (Math.sign(intArray[i]) == -1) intArray[i] = intArray[i] * -1; //Convert all negative numbers to positive numbers.
+        intArray[i] = Math.abs(intArray[i]); //Convert all negative numbers to positive numbers.
         if (navigator.userAgent.indexOf("Edg") == -1) { //Edge does not support Number.prototype.toLocaleString, it will not be used.
           if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a precision of 3 if value is over 100 trillion.
           else if (intArray[i] != Infinity) textArray[i] = intArray[i].toLocaleString(); //Only use Number.prototype.toLocaleString if the given value is finite.
@@ -906,35 +758,30 @@ function script() {
         console.log(loadData);
         if (loadData[0] >= 3.8) {
           if (!loadData[1]) {
-            let intsToPull = [clicks, clickValue, cps, lifetimeClicks, lifetimeManualClicks, coinClickCount, totalClickHelpers, clickerCPS, clickerCost, clickersOwned, superClickerCPS,
-              superClickerCost, superClickersOwned, doublePointerCPS, doublePointerCost, doublePointersOwned, employeeCost, employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth,
-              superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked];
-            for (let i = 0; i < intsToPull.length; i++) {
-              clicks = loadData[2];
-              clickValue = loadData[3];
-              cps = loadData[4];
-              lifetimeClicks = loadData[5];
-              lifetimeManualClicks = loadData[6];
-              coinClickCount = loadData[7];
-              totalClickHelpers = loadData[8];
-              clickerCPS = loadData[9];
-              clickerCost = loadData[10];
-              clickersOwned = loadData[11];
-              superClickerCPS = loadData[12];
-              superClickerCost = loadData[13];
-              superClickersOwned = loadData[14];
-              doublePointerCPS = loadData[15];
-              doublePointerCost = loadData[16];
-              doublePointersOwned = loadData[17];
-              employeeCost = loadData[18];
-              employeesOwned = loadData[19];
-              unbuffedCV = loadData[20];
-              unbuffedCPS = loadData[21];
-              clickerCPSWorth = loadData[22];
-              superClickerCPSWorth = loadData[23];
-              doublePointerCPSWorth = loadData[24];
-              timePlayed = loadData[25];
-            }
+            clicks = loadData[2];
+            clickValue = loadData[3];
+            cps = loadData[4];
+            lifetimeClicks = loadData[5];
+            lifetimeManualClicks = loadData[6];
+            coinClickCount = loadData[7];
+            totalClickHelpers = loadData[8];
+            clickerCPS = loadData[9];
+            clickerCost = loadData[10];
+            clickersOwned = loadData[11];
+            superClickerCPS = loadData[12];
+            superClickerCost = loadData[13];
+            superClickersOwned = loadData[14];
+            doublePointerCPS = loadData[15];
+            doublePointerCost = loadData[16];
+            doublePointersOwned = loadData[17];
+            employeeCost = loadData[18];
+            employeesOwned = loadData[19];
+            unbuffedCV = loadData[20];
+            unbuffedCPS = loadData[21];
+            clickerCPSWorth = loadData[22];
+            superClickerCPSWorth = loadData[23];
+            doublePointerCPSWorth = loadData[24];
+            timePlayed = loadData[25];
           } else {
             console.warn("Debug autoplay was enabled on the last save, it will be destroyed.");
             debugConsole = debugConsole + "WARN: Debug autoplay was enabled on the last save, it will be destroyed." + "\n";
@@ -1215,45 +1062,51 @@ function script() {
   clickerBuy.addEventListener("click", function () {
     sfx.play();
     if (clicks >= clickerCost) {
+      if (clickerScale == 0.002) clickerScale = 0.003;
       sfx5.play();
       clicks = clicks - clickerCost;
       clickersOwned++;
       cps = cps + clickerCPS;
       clickerCPSWorth = clickerCPSWorth + clickerCPS;
       if (buff == "cpsDouble") cps = cps + (clickerCPS * 2);
-      clickerCPS = clickerCPS + Math.round(clickersOwned * 2 + (0.01 * cps) + (Math.floor(Math.random() * 15) + 3));
+      clickerCPS = Math.abs(Math.round(clickersOwned * 2 + Math.abs((clickerScale * cps)) + (Math.floor(Math.random() * 15) + 3)));
       clickerCost = clickerCost + Math.round(clickersOwned + (15 * cps) + clickersOwned * 3 + (Math.floor(Math.random() * 200) + 100));
       clickValue = clickValue + Math.round(clickersOwned * 0.5 + 0.01 * cps);
+      clickerScale = clickerScale - 0.01;
       totalClickHelpers++;
     }
   });
   superClickerBuy.addEventListener("click", function () {
     sfx.play();
     if (clicks >= superClickerCost) {
+      if (superClickerScale == 0.002) superClickerScale = 0.006;
       sfx5.play();
       clicks = clicks - superClickerCost;
       superClickersOwned++;
       cps = cps + superClickerCPS;
       superClickerCPSWorth = superClickerCPSWorth + superClickerCPS;
       if (buff == "cpsDouble") cps = cps + (superClickerCPS * 2);
-      superClickerCPS = superClickerCPS + Math.round(superClickersOwned * 3 + (0.03 * cps));
+      superClickerCPS = 35000 + Math.abs(Math.round(superClickersOwned * 3 + (superClickerScale * cps)));
       superClickerCost = superClickerCost + Math.round(superClickerCost + (100 * cps) + superClickersOwned * 4 + (Math.floor(Math.random() * 50000) + 30000));
-      clickValue = clickValue + Math.round(superClickersOwned * 2 + 0.03 * cps);
+      clickValue = clickValue + Math.round(superClickersOwned * 2 + 0.01 * cps);
+      superClickerScale = superClickerScale - 0.002;
       totalClickHelpers++;
     }
   });
   doublePointerBuy.addEventListener("click", function () {
     sfx.play();
     if (clicks >= doublePointerCost) {
+      if (doublePointerScale == 0.03) doublePointerScale = 0.09;
       sfx5.play();
       clicks = clicks - doublePointerCost;
       doublePointersOwned++;
       cps = cps + doublePointerCPS;
       doublePointerCPSWorth = doublePointerCPSWorth + doublePointerCPS;
       if (buff == "cpsDouble") cps = cps + (doublePointerCPS * 2);
-      doublePointerCPS = doublePointerCPS + Math.round(doublePointersOwned * 5 + (0.05 * cps));
+      doublePointerCPS = 2500000000 + Math.abs(Math.round(doublePointersOwned * 5 + (doublePointerScale * cps)));
       doublePointerCost = doublePointerCost + Math.round(doublePointersOwned + (175 * cps) + doublePointersOwned * 10 + (Math.floor(Math.random() * 1000000) + 500000));
-      clickValue = clickValue + Math.round(doublePointersOwned * 3 + 0.07 * cps);
+      clickValue = clickValue + Math.round(doublePointersOwned * 3 + 0.03 * cps);
+      doublePointerScale = doublePointerScale - 0.03;
       totalClickHelpers++;
     }
   });
@@ -1525,7 +1378,7 @@ function script() {
     achDescStr.textContent = achDescs[21];
     achUnlockStr.textContent = "Unlocked: " + achArr[21];
   });
-  octillionare.addEventListener("click", function () {
+  septillionare.addEventListener("click", function () {
     sfx.play();
     achNameStr.textContent = achStrs[22];
     achDescStr.textContent = achDescs[22];
@@ -1562,7 +1415,7 @@ function script() {
   volumeInput.addEventListener("change", function () {
     if (volumeInput.value >= 0 && volumeInput.value <= 100) {
       volume = volumeInput.value / 100;
-      let sfxArray = [sfx, sfx2, sfx3, sfx4, sfx5]
+      let sfxArray = [sfx, sfx2, sfx3, sfx4, sfx5];
       for (let i = 0; i < 5; i++) {
         sfxArray[i].volume = volume;
       }
