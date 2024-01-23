@@ -50,6 +50,7 @@ function uaSniffer() {
   const browserVer = userAgent.indexOf(browsers[index]); //Detect version of running browser
   runningBrowserString.textContent = browserStr + " v" + browserVer + " running on " + os;
   console.log(browserStr + " " + browserVer + " running on " + os);
+  console.log("User Agent String: " + userAgent);
   const unsupportedString = document.createElement("p");
   unsupportedString.style.position = "absolute";
   unsupportedString.style.fontSize = "25px";
