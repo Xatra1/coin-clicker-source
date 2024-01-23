@@ -39,7 +39,7 @@ function uaSniffer() {
 		index--;
 	}
 	if (index > -1) browserStr = browsers[index];
-	while (index > -1 && userAgent.indexOf(oses[osIndex]) == -1) { //Loop through possible UA strings to detect client's operating system.
+	while (index > -1 && userAgent.indexOf(oses[osIndex]) == -1) { //Loop through possible UA strings to detect client operating system.
 		index--;
 	}
 	if (index > -1) os = oses[osIndex];
@@ -1350,7 +1350,7 @@ function script() {
 	debugKeySubmit.addEventListener("click", function (event) {
 		event.preventDefault();
 		try {
-			var dmkInput = atob(debugKeyInput.value);
+			let dmkInput = atob(debugKeyInput.value);
 		} catch (error) {
 			console.warn("Debug Access Key input is not encoded. Using raw input as value.");
 			debugConsole = debugConsole + "WARN: Debug access key input is not encoded. Using raw input as value." + "\n";
