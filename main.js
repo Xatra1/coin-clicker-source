@@ -42,7 +42,7 @@ function uaSniffer() {
   while (index > -1 && userAgent.indexOf(oses[osIndex]) == -1) { //Loop through possible UA strings to detect client operating system.
     index--;
   }
-  if (index > -1) os = oses[osIndex];
+  if (osIndex > -1) os = oses[osIndex];
   //Normalize UA strings
   if (browserStr == "Edg") browserStr = "Edge";
   else if (browserStr == "OPR") browserStr = "Opera";
