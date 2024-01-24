@@ -1,9 +1,4 @@
-To play the game, simply download the source code from any release or get the newest (and possibly unstable!) code by typing the following commands into a terminal:
-```
-git clone https://github.com/Xatra1/coin-clicker-source.git
-cd coin-clicker-source
-```
-This will put you into the folder that contains "index.html", which is how you will open the game.  
+You can download the latest stable release of the game from the Releases tab, or use the Coin Clicker Release Tool [here](https://github.com/Xatra1/coin-clicker-release-tool) to make a release with the latest (and potentially unstable!) code.  
   
 Or, if you don't want to bother with that, you can also play the game [here.](https://xatra1.github.io/coin-clicker-source) (Note that this uses the latest version of the code by default and may also be unstable.)
   
