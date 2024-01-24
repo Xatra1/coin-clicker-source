@@ -84,6 +84,11 @@ function script() {
   const godFingerBuy = document.getElementById("godfingerbuy");
   const godFingerCostString = document.getElementById("godfingercoststring");
   const godFingerOwnedString = document.getElementById("godfingerownedstring");
+  const clickerFusionGroup = document.getElementById("clickerfusion");
+  const clickerFusionBuy = document.getElementById("clickerfusionbuy");
+  const clickerFusionCostString = document.getElementById("clickerfusioncoststring");
+  const clickerFusionOwnedString = document.getElementById("clickerfusionownedstring");
+  const clickerFusionInfo = document.getElementById("clickerfusioninfo");
   //Stat panel
   const statsPanel = document.getElementById("statspanel");
   const timePlayedString = document.getElementById("timestring");
@@ -211,6 +216,10 @@ function script() {
   var godFingerCV = 0.35;
   var godFingerCost = 5000000000000;
   var godFingerOwned = false;
+  var clickerFusionUnlocked = false;
+  var clickerFusionCost = 0;
+  var clickerFusionCPS = 1.50;
+  var clickerFusionOwned = false;
   //Save and load variables
   var manualSave = false;
   var readyToSave = true;
@@ -357,12 +366,13 @@ function script() {
         readyToSave = false;
       } else if (debugAutoplay) {
         costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
-        let buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy];
+        let buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy];
         saveInfoString.textContent = "Saving is disabled.";
         sfx.volume = 0;
         coin.click();
         for (let i = -1; i < costArray.length; i++) {
           if (clicks >= costArray[i]) buttonArray[i].click();
+          if (clickersOwned >= 150) buttonArray[buttonArray.length - 1].click();
         }
       }
     } catch (error) {
@@ -390,9 +400,11 @@ function script() {
         employeeCostString.textContent = "Cost: " + textArray[16];
         employeesOwnedString.textContent = "Owned: " + textArray[17];
         godFingerOwnedString.textContent = "Owned: " + godFingerOwned;
+        clickerFusionOwnedString.textContent = "Owned: " + clickerFusionOwned;
         if (cursorOwned) cursorCostString.textContent = "Cannot buy again.";
         if (superCursorOwned) superCursorCostString.textContent = "Cannot buy again.";
         if (godFingerOwned) godFingerCostString.textContent = "Cannot buy again.";
+        if (clickerFusionOwned) clickerFusionCostString.textContent = "Cannot buy again.";
       }
       if (timePlayed == 1000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 1000) + " second.";
       else if (timePlayed >= 60000 && timePlayed < 900000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 60000) + " minute.";
@@ -470,6 +482,14 @@ function script() {
         godFingerUnlocked = true;
         SHT = 500;
       } else if (godFingerUnlocked) godFingerGroup.style.display = "block";
+      if (clickersOwned >= 150 && !clickerFusionOwned) {
+        sfx3.play();
+        unlockString.textContent = "Clicker Fusion unlocked!";
+        unlockString.style.display = "block";
+        cursorFusionGroup.style.display = "block";
+        cursorFusionUnlocked = true;
+        SHT = 500;
+      } else if (cursorFusionUnlocked) cursurFusionGroup.style.display = "block";
       achievementUnlockCheck();
     } catch (error) {
       errorHandler(error);
@@ -1174,6 +1194,16 @@ function script() {
       godFingerCost = "Owned.";
       totalClickHelpers++;
     }
+  });
+  cursorFusionBuy.addEventListener("click", function() {
+    sfx.play();
+    if (clickersOwned >= 150 && !clickerFusionOwned) {
+      sfx5.play();
+      clickerFusionOwned = true;
+      cps = cps + Math.round(clickerCPSWorth * 1.5);
+      clickerFusionCost = "Owned";
+      totalClickHelpers++;
+    }
   })
   saveButton.addEventListener("click", function () {
     sfx.play();
@@ -1234,6 +1264,8 @@ function script() {
     achievementsLabel.style.top = top + 'px';
     settingsLabel.style.left = left + 'px';
     settingsLabel.style.top = top + 'px';
+    clickerFusionInfo.style.top = top + 'px';
+    clickerFusionInfo.style.left = left + 'px';
   })
   achievementsButton.addEventListener("click", function () {
     sfx.play();
