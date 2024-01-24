@@ -730,6 +730,27 @@ body {
   left: 10.8vw;
 }
 
+#clickerfusionhovercontainer .hover-target {
+  display: none;
+}
+
+#clickerfusionhovercontainer .hover-trigger:hover+.hover-target {
+  display: block;
+}
+
+#clickerfusion {
+  background: transparent url("../img/shop/clicker.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid black 1px;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 27vw;
+  left: 7.6vw;
+  cursor: pointer;
+}
+
 /* Stats panel elements */
 #statsstring {
   font-size: 35px;
