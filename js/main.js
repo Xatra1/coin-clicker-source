@@ -84,11 +84,11 @@ function script() {
   const godFingerBuy = document.getElementById("godfingerbuy");
   const godFingerCostString = document.getElementById("godfingercoststring");
   const godFingerOwnedString = document.getElementById("godfingerownedstring");
-  const clickerFusionGroup = document.getElementById("clickerfusion");
+  /* const clickerFusionGroup = document.getElementById("clickerfusion");
   const clickerFusionBuy = document.getElementById("clickerfusionbuy");
   const clickerFusionCostString = document.getElementById("clickerfusioncoststring");
   const clickerFusionOwnedString = document.getElementById("clickerfusionownedstring");
-  const clickerFusionInfo = document.getElementById("clickerfusioninfo");
+  const clickerFusionInfo = document.getElementById("clickerfusioninfo"); */
   //Stat panel
   const statsPanel = document.getElementById("statspanel");
   const timePlayedString = document.getElementById("timestring");
@@ -274,7 +274,7 @@ function script() {
   //Debug mode variables
   var generatedKey = "debug";
   var debugScreenState = "closed";
-  var debug = true; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
+  var debug = false; //This boolean is purely for quickly testing added code, this will not affect anything within the normal game and should be set to false in released builds.
   var debugAutoplay = false; //This boolean makes the game almost fully automated, requiring almost zero user input. It should be set to false in released builds, but if you see this message, you are welcome to enable it. However, it will automatically save the game, disable saving, and DESTROY your save on next load.
   var forceBuff = false; //This boolean determines if the buff RNG value listed in buffRNGCalc() is forced or if it's always random. It should be set to false in released builds.
   var performScreenSwitch = false; //Related to debugAutoplay, this boolean determines whether or not the user would like to have the shop panels alternate between each other every 5 seconds.
@@ -366,13 +366,13 @@ function script() {
         readyToSave = false;
       } else if (debugAutoplay) {
         costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
-        let buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy];
+        let buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy /*clickerFusionBuy*/];
         saveInfoString.textContent = "Saving is disabled.";
         sfx.volume = 0;
         coin.click();
         for (let i = -1; i < costArray.length; i++) {
           if (clicks >= costArray[i]) buttonArray[i].click();
-          if (clickersOwned >= 150) buttonArray[buttonArray.length - 1].click();
+          //if (clickersOwned >= 150) buttonArray[buttonArray.length - 1].click();
         }
       }
     } catch (error) {
@@ -400,11 +400,11 @@ function script() {
         employeeCostString.textContent = "Cost: " + textArray[16];
         employeesOwnedString.textContent = "Owned: " + textArray[17];
         godFingerOwnedString.textContent = "Owned: " + godFingerOwned;
-        clickerFusionOwnedString.textContent = "Owned: " + clickerFusionOwned;
+        //clickerFusionOwnedString.textContent = "Owned: " + clickerFusionOwned;
         if (cursorOwned) cursorCostString.textContent = "Cannot buy again.";
         if (superCursorOwned) superCursorCostString.textContent = "Cannot buy again.";
         if (godFingerOwned) godFingerCostString.textContent = "Cannot buy again.";
-        if (clickerFusionOwned) clickerFusionCostString.textContent = "Cannot buy again.";
+        //if (clickerFusionOwned) clickerFusionCostString.textContent = "Cannot buy again.";
       }
       if (timePlayed == 1000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 1000) + " second.";
       else if (timePlayed >= 60000 && timePlayed < 900000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 60000) + " minute.";
@@ -482,14 +482,14 @@ function script() {
         godFingerUnlocked = true;
         SHT = 500;
       } else if (godFingerUnlocked) godFingerGroup.style.display = "block";
-      if (clickersOwned >= 150 && !clickerFusionOwned) {
+      /* if (clickersOwned >= 150 && !clickerFusionOwned) {
         sfx3.play();
         unlockString.textContent = "Clicker Fusion unlocked!";
         unlockString.style.display = "block";
         cursorFusionGroup.style.display = "block";
         cursorFusionUnlocked = true;
         SHT = 500;
-      } else if (cursorFusionUnlocked) cursurFusionGroup.style.display = "block";
+      } else if (clickerFusionUnlocked) clickerFusionGroup.style.display = "block"; */
       achievementUnlockCheck();
     } catch (error) {
       errorHandler(error);
@@ -741,13 +741,18 @@ function script() {
         employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked
       ];
       for (let i = 0; i < intArray.length; i++) {
-        intArray[i] = Math.abs(intArray[i]); //Convert all negative numbers to positive numbers.
-        if (navigator.userAgent.indexOf("Edg") == -1) { //Edge does not support Number.prototype.toLocaleString, it will not be used.
-          if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a precision of 3 if value is over 100 trillion.
-          else if (intArray[i] != Infinity) textArray[i] = intArray[i].toLocaleString(); //Only use Number.prototype.toLocaleString if the given value is finite.
-          else throw ("A value has become infinite, which means you've beaten the game! There is no reason to continue from here, and it may break even more things if you do.");
+        intArray[i] = Math.abs(intArray[i]); //Use Number.prototype.toLocaleString if supported.
+        if (Number.prototype.toLocaleString() != undefined) {
+          if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a 3 decimal places if value is over 100 trillion.
+          else textArray[i] = intArray[i].toLocaleString(); //Simply return a value with commas if there is no need for exponents.
+        } else {
+          if (intArray[i] < 100000000000000) { //Use a basic pattern to add number commas if Number.prototype.toLocaleString returns undefined. Returns an exponential using the same method as above if value is over 100 trillion.
+            textArray[i] = x.toString();
+            var pattern = /(-?\d+)(\d{3})/;
+            while (pattern.test(textArray[i]))
+              textArray[i] = textArray[i].replace(pattern, "$1,$2");
+          } else textArray[i] = intArray[i].toExponential(3);
         }
-        else textArray[i] = intArray[i];
       }
     } catch (error) {
       errorHandler(error);
@@ -1011,9 +1016,8 @@ function script() {
       let ctx = canvas.getContext("2d");
       let size = $(window).width();
       let scale = window.devicePixelRatio;
-      if (navigator.userAgent.indexOf("OPR") == -1 && navigator.userAgent.indexOf("Edg") == -1) { //Edge and Opera do not support this style of canvas drawing, it will not be used.
-        canvas.style.width = "${size}px";
-        canvas.style.height = "${size}px";
+        canvas.style.width = `${size}px`;
+        canvas.style.height = `${size}px`;
         canvas.height = Math.floor(size * scale);
         canvas.width = Math.floor(size * scale);
         ctx.scale(scale, scale);
@@ -1024,7 +1028,6 @@ function script() {
           ctx.fillRect(405, 0, 2, canvas.height);
           ctx.fillRect(925, 0, 2, canvas.height);
         }
-      }
     } catch (error) {
       errorHandler(error);
     }
@@ -1195,7 +1198,7 @@ function script() {
       totalClickHelpers++;
     }
   });
-  cursorFusionBuy.addEventListener("click", function() {
+  /* clickerFusionBuy.addEventListener("click", function () {
     sfx.play();
     if (clickersOwned >= 150 && !clickerFusionOwned) {
       sfx5.play();
@@ -1204,7 +1207,7 @@ function script() {
       clickerFusionCost = "Owned";
       totalClickHelpers++;
     }
-  })
+  }); */
   saveButton.addEventListener("click", function () {
     sfx.play();
     manualSave = true;

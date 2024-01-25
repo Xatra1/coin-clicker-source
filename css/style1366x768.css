@@ -730,7 +730,7 @@ body {
   left: 10.8vw;
 }
 
-#clickerfusionhovercontainer .hover-target {
+/* #clickerfusionhovercontainer .hover-target {
   display: none;
 }
 
@@ -749,7 +749,7 @@ body {
   top: 27vw;
   left: 7.6vw;
   cursor: pointer;
-}
+} */
 
 /* Stats panel elements */
 #statsstring {
