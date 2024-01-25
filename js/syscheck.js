@@ -21,7 +21,7 @@ function sysCheck() {
     index--;
   }
   if (index > -1) browserStr = browsers[index];
-  if (userAgentData != undefined) os = userAgentData.platform; //Use userAgentData to find client. operating system.
+  if (userAgentData != undefined) os = userAgentData.platform; //Use userAgentData to find client operating system.
   else {
     const oses = ["X11", "Windows", "Mac", "Linux"];
     var osIndex = oses.length - 1;
