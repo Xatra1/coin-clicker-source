@@ -1,6 +1,6 @@
 /*
 Coin Clicker Update 6 Codename "Abundance"
-Build 4.11 Rewrite Beta
+Build 4.12 Rewrite Beta
 */
 
 //Any code that is commented out does not get used, but is planned to be utilized in the near future.
@@ -84,6 +84,11 @@ function script() {
   const godFingerBuy = document.getElementById("godfingerbuy");
   const godFingerCostString = document.getElementById("godfingercoststring");
   const godFingerOwnedString = document.getElementById("godfingerownedstring");
+  /* const clickerFusionGroup = document.getElementById("clickerfusion");
+  const clickerFusionBuy = document.getElementById("clickerfusionbuy");
+  const clickerFusionCostString = document.getElementById("clickerfusioncoststring");
+  const clickerFusionOwnedString = document.getElementById("clickerfusionownedstring");
+  const clickerFusionInfo = document.getElementById("clickerfusioninfo"); */
   //Stat panel
   const statsPanel = document.getElementById("statspanel");
   const timePlayedString = document.getElementById("timestring");
@@ -139,8 +144,8 @@ function script() {
   const backToGame2 = document.getElementById("backtogame2");
   const volumeInput = document.getElementById("volumeinput");
   //Title screen variables
-  const buildStr = "4.11ab";
-  const buildNumber = 4.11;
+  const buildStr = "4.12ab";
+  const buildNumber = 4.12;
   const updateName = "abundance";
   var gameStarted = false;
   //Stat variables
@@ -211,6 +216,10 @@ function script() {
   var godFingerCV = 0.35;
   var godFingerCost = 5000000000000;
   var godFingerOwned = false;
+  var clickerFusionUnlocked = false;
+  var clickerFusionCost = 0;
+  var clickerFusionCPS = 1.50;
+  var clickerFusionOwned = false;
   //Save and load variables
   var manualSave = false;
   var readyToSave = true;
@@ -334,6 +343,8 @@ function script() {
     godFingerUnlocked = true;
     statsPanel.style.display = "block";
     bmbarNote.style.display = "none";
+    shopPanel.style.display = "none";
+    upgradeShopPanel.style.display = "block";
     console.log("Debug boolean is enabled. Titlescreen will be skipped and all shop items will be unlocked from the start.");
     debugConsole = debugConsole + "Debug boolean is enabled. Titlescreen will be skipped and all shop items will be unlocked from the start." + "\n";
   }
@@ -355,12 +366,13 @@ function script() {
         readyToSave = false;
       } else if (debugAutoplay) {
         costArray = [clickerCost, superClickerCost, doublePointerCost, cursorCost, superCursorCost, employeeCost, godFingerCost];
-        let buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy];
+        let buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy /*clickerFusionBuy*/];
         saveInfoString.textContent = "Saving is disabled.";
         sfx.volume = 0;
         coin.click();
         for (let i = -1; i < costArray.length; i++) {
           if (clicks >= costArray[i]) buttonArray[i].click();
+          //if (clickersOwned >= 150) buttonArray[buttonArray.length - 1].click();
         }
       }
     } catch (error) {
@@ -388,9 +400,11 @@ function script() {
         employeeCostString.textContent = "Cost: " + textArray[16];
         employeesOwnedString.textContent = "Owned: " + textArray[17];
         godFingerOwnedString.textContent = "Owned: " + godFingerOwned;
+        //clickerFusionOwnedString.textContent = "Owned: " + clickerFusionOwned;
         if (cursorOwned) cursorCostString.textContent = "Cannot buy again.";
         if (superCursorOwned) superCursorCostString.textContent = "Cannot buy again.";
         if (godFingerOwned) godFingerCostString.textContent = "Cannot buy again.";
+        //if (clickerFusionOwned) clickerFusionCostString.textContent = "Cannot buy again.";
       }
       if (timePlayed == 1000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 1000) + " second.";
       else if (timePlayed >= 60000 && timePlayed < 900000) timePlayedString.textContent = "You have played for " + Math.round(timePlayed / 60000) + " minute.";
@@ -468,6 +482,14 @@ function script() {
         godFingerUnlocked = true;
         SHT = 500;
       } else if (godFingerUnlocked) godFingerGroup.style.display = "block";
+      /* if (clickersOwned >= 150 && !clickerFusionOwned) {
+        sfx3.play();
+        unlockString.textContent = "Clicker Fusion unlocked!";
+        unlockString.style.display = "block";
+        cursorFusionGroup.style.display = "block";
+        cursorFusionUnlocked = true;
+        SHT = 500;
+      } else if (clickerFusionUnlocked) clickerFusionGroup.style.display = "block"; */
       achievementUnlockCheck();
     } catch (error) {
       errorHandler(error);
@@ -719,13 +741,18 @@ function script() {
         employeesOwned, unbuffedCV, unbuffedCPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, achievementsUnlocked
       ];
       for (let i = 0; i < intArray.length; i++) {
-        intArray[i] = Math.abs(intArray[i]); //Convert all negative numbers to positive numbers.
-        if (navigator.userAgent.indexOf("Edg") == -1) { //Edge does not support Number.prototype.toLocaleString, it will not be used.
-          if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a precision of 3 if value is over 100 trillion.
-          else if (intArray[i] != Infinity) textArray[i] = intArray[i].toLocaleString(); //Only use Number.prototype.toLocaleString if the given value is finite.
-          else throw ("A value has become infinite, which means you've beaten the game! There is no reason to continue from here, and it may break even more things if you do.");
+        intArray[i] = Math.abs(intArray[i]); //Use Number.prototype.toLocaleString if supported.
+        if (Number.prototype.toLocaleString() != undefined) {
+          if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); //Use exponentials with a 3 decimal places if value is over 100 trillion.
+          else textArray[i] = intArray[i].toLocaleString(); //Simply return a value with commas if there is no need for exponents.
+        } else {
+          if (intArray[i] < 100000000000000) { //Use a basic pattern to add number commas if Number.prototype.toLocaleString returns undefined. Returns an exponential using the same method as above if value is over 100 trillion.
+            textArray[i] = x.toString();
+            var pattern = /(-?\d+)(\d{3})/;
+            while (pattern.test(textArray[i]))
+              textArray[i] = textArray[i].replace(pattern, "$1,$2");
+          } else textArray[i] = intArray[i].toExponential(3);
         }
-        else textArray[i] = intArray[i];
       }
     } catch (error) {
       errorHandler(error);
@@ -989,9 +1016,8 @@ function script() {
       let ctx = canvas.getContext("2d");
       let size = $(window).width();
       let scale = window.devicePixelRatio;
-      if (navigator.userAgent.indexOf("OPR") == -1 && navigator.userAgent.indexOf("Edg") == -1) { //Edge and Opera do not support this style of canvas drawing, it will not be used.
-        canvas.style.width = "${size}px";
-        canvas.style.height = "${size}px";
+        canvas.style.width = `${size}px`;
+        canvas.style.height = `${size}px`;
         canvas.height = Math.floor(size * scale);
         canvas.width = Math.floor(size * scale);
         ctx.scale(scale, scale);
@@ -1002,7 +1028,6 @@ function script() {
           ctx.fillRect(405, 0, 2, canvas.height);
           ctx.fillRect(925, 0, 2, canvas.height);
         }
-      }
     } catch (error) {
       errorHandler(error);
     }
@@ -1172,7 +1197,17 @@ function script() {
       godFingerCost = "Owned.";
       totalClickHelpers++;
     }
-  })
+  });
+  /* clickerFusionBuy.addEventListener("click", function () {
+    sfx.play();
+    if (clickersOwned >= 150 && !clickerFusionOwned) {
+      sfx5.play();
+      clickerFusionOwned = true;
+      cps = cps + Math.round(clickerCPSWorth * 1.5);
+      clickerFusionCost = "Owned";
+      totalClickHelpers++;
+    }
+  }); */
   saveButton.addEventListener("click", function () {
     sfx.play();
     manualSave = true;
@@ -1232,6 +1267,8 @@ function script() {
     achievementsLabel.style.top = top + 'px';
     settingsLabel.style.left = left + 'px';
     settingsLabel.style.top = top + 'px';
+    clickerFusionInfo.style.top = top + 'px';
+    clickerFusionInfo.style.left = left + 'px';
   })
   achievementsButton.addEventListener("click", function () {
     sfx.play();
