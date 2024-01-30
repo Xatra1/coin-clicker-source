@@ -1461,7 +1461,7 @@ function script() {
   document.addEventListener("click", function () {
     if (debugAutoplay) sfx.volume = volume;
   })
-  //Function interval;
+  //Function intervals
   setInterval(timedLabelCount, 1); //This function will be removed in the future.
   setInterval(autoplay, autoplayInterval);
   setInterval(rgChange, 25);
