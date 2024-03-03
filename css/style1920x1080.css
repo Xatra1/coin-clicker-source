@@ -95,7 +95,7 @@ body {
 
 /* Game screen elements */
 #coin {
-  background: transparent url("../img/coin.jpg") no-repeat;
+  background: transparent url("../img/coin.png") no-repeat;
   background-size: cover;
   border-style: none;
   width: 14vw;
