@@ -5,7 +5,7 @@ Opera and Microsoft Edge do not support the canvas drawing (used to divide secti
   
 Chrome users are advised to disable the bookmarks bar from showing up in tabs, to stop text from being cut off at the bottom of the screen. The game otherwise performs just fine, with everything working as expected.  
   
-Firefox works perfectly, with the exception of being unable to accurately identify your OS name.  
+Firefox works perfectly, with the exception of being unable to accurately identify your OS name. It will instead default to general names like "Windows" or "Linux."  
   
 **Note: This game only officially supports 1920x1080 and 1366x768 resolutions, and is designed to run mostly on Linux systems.**  
   
