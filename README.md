@@ -10,7 +10,7 @@ Firefox works perfectly, with the exception of being unable to accurately identi
 **Note: This game only officially supports 1920x1080 and 1366x768 resolutions, and is designed to display properly mostly on Linux systems.**  
   
 # About
-Coin Clicker is a web-based clicker game inspired by idle games like Cookie Clicker. It was originally made using [code.org](https://code.org)'s libraries, before I got frustrated with the limitations of the site's functions and rebuilt the game from the ground up using (mostly) pure JavaScript. The original project only made it to Beta v4, before Beta v5, codenamed "Rewrite," was moved over to GitHub. This project has since far surpassed the progress of the original code.org game and has gotten far more work put into it.  
+Coin Clicker is a web-based clicker game inspired by idle games like Cookie Clicker. It was originally made using [code.org](https://code.org)'s App Lab libraries, before I got frustrated with the limitations of the site's functions and rebuilt the game from the ground up using (mostly) pure JavaScript. The original project only made it to Beta v4, before Beta v5, codenamed "Rewrite," was moved over to GitHub. This project has since far surpassed the progress of the original code.org game and has gotten far more work put into it.  
 
 You can download the latest stable release of the game from the Releases tab, or use the Coin Clicker Release Tool [here](https://github.com/Xatra1/coin-clicker-release-tool) to make a release with the latest (and potentially unstable!) code.  
   
