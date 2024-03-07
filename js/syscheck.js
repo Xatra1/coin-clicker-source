@@ -5,13 +5,17 @@ const link = document.createElement("link");
 const bmbarNote = document.createElement("p");
 const resWarn = document.createElement("p");
 const runningBrowserString = document.getElementById("runningbrowserstring");
-const div = document.getElementById("unsupportedremove");
-const enableJS = true;
+const jsFailStr = document.getElementById("jsfail");
+jsFailStr.style.display = "none";
+const script = document.createElement("script");
+const filePath = './js/main.js';
+script.src = filePath;
 
 console.groupCollapsed("Navigator Information");
 console.log(window.navigator);
 console.groupEnd();
 
+sysCheck();
 function sysCheck() {
   const browsers = ["MSIE", "Firefox", "Safari", "Chrome", "OPR", "Edg"];
   const userAgent = navigator.userAgent;
@@ -100,11 +104,10 @@ function sysCheck() {
     width = "1920";
     document.getElementById("titlescreen").style.display = "block";
   }
-  resolutionCheck(enableJS, width);
+  resolutionCheck(width);
 }
 
-function resolutionCheck(enableJS, width) { //There are currently only two supported resolutions, 1920x1080, and 1366x768. A different stylesheet is loaded based on browser width. It is recommended that you play the game in a maximized browser window at default zoom (100%).
-  console.log(enableJS, width);
+function resolutionCheck(width) { //There are currently only two supported resolutions, 1920x1080, and 1366x768. A different stylesheet is loaded based on browser width. It is recommended that you play the game in a maximized browser window at default zoom (100%).
   var curStySht;
   const head = document.head;
   const body = document.body;
@@ -138,11 +141,5 @@ function resolutionCheck(enableJS, width) { //There are currently only two suppo
     console.log("Using fallback sheet, detected resolution is currently " + $(window).width() + "x" + $(window).height());
     debugConsole += "Using fallback sheet, detacted resolution is currently " + $(window).width() + "x" + $(window).height() + "\n";
   }
-  if (enableJS) {
-    try {
-      script();
-    } catch (error) {
-      errorHandler(error)
-    }
-  } else div.appendChild(resWarn);
+  document.body.appendChild(script);
 }

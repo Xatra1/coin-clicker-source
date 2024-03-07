@@ -5,21 +5,56 @@
   <title>Coin Clicker Beta v6</title>
 </head>
 
-<body onload="appendScr()">
+<body>
   <noscript>
     <link rel="stylesheet" href="./css/noJS.css">
     <h1 id="ns">This site makes extensive use of JavaScript, which you have disabled. Please enable it and refresh the
       page.</h1>
-    <p id="ns">Unless you want to stare at the background, of course.</p>
+    <p id="ns">Unless you want to stare at this lovely blank page, of course.</p>
   </noscript>
   <!-- jQuery Libraries -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="append.js"></script>
   <canvas id="borders"></canvas>
-  <div id="unsupportedremove">
+  <style>
+    body {
+      background-image: url("../img/background.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: Courier, monospace;
+    }
+
+    #hideloading {
+      display: none;
+    }
+
+    #loadstring {
+      text-align: center;
+      font-weight: 100;
+    }
+
+    #loadfailstr {
+      text-align: center;
+    }
+  </style>
+  <div id="loadingscreen">
+    <h1 id="loadstring">Loading...</h1>
+    <p id="loadfailstr">If the game more than a few seconds to load, try refreshing the page.</p>
+  </div>
+  <div id="hideloading">
+    <div id="jsfail">
+      <h1>If the game failed to load, please try reloading the page.</h1>
+    </div>
+    <div id="audio">
+      <audio src="./snd/click.mp3" id="sfx"></audio>
+      <audio src="./snd/shopunlock.mp3" id="sfx2"></audio>
+      <audio src="./snd/achievementunlock.mp3" id="sfx3"></audio>
+      <audio src="./snd/specialachievementunlocksfx.mp3" id="sfx4"></audio>
+      <audio src="./snd/shopbuy.mp3" id="sfx5"></audio>
+    </div>
     <div id="titlescreen">
-      <p id="sourcenote">If you wish to view the source HTML used for this game, add "view-source:" before the
-        "https://" or "file://" in the URL. You can also hit Ctrl+U on some browsers.</p>
+      <p id="sourcenote"></p>
+      <!-- Kept for compatibility with debug variables. This element does nothing by default. -->
       <p id="runningbrowserstring">detected browser:</p>
       <p id="basedonbuildstring">based on code.org build 4.41b</p>
       <h2 id="betastring">beta v6</h2>
@@ -38,7 +73,7 @@
       <p id="savingstring">Saving...</p>
       <p id="saveinfo">Game autosaves every minute; Shortcut: S</p>
       <button id="wipesavebutton">Wipe Save</button>
-      <p id="bufflabel">Your click value has been increased by 777% of your CPS for 10 seconds!</p>
+      <p id="bufflabel">Your click value has been increased by 777% of your CpS for 10 seconds!</p>
       <div id="achievementsbtnhovercontainer">
         <button id="achievementsbutton" class="hover-trigger"></button>
         <p id="achievementslabel" class="hover-target">Achievements</p>
@@ -50,33 +85,34 @@
     </div>
     <div id="shoppanel">
       <p id="shopstring">Shop</p>
+      <p id="autobuystring">Autobuy is enabled.</p>
       <img id="shopicon" src="./img/shop/shoplogo.png" height="50px">
       <button id="upgradebutton">Upgrades</button>
       <div id="clickerhovercontainer">
         <button id="clickerbuy" class="hover-trigger" src="img/shop/clicker.jpg"></button>
-        <p id="clickerinfo" class="hover-target">Your 0 clickers account for 0 (0%) CPS.</p>
+        <p id="clickerinfo" class="hover-target">You have no clickers.</p>
       </div>
       <p id="clickerstring">clicker</p>
-      <p id="clickercpsstring">CPS: </p>
+      <p id="clickercpsstring">CpS: </p>
       <p id="clickercoststring">Cost: </p>
       <p id="clickersownedstring">Owned: </p>
       <div id="superclicker">
         <div id="superclickerhovercontainer">
           <button id="superclickerbuy" class="hover-trigger"></button>
-          <p id="superclickerinfo" class="hover-target">Your 0 super clickers account for 0 (0%) CPS.</p>
+          <p id="superclickerinfo" class="hover-target">You have no super clickers.</p>
         </div>
         <p id="superclickerstring">super clicker</p>
-        <P id="superclickercpsstring">CPS: </P>
+        <P id="superclickercpsstring">CpS: </P>
         <p id="superclickercoststring">Cost: </p>
         <p id="superclickersownedstring">Owned: </p>
       </div>
       <div id="doublepointer">
         <div id="doublepointerhovercontainer">
           <button id="doublepointerbuy" class="hover-trigger"></button>
-          <p id="doublepointerinfo" class="hover-target">Your 0 double pointers account for 0 (0%) CPS.</p>
+          <p id="doublepointerinfo" class="hover-target">You have no double pointers.</p>
         </div>
         <p id="doublepointerstring">double pointer</p>
-        <p id="doublepointercpsstring">CPS: </p>
+        <p id="doublepointercpsstring">CpS: </p>
         <p id="doublepointercoststring">Cost: </p>
         <p id="doublepointersownedstring">Owned: </p>
       </div>
@@ -87,20 +123,20 @@
       <button id="shopreturnbutton">Back</button>
       <button id="cursorbuy"></button>
       <p id="cursorstring">cursor</p>
-      <p id="cursorcpsstring">CPS: +50%</p>
+      <p id="cursorcpsstring">CpS: +50%</p>
       <p id="cursorcoststring">Cost: 5,000,000</p>
       <p id="cursorownedstring">Owned: </p>
       <div id="supercursor">
         <button id="supercursorbuy"></button>
         <p id="supercursorstring">super cursor</p>
-        <p id="supercursorcpsstring">CPS: +75%</p>
+        <p id="supercursorcpsstring">CpS: +75%</p>
         <p id="supercursorcoststring">Cost: 500,000,000</p>
         <p id="supercursorownedstring">Owned: </p>
       </div>
       <div id="employee">
         <button id="employeebuy"></button>
         <p id="employeestring">employee</p>
-        <p id="employeecpsstring">CPS: +0.5% (Stacks)</p>
+        <p id="employeecpsstring">CpS: +0.5% (Stacks)</p>
         <p id="employeecoststring">Cost: 50,000,000,000</p>
         <p id="employeesownedstring">Owned: </p>
       </div>
@@ -114,7 +150,7 @@
       <div id="clickerfusion">
         <div id="clickerfusionhovercontainer">
           <button id="clickerfusionbuy" class="hover-trigger"></button>
-          <p id="clickerfusioninfo" class="hover-target">Fuse 150 clickers together to multiply their CPS by 150%. You
+          <p id="clickerfusioninfo" class="hover-target">Fuse 150 clickers together to multiply their CpS by 150%. You
             can only do this once.</p>
         </div>
         <p id="clickerfusionstring">clicker fusion</p>
@@ -136,9 +172,9 @@
     <div id="debuginputscreen">
       <h1 id="debugscreenlabel">Debug Mode</h1>
       <form id="debuginputfield">
-        <p id="dbip">Debug Access Key (Base64)</p>
+        <p id="dbip">Debug Console Access Key</p>
         <label id="dbilabel" for="debugkeyinput"></label>
-        <input type="text" name="debugkeyinput" placeholder="Input here..." id="debugkeyinput">
+        <input type="text" name="debugkeyinput" placeholder="'debug' or your Base64 key" id="debugkeyinput">
         <button id="debugkeysubmit">Submit</button>
       </form>
       <p id="incorrectkeyentered">Incorrect key.</p>
@@ -184,9 +220,16 @@
       <label for="volumeinput"></label>
       <p id="volumestring">Volume (Accepts values between 0-100):</p>
       <input name="volumeinput" id="volumeinput" type="text">
+      <div id="autobuyhovercontainer">
+        <p id="autobuysettingstr">Autobuy (Hover for info):</p>
+        <button id="autobuysetting" class="hover-trigger">OFF</button>
+        <p id="autobuyinfo" class="hover-target">Automatically buys items for you whenever you have enough
+          clicks.</p>
+      </div>
       <button id="backtogame2">Back</button>
     </div>
   </div>
+  <script src="./js/syscheck.js"></script>
 </body>
 
 

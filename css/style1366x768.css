@@ -265,6 +265,7 @@ body {
   position: fixed;
   top: 0.5vw;
   left: 64.7vw;
+  cursor: pointer;
 }
 
 /* Shop panel elements */
@@ -280,6 +281,15 @@ body {
   position: fixed;
   top: -0.5vw;
   left: 12.5vw;
+}
+
+#autobuystring {
+  font-size: 11px;
+  color: black;
+  position: fixed;
+  display: none;
+  top: 4vw;
+  left: 9vw;
 }
 
 #clickerhovercontainer .hover-target {
@@ -1376,6 +1386,41 @@ body {
   position: fixed;
   top: 4.2vw;
   left: 33.5vw;
+}
+
+#autobuyhovercontainer .hover-target {
+  display: none;
+}
+
+#autobuyhovercontainer .hover-trigger:hover+.hover-target {
+  display: block;
+}
+
+#autobuyinfo {
+  font-size: 14px;
+  width: 350px;
+  border: solid black 1px;
+  position: fixed;
+}
+
+#autobuysettingstr {
+  font-size: 12.5px;
+  position: fixed;
+  top: 6vw;
+  left: 39vw;
+}
+
+#autobuysetting {
+  background: transparent;
+  height: 1.5vw;
+  width: 5vw;
+  border: solid 1px black;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  position: fixed;
+  top: 6.75vw;
+  left: 54vw;
+  cursor: pointer;
 }
 
 #backtogame2 {
