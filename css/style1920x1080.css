@@ -226,6 +226,7 @@ body {
   position: fixed;
   top: 0.5vw;
   left: 67vw;
+  cursor: pointer;
 }
 
 #saveinfo {
@@ -266,6 +267,15 @@ body {
   left: 11.8vw;
 }
 
+#autobuystring {
+  font-size: 11px;
+  color: black;
+  position: fixed;
+  display: none;
+  top: 3.3vw;
+  left: 9.3vw;
+}
+
 #clickerhovercontainer .hover-target {
   display: none;
 }
@@ -276,7 +286,9 @@ body {
 
 #clickerinfo {
   position: fixed;
-  border: solid 1px black;
+  border: solid black 1px;
+  width: 210px;
+  display: none;
 }
 
 #clickerbuy {
@@ -339,6 +351,8 @@ body {
 #superclickerinfo {
   position: fixed;
   border: solid black 1px;
+  width: 210px;
+  display: none;
 }
 
 #superclickerbuy {
@@ -399,8 +413,10 @@ body {
 }
 
 #doublepointerinfo {
+  display: none;
   position: fixed;
   border: solid black 1px;
+  width: 210px;
 }
 
 #doublepointerbuy {
@@ -685,6 +701,66 @@ body {
   left: 10.8vw;
 }
 
+#clickerfusion {
+  display: none;
+}
+
+#clickerfusionhovercontainer .hover-target {
+  display: none;
+}
+
+#clickerfusionhovercontainer .hover-trigger:hover+.hover-target {
+  display: block;
+}
+
+#clickerfusioninfo {
+  font-size: 14px;
+  border: solid black 1px;
+  position: fixed;
+  width: 300px;
+}
+
+#clickerfusionbuy {
+  background: transparent url("../img/shop/clicker.png") no-repeat;
+  background-size: 90%;
+  background-position: center;
+  border: solid black 1px;
+  height: 3vw;
+  width: 3vw;
+  position: fixed;
+  top: 27vw;
+  left: 7.6vw;
+  cursor: pointer;
+}
+
+#clickerfusionstring {
+  text-align: center;
+  position: fixed;
+  top: 25vw;
+  left: 4.8vw;
+}
+
+#clickerfusionperkstring {
+  text-align: center;
+  position: fixed;
+  top: 26vw;
+  left: 10.8vw;
+}
+
+#clickerfusioncoststring {
+  text-align: center;
+  position: fixed;
+  top: 27vw;
+  left: 10.8vw;
+}
+
+#clickerfusionownedstring {
+  text-align: center;
+  position: fixed;
+  top: 28vw;
+  left: 10.8vw;
+}
+
 /* Stats panel elements */
 #statsicon {
   position: absolute;
@@ -769,6 +845,26 @@ body {
   border: solid 1px black;
 }
 
+#rawcpsstring {
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  width: 400px;
+  top: 7vw;
+  left: 74.1vw;
+  border: solid 1px black;
+}
+
+#rawcvstring {
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  width: 400px;
+  top: 7.5vw;
+  left: 74.1vw;
+  border: solid 1px black;
+}
+
 /* Debug screen elements */
 #debuginputscreen {
   display: none;
@@ -782,7 +878,8 @@ body {
   font-weight: 100;
   font-size: 40px;
   position: fixed;
-  left: 43vw;
+  top: 15vw;
+  left: 42.7vw;
 }
 
 #debuginputfield {
@@ -835,11 +932,23 @@ body {
   border: solid 1px black;
   font-family: courier, monospace;
   overflow: scroll;
-  height: 15vw;
-  width: 20vw;
+  height: 30vw;
+  width: 41vw;
   position: fixed;
-  top: 15vw;
-  left: 39vw;
+  top: 3vw;
+  left: 28vw;
+}
+
+#debugcmdinput {
+  background: transparent;
+  border: solid 1px black;
+  font-family: courier, monospace;
+  overflow: scroll;
+  height: 1vw;
+  width: 41vw;
+  position: fixed;
+  top: 33.5vw;
+  left: 28vw;
 }
 
 /* Achievements screen elements */
@@ -1156,7 +1265,7 @@ body {
 }
 
 #septillionare {
-  background: transparent url("../img/achievements/octillionachievements.png") no-repeat;
+  background: transparent url("../img/achievements/septillionachievements.png") no-repeat;
   background-size: 90%;
   background-position: center;
   border: solid 1px black;
@@ -1169,7 +1278,7 @@ body {
 }
 
 #why {
-  background: transparent url("../img/achievements/octillionachievements.png") no-repeat;
+  background: transparent url("../img/achievements/septillionachievements.png") no-repeat;
   background-size: 90%;
   background-position: center;
   border: solid 1px black;
@@ -1182,7 +1291,7 @@ body {
 }
 
 #twentyfingers {
-  background: transparent url("../img/achievements/octillionachievements.png") no-repeat;
+  background: transparent url("../img/achievements/septillionachievements.png") no-repeat;
   background-size: 90%;
   background-position: center;
   border: solid 1px black;
@@ -1262,6 +1371,40 @@ body {
   position: fixed;
   top: 4.2vw;
   left: 33.5vw;
+}
+
+#autobuyhovercontainer .hover-target {
+  display: none;
+}
+
+#autobuyhovercontainer .hover-trigger:hover+.hover-target {
+  display: block;
+}
+
+#autobuyinfo {
+  font-size: 14px;
+  width: 350px;
+  border: solid black 1px;
+  position: fixed;
+}
+
+#autobuysettingstr {
+  position: fixed;
+  top: 6.1vw;
+  left: 39vw;
+}
+
+#autobuysetting {
+  background: transparent;
+  height: 1.5vw;
+  width: 5vw;
+  border: solid 1px black;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  position: fixed;
+  top: 6.75vw;
+  left: 52.5vw;
+  cursor: pointer;
 }
 
 #backtogame2 {
