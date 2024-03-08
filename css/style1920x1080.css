@@ -845,6 +845,26 @@ body {
   border: solid 1px black;
 }
 
+#rawcpsstring {
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  width: 400px;
+  top: 7vw;
+  left: 74.1vw;
+  border: solid 1px black;
+}
+
+#rawcvstring {
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  width: 400px;
+  top: 7.5vw;
+  left: 74.1vw;
+  border: solid 1px black;
+}
+
 /* Debug screen elements */
 #debuginputscreen {
   display: none;
@@ -858,6 +878,7 @@ body {
   font-weight: 100;
   font-size: 40px;
   position: fixed;
+  top: 15vw;
   left: 42.7vw;
 }
 
@@ -911,11 +932,23 @@ body {
   border: solid 1px black;
   font-family: courier, monospace;
   overflow: scroll;
-  height: 15vw;
-  width: 20vw;
+  height: 30vw;
+  width: 41vw;
   position: fixed;
-  top: 15vw;
-  left: 39vw;
+  top: 3vw;
+  left: 28vw;
+}
+
+#debugcmdinput {
+  background: transparent;
+  border: solid 1px black;
+  font-family: courier, monospace;
+  overflow: scroll;
+  height: 1vw;
+  width: 41vw;
+  position: fixed;
+  top: 33.5vw;
+  left: 28vw;
 }
 
 /* Achievements screen elements */

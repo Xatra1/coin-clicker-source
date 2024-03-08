@@ -192,7 +192,7 @@ body {
   width: 500px;
   display: none;
   position: fixed;
-  top: 37vw;
+  top: 39vw;
   left: 30.5vw;
 }
 
@@ -890,6 +890,26 @@ body {
   border-width: 1px;
   border-style: solid;
   border-color: black;
+}
+
+#rawcpsstring {
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  width: 400px;
+  top: 8.5vw;
+  left: 69vw;
+  border: solid 1px black;
+}
+
+#rawcvstring {
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  width: 400px;
+  top: 9vw;
+  left: 69vw;
+  border: solid 1px black;
 }
 
 /* Debug screen elements */

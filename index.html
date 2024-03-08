@@ -2,19 +2,6 @@
 <html lang="en-US">
 
 <head>
-  <title>Coin Clicker Beta v6</title>
-</head>
-
-<body>
-  <noscript>
-    <link rel="stylesheet" href="./css/noJS.css">
-    <h1 id="ns">This site makes extensive use of JavaScript, which you have disabled. Please enable it and refresh the
-      page.</h1>
-    <p id="ns">Unless you want to stare at this lovely blank page, of course.</p>
-  </noscript>
-  <!-- jQuery Libraries -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <canvas id="borders"></canvas>
   <style>
     body {
       background-image: url("../img/background.jpg");
@@ -37,6 +24,18 @@
       text-align: center;
     }
   </style>
+</head>
+
+<body>
+  <noscript>
+    <link rel="stylesheet" href="./css/noJS.css">
+    <h1 id="ns">This site makes extensive use of JavaScript, which you have disabled. Please enable it and refresh the
+      page.</h1>
+    <p id="ns">Unless you want to stare at this lovely blank page, of course.</p>
+  </noscript>
+  <!-- jQuery Libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <canvas id="borders"></canvas>
   <div id="loadingscreen">
     <h1 id="loadstring">Loading...</h1>
     <p id="loadfailstr">If the game more than a few seconds to load, try refreshing the page.</p>
@@ -124,13 +123,13 @@
       <button id="cursorbuy"></button>
       <p id="cursorstring">cursor</p>
       <p id="cursorcpsstring">CpS: +50%</p>
-      <p id="cursorcoststring">Cost: 5,000,000</p>
+      <p id="cursorcoststring">Cost: 1,000,000</p>
       <p id="cursorownedstring">Owned: </p>
       <div id="supercursor">
         <button id="supercursorbuy"></button>
         <p id="supercursorstring">super cursor</p>
         <p id="supercursorcpsstring">CpS: +75%</p>
-        <p id="supercursorcoststring">Cost: 500,000,000</p>
+        <p id="supercursorcoststring">Cost: 150,000,000</p>
         <p id="supercursorownedstring">Owned: </p>
       </div>
       <div id="employee">
@@ -167,7 +166,9 @@
       <p id="lifetimemanualclicksstring">You have gotten 0 clicks from clicking.</p>
       <p id="coinclickcountstring">You have clicked the coin 0 times.</p>
       <p id="totalclickhelpersstring">You have bought 0 items.</p>
-      <p id="achievementsunlockedstring" class="hover-trigger">You have unlocked 0 achievements.</p>
+      <p id="achievementsunlockedstring">You have unlocked 0 achievements.</p>
+      <p id="rawcpsstring">Your raw clicks per second is 0.</p>
+      <p id="rawcvstring">Your raw click value is 0.</p>
     </div>
     <div id="debuginputscreen">
       <h1 id="debugscreenlabel">Debug Mode</h1>
@@ -181,6 +182,10 @@
     </div>
     <div id="debugscreen">
       <textarea readonly id="debugconsole">Debug Console: </textarea>
+      <form id="debugconsinput">
+        <label for="debugcmdinput"></label>
+        <input type="text" name="debugcmdinput" placeholder=">_" id="debugcmdinput">
+      </form>
     </div>
     <div id="achievementsscreen">
       <h2 id="achievementsheader">Achievements</h2>
@@ -229,7 +234,7 @@
       <button id="backtogame2">Back</button>
     </div>
   </div>
-  <script src="./js/syscheck.js"></script>
+  <script src="./js/main.js"></script>
 </body>
 
 
