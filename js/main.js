@@ -1906,7 +1906,6 @@ document.addEventListener('loadevt', function () {
             setTimeout(function () {
               if (!gameStarted) sfx7.play();
               if (!prompting) $('#updatestring').css('-webkit-animation-play-state', 'running');
-              updateString.textContent = navigator.userAgent;
               setTimeout(function () {
                 $('#title').css('-webkit-animation-play-state', 'paused');
                 smallCoin3.style.rotate = '270deg';
