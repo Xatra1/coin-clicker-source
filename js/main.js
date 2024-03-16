@@ -1874,6 +1874,12 @@ window.addEventListener('beforeunload', function (event) {
   }
 });
 
+bgm.addEventListener('ended', function () {
+  bgm = new Audio();
+  bgm.src = './snd/bgm.mp3';
+  bgm.play();
+});
+
 document.addEventListener('loadevt', function () {
   try {
     loadingScreen.style.display = 'none';
@@ -1963,6 +1969,7 @@ setInterval(function () {
   const particleClass = document.querySelectorAll('.coinparticle');
   if (particleClass.length > 25) for (let i = 20; i > 0; i--) particleClass[i].parentNode.removeChild(particleClass[i]);
 }, 1);
+
 setInterval(function () {
   if (autosavePending) savingString.textContent = 'Waiting for buff...';
   if (buff == 'none' && autosavePending) {
@@ -1971,11 +1978,6 @@ setInterval(function () {
     saveGame();
   }
 }, 1);
-bgm.addEventListener('ended', function () {
-  var bgm = new Audio();
-  bgm.src = './snd/bgm.mp3';
-  bgm.play();
-});
 
 const loadEvt = new Event('loadevt');
 document.dispatchEvent(loadEvt);
