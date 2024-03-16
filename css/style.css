@@ -1,0 +1,1358 @@
+/* Font Awesome lib */
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
+
+/* Animations */
+
+@keyframes coinOpacity {
+  from {
+    opacity: 0%;
+  }
+
+  to {
+    opacity: 100%;
+  }
+}
+
+@keyframes bgmove {
+  from {
+    opacity: 40%;
+    transform: translate3d(0, 0, 0)
+  }
+
+  to {
+    opacity: 0%;
+    transform: translate3d(0, 22vw, 0)
+  }
+}
+
+@keyframes titlestrsmov {
+  100% {
+    transform: translate3d(0, 35vw, 0);
+  }
+}
+
+@keyframes bmbarnotemov {
+  from {
+    transform: translate3d(0, 0, 0)
+  }
+
+  to {
+    transform: translate3d(0, 2vw, 0)
+  }
+}
+
+@keyframes btmstringmov {
+  from {
+    transform: translate3d(0, 0, 0)
+  }
+
+  to {
+    transform: translate3d(0, -2.5vw, 0)
+  }
+}
+
+@keyframes dbgstringmov {
+  from {
+    transform: translate3d(0, 0, 0)
+  }
+
+  to {
+    transform: translate3d(0, -2vw, 0)
+  }
+}
+
+@keyframes smallCoinMove1 {
+  from {
+    transform: translate3d(0, 0, 0);
+    rotate: 0deg;
+  }
+
+  to {
+    transform: translate3d(14vw, 0, 0);
+    rotate: 270deg;
+  }
+}
+
+@keyframes smallCoinMove2 {
+  from {
+    transform: translate3d(0, 0, 0);
+    rotate: 0deg;
+  }
+
+  to {
+    transform: translate3d(-14vw, 0, 0);
+    rotate: 270deg;
+  }
+}
+
+@keyframes smallCoinMove3 {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg)
+  }
+
+  to {
+    transform: translate3d(14vw, 0, 0) rotate(360deg)
+  }
+}
+
+@keyframes smallCoinMove4 {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg)
+  }
+
+  to {
+    transform: translate3d(-14vw, 0, 0) rotate(-360deg)
+  }
+}
+
+@keyframes smallCoinSpin1 {
+  from {
+    transform: rotate(0deg) translate3d(14vw, 0, 0)
+  }
+
+  to {
+    transform: rotate(360deg) translate3d(14vw, 0, 0)
+  }
+}
+
+@keyframes smallCoinSpin2 {
+  from {
+    transform: rotate(0deg) translate3d(-14vw, 0, 0)
+  }
+
+  to {
+    transform: rotate(360deg) translate3d(-14vw, 0, 0)
+  }
+}
+
+@keyframes smallCoinSpin3 {
+  from {
+    transform: rotate(0deg) translate3d(14vw, 0, 0)
+  }
+
+  to {
+    transform: rotate(360deg) translate3d(14vw, 0, 0)
+  }
+}
+
+@keyframes smallCoinSpin4 {
+  from {
+    transform: rotate(0deg) translate3d(-14vw, 0, 0)
+  }
+
+  to {
+    transform: rotate(360deg) translate3d(-14vw, 0, 0)
+  }
+}
+
+@keyframes tsclickermov {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0%;
+  }
+
+  to {
+    transform: translate3d(4vw, -3.2vw, 0) rotate(320deg);
+    opacity: 100%;
+  }
+}
+
+@keyframes startmov {
+  from {
+    transform: translate3d(0, 0, 0)
+  }
+
+  to {
+    transform: translate3d(0, -4.7vw, 0)
+  }
+}
+
+@keyframes coinpartmov {
+  from {
+    opacity: 100%;
+    transform: translate3d(0, 0, 0)
+  }
+
+  to {
+    opacity: 0%;
+    transform: translate3d(0, 20px, 0);
+  }
+}
+
+@keyframes clickermov {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg)
+  }
+
+  to {
+    transform: translate3d(35.5vw, 7.2vw, 0) rotate(172deg)
+  }
+}
+
+@keyframes clickerclick {
+  from {
+    transform: translate3d(35.5vw, 7.2vw, 0) rotate(172deg)
+  }
+
+  to {
+    transform: translate3d(35.2vw, 6.9vw, 0) rotate(172deg)
+  }
+}
+
+@keyframes superclickermov {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg)
+  }
+
+  to {
+    transform: translate3d(44vw, 2vw, 0) rotate(175deg)
+  }
+}
+
+@keyframes superclickerclick {
+  from {
+    transform: translate3d(44vw, 2vw, 0) rotate(175deg)
+  }
+
+  to {
+    transform: translate3d(44.3vw, 1.7vw, 0) rotate(175deg)
+  }
+}
+
+@keyframes doublepointermov {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg)
+  }
+
+  to {
+    transform: translate3d(39.8vw, 6.9vw, 0) rotate(90deg)
+  }
+}
+
+@keyframes doublepointerclick {
+  from {
+    transform: translate3d(39.8vw, 6.9vw, 0) rotate(90deg)
+  }
+
+  to {
+    transform: translate3d(39.8vw, 7.5vw, 0) rotate(90deg)
+  }
+}
+
+@keyframes cursormov {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    height: 3vw;
+    width: 3vw;
+  }
+
+  to {
+    transform: translate3d(65vw, 23vw, 0) rotate(23deg);
+    height: 1.5vw;
+    width: 1.5vw;
+  }
+}
+
+@keyframes supercursormov {
+  from {
+    transform: translate3d(0, 0, 0);
+    height: 3vw;
+    width: 3vw;
+  }
+
+  to {
+    transform: translate3d(67vw, 18vw, 0);
+    height: 1.5vw;
+    width: 1.5vw;
+  }
+}
+
+@keyframes employeemov {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(39.8vw, -5vw, 0);
+  }
+}
+
+body {
+  background: url("../img/background.jpg") no-repeat fixed;
+  background-position: cover;
+  background-size: 100%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1vw;
+}
+
+/* Classes */
+
+/* General + Multi-class */
+
+.fixed {
+  position: fixed;
+}
+
+.center {
+  text-align: center;
+}
+
+.bgelement {
+  z-index: -1;
+}
+
+.buttons:not(#coin, #wipesavebutton, .bgelement, #fortheworthy, #breakpoint):hover,
+.shopbuttons:hover {
+  box-shadow: 0.05vw 0.05vw 0.2px black, -0.05vw -0.05vw 0.2px black;
+}
+
+.buttons,
+.tsclicker {
+  background: transparent no-repeat center;
+  background-size: 90%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1vw;
+  cursor: pointer;
+}
+
+.shopstrings,
+.ushopstrings,
+.statstrs {
+  text-align: center;
+  cursor: default;
+}
+
+.buttons,
+.statstrs,
+.label,
+.shopinfostr,
+.shopbuttons {
+  border: solid black 0.05vw;
+}
+
+/* Title screen */
+
+.coins {
+  height: 9.5vw;
+  width: 9.5vw;
+  top: 20.5vw;
+  left: 43.5vw;
+  animation: coinOpacity 2.5s forwards;
+}
+
+.titlestr {
+  font-weight: 100;
+  animation: titlestrsmov 1s ease-out forwards;
+}
+
+.btmstr {
+  top: 51vw;
+  animation: btmstringmov 1s ease-out forwards;
+}
+
+/* Game screen */
+
+.borders {
+  top: -0.2vw;
+  height: 100vw;
+  width: 0.05vw;
+  display: none;
+}
+
+/* Shop panel */
+
+.shopbuttons {
+  background: transparent no-repeat center;
+  background-size: 90%;
+  transition: width 0.3s, height 0.3s;
+  height: 3vw;
+  width: 3vw;
+  left: 7.6vw;
+  cursor: pointer;
+}
+
+.shopbuttons:hover {
+  height: 3.2vw;
+  width: 3.2vw;
+}
+
+.shopstrings {
+  font-size: 0.9vw;
+  left: 10.8vw;
+}
+
+/* Upgrade shop panel */
+
+.ushopstrings {
+  font-size: 0.9vw;
+  left: 10.8vw;
+}
+
+/* Stats panel */
+
+.statstrs {
+  position: relative;
+  width: 29vw;
+  left: 69vw;
+}
+
+/* Achievements panel */
+
+.ach.buttons {
+  background: transparent no-repeat center;
+  background-size: 90%;
+  height: 3vw;
+  width: 3vw;
+}
+
+.ach.icons {
+  font-size: 2.2vw;
+  vertical-align: middle;
+  line-height: 3vw;
+  height: 3.1vw;
+  width: 3.1vw;
+}
+
+/* IDs and pseudoclasses */
+
+/* Multi-ID */
+
+#hideloading,
+#titlescreen,
+#gamescreen,
+#shoppanel,
+#upgradeshoppanel,
+#statspanel,
+#debuginputscreen,
+#debugscreen,
+#achievementsscreen,
+#settingsscreen,
+#hideloading,
+#savingstring,
+#savebuttonhovercontainer .hover-target,
+#unlockstring,
+#bufflabel,
+#achievementsbtnhovercontainer .hover-target,
+#settingsbtnhovercontainer .hover-target,
+#autobuystring,
+#clickerhovercontainer .hover-target,
+#superclicker,
+#superclickerhovercontainer .hover-target,
+#superclickerimg,
+#doublepointer,
+#doublepointerhovercontainer .hover-target,
+#doublepointerimg,
+#supercursor,
+#employee,
+#godfinger,
+#clickerfusion,
+#clickerfusionhovercontainer .hover-target,
+#incorrectkeyentered,
+#breakpoint,
+#autobuyhovercontainer .hover-target,
+#breakpointicon,
+#cursorimg,
+#supercursorimg,
+#employeeimg {
+  display: none;
+}
+
+#savebuttonhovercontainer .hover-trigger:hover+.hover-target,
+#achievementsbtnhovercontainer .hover-trigger:hover+.hover-target,
+#settingsbtnhovercontainer .hover-trigger:hover+.hover-target,
+#clickerhovercontainer .hover-trigger:hover+.hover-target,
+#superclickerhovercontainer .hover-trigger:hover+.hover-target,
+#doublepointerhovercontainer .hover-trigger:hover+.hover-target,
+#clickerfusionhovercontainer .hover-trigger:hover+.hover-target,
+#autobuyhovercontainer .hover-trigger:hover+.hover-target {
+  display: block;
+}
+
+#clickerbuy:hover,
+#superclickerbuy:hover,
+#doublepointerbuy:hover,
+#cursorbuy:hover,
+#supercursorbuy:hover,
+#employeebuy:hover,
+#godfingerbuy:hover,
+#clickerfusionbuy:hover {
+  height: 3.2vw;
+  width: 3.2vw;
+}
+
+#clickerbuy:active,
+#superclickerbuy:active,
+#doublepointerbuy:active,
+#cursorbuy:active,
+#supercursorbuy:active,
+#employeebuy:hover,
+#godfingerbuy:active,
+#clickerfusionbuy:hover {
+  height: 3vw;
+  width: 3vw;
+}
+
+#wipesavebutton:hover,
+#fortheworthy:hover,
+#breakpoint:hover {
+  box-shadow: 0.05vw 0.05vw 0.2px red, -0.05vw -0.05vw 0.2px red;
+}
+
+#upgradebutton,
+#shopreturnbutton {
+  height: 3vw;
+  width: 10vw;
+  top: 46.3vw;
+  left: 9vw;
+}
+
+/* Loading screen */
+
+#loadstring {
+  font-weight: 100;
+}
+
+/* Title screen */
+
+#bg {
+  height: 2vw;
+  width: 2vw;
+  top: -2vw;
+  opacity: 40%;
+  z-index: -1;
+  animation: bgmove 4s linear forwards;
+}
+
+#skipintrostring {
+  top: -0.1vw;
+  left: 33.3vw;
+  animation: coinOpacity 2.5s forwards;
+}
+
+#basedonbuildstring {
+  left: 82vw;
+}
+
+#runningbrowserstring {
+  left: 29.5vw;
+  width: 37vw;
+}
+
+#title {
+  font-size: 3.5vw;
+  width: 10vw;
+  top: -19.5vw;
+  left: 41vw;
+}
+
+#betastring {
+  font-size: 2.5vw;
+  top: -12vw;
+  left: 43vw;
+}
+
+#updatestring {
+  font-size: 1.5vw;
+  width: 37vw;
+  top: -8.3vw;
+  left: 30vw;
+}
+
+#startbutton {
+  height: 3vw;
+  width: 10vw;
+  top: 51vw;
+  left: 43.2vw;
+  animation: startmov 1.5s ease-out forwards;
+}
+
+#tsclicker {
+  background-image: url("../img/shop/clicker.png");
+  opacity: 0%;
+  height: 4vw;
+  width: 4vw;
+  top: 20.7vw;
+  left: 46.9vw;
+  animation: tsclickermov 1.5s 0.5s forwards;
+}
+
+#sourcenote {
+  font-size: 0.9vw;
+}
+
+#key {
+  font-size: 1vw;
+  top: 2vw;
+}
+
+/* Game screen elements */
+
+#coin {
+  background-image: url("../img/coin.png");
+  border: none;
+  width: 14vw;
+  height: 14vw;
+  top: 13vw;
+  left: 42vw;
+  transition: all 0.3s;
+}
+
+#coin:hover {
+  top: 12vw;
+  left: 41vw;
+  width: 15vw;
+  height: 15vw;
+}
+
+#coin:active {
+  transform: rotate(5deg);
+}
+
+#coinparticle {
+  background-image: url("../img/coin.png");
+  border: none;
+  height: 2.5vw;
+  width: 2.5vw;
+  pointer-events: none;
+}
+
+#clickstring {
+  width: 37vw;
+  top: 26.7vw;
+  left: 30.5vw;
+  cursor: default;
+}
+
+#cpsstring {
+  width: 37vw;
+  top: 28.3vw;
+  left: 30.5vw;
+  cursor: default;
+}
+
+#clickvaluestring {
+  width: 37vw;
+  top: 30vw;
+  left: 30.5vw;
+  cursor: default;
+}
+
+#savebutton {
+  height: 3vw;
+  width: 10vw;
+  top: 0.5vw;
+  left: 44vw;
+}
+
+#savingstring {
+  width: 37vw;
+  top: 2.6vw;
+  left: 30.6vw;
+}
+
+#saveinfo {
+  width: 37vw;
+  top: 3vw;
+  left: 30.7vw;
+  font-size: 0.8vw;
+}
+
+#unlockstring {
+  width: 37vw;
+  top: 39vw;
+  left: 30.5vw;
+}
+
+#bufflabel {
+  width: 37vw;
+  top: 35vw;
+  left: 31vw;
+}
+
+#borders {
+  top: -0.1vw;
+}
+
+#leftborder {
+  left: 30vw;
+}
+
+#rightborder {
+  left: 68.5vw;
+}
+
+#achievementslabel {
+  width: 7.7vw;
+}
+
+#achievementsbutton {
+  height: 3vw;
+  width: 3vw;
+  top: 0.5vw;
+  left: 31vw;
+}
+
+#achievementsbtnicon {
+  height: 3.2vw;
+  width: 3.2vw;
+  top: 0.5vw;
+  left: 30.9vw;
+}
+
+#settingslabel {
+  width: 6.8vw;
+}
+
+#settingsbutton {
+  background-image: url("../img/settings/settings.png");
+  height: 3vw;
+  width: 3vw;
+  top: 0.5vw;
+  left: 64.7vw;
+}
+
+/* Shop panel elements */
+
+#shopicon {
+  height: 3.5vw;
+  width: 3.5vw;
+  top: 1.28vw;
+  left: 8.3vw;
+}
+
+#shopstring {
+  font-size: 2.5vw;
+  top: -0.5vw;
+  left: 12.5vw;
+}
+
+#autobuystring {
+  font-size: 0.8vw;
+  top: 4vw;
+  left: 10vw;
+}
+
+#clickerinfo {
+  font-size: 0.8vw;
+  width: 13.5vw;
+}
+
+#clickerimg {
+  background-image: url("../img/shop/clicker.png");
+  border: none;
+  top: 7vw;
+}
+
+#clickerbuy {
+  background-image: url("../img/shop/clicker.png");
+  top: 7vw;
+}
+
+#clickerstring {
+  top: 5vw;
+  left: 7.35vw;
+}
+
+#clickercpsstring {
+  top: 6vw;
+}
+
+#clickercoststring {
+  top: 7vw;
+}
+
+#clickersownedstring {
+  top: 8vw;
+}
+
+#superclickerinfo {
+  font-size: 0.8vw;
+  width: 13.5vw;
+}
+
+#superclickerimg {
+  background-image: url("../img/shop/superclicker.png");
+  border: none;
+  top: 12vw;
+  animation: superclickermov 2s forwards;
+}
+
+#superclickerbuy {
+  background-image: url("../img/shop/superclicker.png");
+  top: 12vw;
+}
+
+#superclickerstring {
+  top: 10vw;
+  left: 5.6vw;
+}
+
+#superclickercpsstring {
+  top: 11vw;
+}
+
+#superclickercoststring {
+  top: 12vw;
+}
+
+#superclickersownedstring {
+  top: 13vw;
+}
+
+#doublepointerinfo {
+  font-size: 0.8vw;
+  width: 13.5vw;
+}
+
+#doublepointerimg {
+  background-image: url("../img/shop/doublepointer.png");
+  border: none;
+  top: 17vw;
+  animation: doublepointermov 2s forwards;
+}
+
+#doublepointerbuy {
+  background-image: url("../img/shop/doublepointer.png");
+  top: 17vw;
+}
+
+#doublepointerstring {
+  top: 15vw;
+  left: 5.5vw;
+}
+
+#doublepointercpsstring {
+  top: 16vw;
+}
+
+#doublepointercoststring {
+  top: 17vw;
+}
+
+#doublepointersownedstring {
+  top: 18vw;
+}
+
+/* Upgrade shop panel elements */
+
+#upgradeshopicon {
+  height: 3.5vw;
+  width: 3.5vw;
+  top: 1.28vw;
+  left: 5.8vw;
+}
+
+#upgradestring {
+  font-size: 2.5vw;
+  top: -0.5vw;
+  left: 10vw;
+}
+
+#cursorimg {
+  background-image: url("../img/shop/cursor.png");
+  border: none;
+  top: 7vw;
+  animation: cursormov 2s forwards;
+}
+
+#cursorbuy {
+  background-image: url("../img/shop/cursor.png");
+  top: 7vw;
+  display: block;
+}
+
+#cursorstring {
+  top: 5vw;
+  left: 7.55vw;
+}
+
+#cursorcpsstring {
+  top: 6vw;
+}
+
+#cursorcoststring {
+  top: 7vw;
+}
+
+#cursorownedstring {
+  top: 8vw;
+}
+
+#supercursorimg {
+  background-image: url("../img/shop/supercursor.png");
+  border: none;
+  top: 12vw;
+  animation: supercursormov 2s 0.5s forwards;
+}
+
+#supercursorbuy {
+  background-image: url("../img/shop/supercursor.png");
+  top: 12vw;
+}
+
+#supercursorstring {
+  top: 10vw;
+  left: 6vw;
+}
+
+#supercursorcpsstring {
+  top: 11vw;
+}
+
+#supercursorcoststring {
+  top: 12vw;
+}
+
+#supercursorownedstring {
+  top: 13vw;
+}
+
+#employeeimg {
+  background-image: url("../img/shop/employee.png");
+  border: none;
+  top: 17vw;
+  animation: employeemov 2s 0.5s forwards;
+}
+
+#employeebuy {
+  background-image: url("../img/shop/employee.png");
+  top: 17vw;
+}
+
+#employeestring {
+  top: 15vw;
+  left: 7vw;
+}
+
+#employeecpsstring {
+  top: 16vw;
+}
+
+#employeecoststring {
+  top: 17vw;
+}
+
+#employeesownedstring {
+  top: 18vw;
+}
+
+#godfingerbuy {
+  background-image: url("../img/shop/godfinger.png");
+  top: 22vw;
+}
+
+#godfingerstring {
+  top: 20vw;
+  left: 6.6vw;
+}
+
+#godfingerperkstring {
+  top: 21vw;
+}
+
+#godfingercoststring {
+  top: 22vw;
+}
+
+#godfingerownedstring {
+  top: 23vw;
+}
+
+#clickerfusioninfo {
+  font-size: 0.8vw;
+  width: 13.5vw;
+}
+
+#clickerfusionbuy {
+  background-image: url("../img/shop/clicker.png");
+  top: 27vw;
+}
+
+#clickerfusionstring {
+  top: 25vw;
+  left: 5.5vw;
+}
+
+#clickerfusionperkstring {
+  top: 26vw;
+}
+
+#clickerfusioncoststring {
+  top: 27vw;
+}
+
+#clickerfusionownedstring {
+  top: 28vw;
+}
+
+/* Stats panel elements */
+#statsstring {
+  font-size: 2.5vw;
+  width: 7.5vw;
+  top: -0.5vw;
+  left: 82vw;
+}
+
+#statsicon {
+  height: 3.5vw;
+  width: 3.5vw;
+  top: 1.28vw;
+  left: 78vw;
+}
+
+#timestring {
+  top: 5.5vw;
+}
+
+#lifetimeclicksstring {
+  top: 6vw;
+}
+
+#lifetimemanualclicksstring {
+  top: 6.5vw;
+}
+
+#coinclickcountstring {
+  top: 7vw;
+}
+
+#totalclickhelpersstring {
+  top: 7.5vw;
+}
+
+#achievementsunlockedstring {
+  top: 8vw;
+}
+
+#rawcpsstring {
+  top: 8.5vw;
+}
+
+#rawcvstring {
+  top: 9vw;
+}
+
+/* Debug screen elements */
+
+#debugscreenlabel {
+  font-weight: 100;
+  font-size: 2.4vw;
+  top: 15vw;
+  left: 41.5vw;
+}
+
+#debuginputfield {
+  background: transparent;
+}
+
+#dbip {
+  font-size: 1.3vw;
+  top: 21.5vw;
+  left: 39.3vw;
+}
+
+#debugkeyinput {
+  border: solid 0.05vw black;
+  background: transparent;
+  font-family: inherit;
+  position: fixed;
+  resize: none;
+  height: 2vw;
+  width: 20vw;
+  top: 25vw;
+  left: 39vw;
+}
+
+#debugkeysubmit {
+  height: 2vw;
+  width: 7vw;
+  top: 28vw;
+  left: 45.5vw;
+}
+
+#incorrectkeyentered {
+  font-size: 15px;
+  top: 29.5vw;
+  left: 45.8vw;
+}
+
+#debugconsole {
+  border: solid 0.05vw black;
+  background: transparent;
+  font-family: inherit;
+  overflow: scroll;
+  height: 30vw;
+  width: 36vw;
+  top: 1vw;
+  left: 31vw;
+}
+
+#debugcmdinput {
+  border: solid 0.05vw black;
+  background: transparent;
+  font-family: inherit;
+  overflow: scroll;
+  height: 1.5vw;
+  width: 36vw;
+  top: 31.8vw;
+  left: 31vw;
+}
+
+/* Achievements screen element */
+
+#achievementsheader {
+  font-weight: 100;
+  font-size: 2vw;
+  top: 0vw;
+  left: 42vw;
+}
+
+#achievementnamestring {
+  width: 18vw;
+  top: 4vw;
+  left: 40vw;
+}
+
+#achievementdescriptionstring {
+  width: 36vw;
+  top: 6vw;
+  left: 31vw;
+}
+
+#achievementunlockedstring {
+  width: 36vw;
+  top: 9.5vw;
+  left: 31vw;
+}
+
+#journeybegins {
+  background-image: url("../img/achievements/thousandachievements.png");
+  top: 13vw;
+  left: 31.5vw;
+}
+
+#agoodstart {
+  background-image: url("../img/achievements/thousandachievements.png");
+  top: 13vw;
+  left: 34.5vw;
+}
+
+#gettingthere {
+  background-image: url("../img/achievements/thousandachievements.png");
+  top: 13vw;
+  left: 37.5vw;
+}
+
+#millionare {
+  background-image: url("../img/achievements/millionachievements.png");
+  top: 13vw;
+  left: 40.5vw;
+}
+
+#coinpool {
+  background-image: url("../img/achievements/millionachievements.png");
+  top: 13vw;
+  left: 43.5vw;
+}
+
+#abundance {
+  background-image: url("../img/achievements/millionachievements.png");
+  top: 13vw;
+  left: 46.5vw;
+}
+
+#billionare {
+  background-image: url("../img/achievements/billionachievements.png");
+  top: 13vw;
+  left: 49.5vw;
+}
+
+#excess {
+  background-image: url("../img/achievements/billionachievements.png");
+  top: 13vw;
+  left: 52.5vw;
+}
+
+#planetofclicks {
+  background-image: url("../img/achievements/billionachievements.png");
+  top: 13vw;
+  left: 55.5vw;
+}
+
+#trillionare {
+  background-image: url("../img/achievements/trillionachievements.png");
+  top: 13vw;
+  left: 58.5vw;
+}
+
+#pocketdimension {
+  background-image: url("../img/achievements/trillionachievements.png");
+  top: 13vw;
+  left: 61.5vw;
+}
+
+#fartoomany {
+  background-image: url("../img/achievements/trillionachievements.png");
+  top: 13vw;
+  left: 64.5vw;
+}
+
+#quadrillionare {
+  background-image: url("../img/achievements/quadrillionachievements.png");
+  top: 16vw;
+  left: 31.5vw;
+}
+
+#coinvortex {
+  background-image: url("../img/achievements/quadrillionachievements.png");
+  top: 16vw;
+  left: 34.5vw;
+}
+
+#coinshapedblackhole {
+  background-image: url("../img/achievements/quadrillionachievements.png");
+  top: 16vw;
+  left: 37.5vw;
+}
+
+#quintillionare {
+  background-image: url("../img/achievements/quintillionachievements.png");
+  top: 16vw;
+  left: 40.5vw;
+}
+
+#clickbeyond {
+  background-image: url("../img/achievements/quintillionachievements.png");
+  top: 16vw;
+  left: 43.5vw;
+}
+
+#distantbeginning {
+  background-image: url("../img/achievements/quintillionachievements.png");
+  top: 16vw;
+  left: 46.5vw;
+}
+
+#sextillionare {
+  background-image: url("../img/achievements/sextillionachievements.png");
+  top: 16vw;
+  left: 49.5vw;
+}
+
+#numberoverflow {
+  background-image: url("../img/achievements/sextillionachievements.png");
+  top: 16vw;
+  left: 52.5vw;
+}
+
+#coinuniverse {
+  background-image: url("../img/achievements/sextillionachievements.png");
+  top: 16vw;
+  left: 55.5vw;
+}
+
+#septillionare {
+  background-image: url("../img/achievements/septillionachievements.png");
+  top: 16vw;
+  left: 58.5vw;
+}
+
+#why {
+  background-image: url("../img/achievements/septillionachievements.png");
+  top: 16vw;
+  left: 61.5vw;
+}
+
+#twentyfingers {
+  background-image: url("../img/achievements/septillionachievements.png");
+  top: 16vw;
+  left: 64.5vw;
+}
+
+#fortheworthy {
+  top: 19vw;
+  left: 48vw;
+}
+
+#fortheworthyicon {
+  top: 19vw;
+  left: 48vw;
+}
+
+#breakpoint {
+  top: 22vw;
+  left: 48vw;
+}
+
+#breakpointicon {
+  top: 22vw;
+  left: 48vw;
+}
+
+#backtogame {
+  height: 3vw;
+  width: 10vw;
+  top: 46vw;
+  left: 44.5vw;
+}
+
+#settingsheader {
+  font-weight: 100;
+  font-size: 2.5vw;
+  top: 0vw;
+  left: 43.5vw;
+}
+
+#volumeinput {
+  border: solid 0.05vw black;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1.2vw;
+  height: 1vw;
+  width: 7vw;
+  top: 5vw;
+  left: 56.3vw;
+}
+
+#volumestring {
+  font-size: 0.9vw;
+  top: 4.2vw;
+  left: 33.5vw;
+}
+
+#autobuyinfo {
+  font-size: 14px;
+  width: 25vw;
+  border: solid black 0.05vw;
+}
+
+#autobuysettingstr {
+  font-size: 0.9vw;
+  position: fixed;
+  top: 6vw;
+  left: 39vw;
+}
+
+#autobuysetting {
+  height: 1.5vw;
+  width: 5vw;
+  top: 6.75vw;
+  left: 54vw;
+}
+
+#wipesavebutton {
+  border: solid 0.05vw red;
+  color: red;
+  height: 3vw;
+  width: 10vw;
+  top: 42vw;
+  left: 44vw;
+}
+
+#backtogame2 {
+  height: 3vw;
+  width: 10vw;
+  top: 46vw;
+  left: 44vw;
+}
