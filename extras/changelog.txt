@@ -33,7 +33,7 @@ Notes and Extra Changes:
 
 And with that, Update 6 is now complete.
 Yeah, I know I didn't add a lot of the stuff I had originally planned, but I decided to significantly polish the game before doing that. The *true* content update will happen soon. 
-Meanwhile, in Update 7, otherwise known as the "Movement" update, I plan to add the following:
+Meanwhile, in Update 7, otherwise known as the "Animation" update, I plan to add the following:
 
 - Animations for things like the coin and shop items.
 - Lots of bug fixes and balancing.
@@ -45,15 +45,29 @@ Build x.xanb
 - New animations with new sound effects! (You can skip the intro animation with the space bar.)
 - The game now automatically saves just before reloading the page.
 - You can now enable debug mode (Skips the title screen and unlocks all shop items by default) by pressing Ctrl+Alt+F on the title screen, enable debug autoplay by pressing Ctrl+Alt+A on the title screen, and enable both with Ctrl+Alt+C
-- Added a new 'pizza' command for the debug console! It displays how many $30 dollar pizzas you could buy if your clicks were real currency.
 - Added the background music from Cookie Clicker. (Click - C418)
 - The save keybind has changed from S to Ctrl+S.
 - Keybinds now also accept input from capital letters as well as lowercase. (Just in case caps lock is on)
 - Fixed a bug where the playtime counter wouldn't convert the time to hours until it reached 120 minutes.
-- Added a new ambient background that appears once you unlock the 'Getting There' achievement.
+- Added a new ambient background that appears once you unlock the 'Millionare' achievement, which will appear on the title screen as well.
 - The game should now work on multiple resolutions!
 - The wipe save button was moved to the Settings screen.
 - Fixed a few bugs with Clicker Fusion.
 - Shifted the positioning of shop items to make it more consistent between the two panels.
 - Fixed a bug that caused the bonus click buff to never occur.
 - This changelog is now included with the game.
+- The game now has a favicon.
+- The save info label that displays when you hover over the save button now alternates between it's default text and the time at which you last saved the game.
+- The browser console logs now have colors!
+- Achievements that pulsed red now pulse green.
+- Added a new hidden achievement...
+- The game's background gradient is now customizable.
+- Added an option to change the graphics mode, which will disable the game's particle effects and decrease the speed that the game's values update.
+- Reworked the way the click value buff works so that it will not trigger if the tab is inactive or if the coin is not visible.
+- More shop rebalancing, to make prices more fair.
+- The title of the page will now change to 'Title updates paused.' if the tab is inactive.
+- The game now has an FPS tracker that can be toggled on and off with Shift+F
+- Your clicks now gain 10% of your CpS every second while offline.
+- 'Clicks' are now referred to as 'Coins'.
+- The game now reports the browser version as well as a more accurate browser name, if supported.
+- Strings which have quickly updating values (coins, CpS, etc) now have a slight transition when increasing and lowering values.

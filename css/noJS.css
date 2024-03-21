@@ -39,18 +39,21 @@
 }
 
 body {
-  background-color: black;
-  color: white;
-  font-family: Courier, monospace;
+  text-align: center;
+  font-weight: 100;
 }
 
 h1#ns {
   font-size: 20px;
-  font-weight: 100;
-  text-align: center;
 }
 
-p#ns {
+a#ns {
   font-size: 18px;
-  text-align: center;
+  color: black;
+}
+
+a#ns:hover {
+  -webkit-text-stroke: 0.2px;
+  -webkit-text-stroke-color: black;
+  text-decoration-thickness: 2px;
 }

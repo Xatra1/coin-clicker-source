@@ -1,245 +1,271 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang='en-US'>
 
 <head>
-  <meta name="viewport" content="height=device-height, width=device-width, inital-scale=1">
-  <link rel="stylesheet" href="./css/style.css">
+  <meta name='viewport' content='height=device-height, width=device-width, initial-scale=1'>
+  <link rel='stylesheet' href='./css/style.css'>
+  <link rel='icon' type='image/x-icon' href='./img/favicon.ico'>
 </head>
 
 <body>
   <noscript>
-    <link rel="stylesheet" href="./css/noJS.css">
-    <h1 id="ns">This site makes extensive use of JavaScript, which you have disabled. Please enable it and refresh the
+    <link rel='stylesheet' href='./css/noJS.css'>
+    <h1 id='ns'>This game requires the use of JavaScript, which you have disabled. Please enable it and refresh the
       page.</h1>
-    <p id="ns">Unless you want to stare at this lovely blank page, of course.</p>
+    <a href='https://www.enable-javascript.com/' id='ns'>How do I enable Javascript?</a>
   </noscript>
   <!-- jQuery Libraries -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <div id="loadingscreen">
-    <h1 id="loadstring" class="center">Loading...</h1>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
+  <div id='loadingscreen'>
+    <h1 id='loadstring' class='center'>Loading...</h1>
   </div>
-  <div id="hideloading">
-    <div id="sounds">
-      <audio src="./snd/click.mp3" id="sfx"></audio>
-      <audio src="./snd/shopunlock.mp3" id="sfx2"></audio>
-      <audio src="./snd/achievementunlock.mp3" id="sfx3"></audio>
-      <audio src="./snd/specialachievementunlocksfx.mp3" id="sfx4"></audio>
-      <audio src="./snd/shopbuy.mp3" id="sfx5"></audio>
-      <audio src="./snd/coinwhoosh.mp3" id="sfx6"></audio>
-      <audio src="./snd/titlestrswhoosh.mp3" id="sfx7"></audio>
-      <audio src="./snd/titlestrswhoosh.mp3" id="sfx7.1"></audio>
-      <audio src="./snd/bgm.mp3" id="bgm"></audio>
+  <div id='hideloading' class='hidden'>
+    <p id='fpslabel' class='fixed hidden'>FPS: </p>
+    <div id='audio'>
+      <audio src='./snd/click.mp3' id='sfx'></audio>
+      <audio src='./snd/shopunlock.mp3' id='sfx2'></audio>
+      <audio src='./snd/achievementunlock.mp3' id='sfx3'></audio>
+      <audio src='./snd/specialachievementunlocksfx.mp3' id='sfx4'></audio>
+      <audio src='./snd/shopbuy.mp3' id='sfx5'></audio>
+      <audio src='./snd/coinwhoosh.mp3' id='sfx6'></audio>
+      <audio src='./snd/titlestrswhoosh.mp3' id='sfx7'></audio>
+      <audio src='./snd/titlestrswhoosh.mp3' id='sfx7.1'></audio>
+      <audio src='./snd/bgm.mp3' id='bgm'></audio>
     </div>
-    <div id="titlescreen">
-      <p id="sourcenote" class="hasanim fixed"></p>
-      <p id="skipintrostring" class="hasanim fixed">Press the space bar to skip directly to the game.</p>
-      <p id="runningbrowserstring" class="hasanim btmstr center fixed"></p>
-      <p id="basedonbuildstring" class="hasanim btmstr fixed">based on code.org build 4.41b</p>
-      <h2 id="betastring" class="hasanim titlestr fixed">beta v7</h2>
-      <p id="buildstring" class="hasanim btmstr fixed"></p>
-      <h1 id="title" class="hasanim titlestr fixed">coin clicker</h1>
-      <h2 id="updatestring" class="hasanim titlestr center fixed"></h2>
-      <button id="startbutton" class="buttons hasanim btmbutton fixed">Start</button>
-      <img id="smallcoin1" class="hasanim coins bgelement fixed" src="./img/coin.png">
-      <img id="smallcoin2" class="hasanim coins bgelement fixed" src="./img/coin.png">
-      <img id="smallcoin3" class="hasanim coins bgelement fixed" src="./img/coin.png">
-      <img id="smallcoin4" class="hasanim coins bgelement fixed" src="./img/coin.png">
-      <img id="tsclicker" class="hasanim fixed bgelement tsclicker" src="./img/shop/clicker.png">
+    <div id='titlescreen' class='hidden'>
+      <p id='sourcenote' class='hasanim fixed'></p>
+      <p id='skipintrostring' class='hasanim fixed'>Press the space bar to skip directly to the game.</p>
+      <p id='runningbrowserstring' class='hasanim btmstr center fixed'></p>
+      <p id='basedonbuildstring' class='hasanim btmstr fixed'>based on code.org build 4.41b</p>
+      <h2 id='betastring' class='hasanim titlestr fixed'>beta v7</h2>
+      <p id='buildstring' class='hasanim btmstr fixed'></p>
+      <h1 id='title' class='hasanim titlestr fixed'>coin clicker</h1>
+      <h2 id='updatestring' class='hasanim titlestr center fixed'></h2>
+      <button id='startbutton' class='buttons hasanim btmbutton fixed'>Start</button>
+      <img id='smallcoin1' class='hasanim coins bgelement fixed' src='./img/coin.png'>
+      <img id='smallcoin2' class='hasanim coins bgelement fixed' src='./img/coin.png'>
+      <img id='smallcoin3' class='hasanim coins bgelement fixed' src='./img/coin.png'>
+      <img id='smallcoin4' class='hasanim coins bgelement fixed' src='./img/coin.png'>
+      <img id='tsclicker' class='hasanim fixed bgelement tsclicker' src='./img/shop/clicker.png'>
     </div>
-    <div id="borders">
-      <img id="leftborder" class="borders fixed" src="./img/border.png">
-      <img id="rightborder" class="borders fixed" src="./img/border.png">
+    <div id='borders'>
+      <img id='leftborder' class='borders fixed' src='./img/border.png'>
+      <img id='rightborder' class='borders fixed' src='./img/border.png'>
     </div>
-    <div id="gamescreen">
-      <button id="coin" class="gamecoin buttons fixed"></button>
-      <button id="clickerimg" class="coinattachment fixed shopbuttons hasanim bgelement"></button>
-      <button id="superclickerimg" class="coinattachment fixed shopbuttons hasanim bgelement"></button>
-      <button id="doublepointerimg" class="coinattachment fixed shopbuttons hasanim bgelement"></button>
-      <button id="employeeimg" class="coinattachment shopbuttons bgelement hasanim fixed"></button>
-      <p id="clickstring" class="fixed center">Clicks: </p>
-      <p id="cpsstring" class="fixed center">Clicks per Second: </p>
-      <p id="clickvaluestring" class="fixed center">Click Value: </p>
-      <p id="unlockstring" class="fixed center">Placeholder unlocked!</p>
-      <div id="savebuttonhovercontainer">
-        <button id="savebutton" class="buttons hover-trigger fixed">Save</button>
-        <p id="saveinfo" class="hover-target fixed center">Game autosaves every minute; You can also press Ctrl+S to
+    <div id='gamescreen' class='hidden'>
+      <button id='coin' class='gamecoin buttons fixed'></button>
+      <button id='clickerimg' class='coinattachment fixed shopbuttons hasanim bgelement'></button>
+      <button id='superclickerimg' class='coinattachment fixed shopbuttons hasanim bgelement hidden'></button>
+      <button id='doublepointerimg' class='coinattachment fixed shopbuttons hasanim bgelement hidden'></button>
+      <button id='employeeimg' class='coinattachment shopbuttons bgelement hasanim fixed hidden'></button>
+      <p id='clickstring' class='fixed center'>Clicks: </p>
+      <p id='cpsstring' class='fixed center'>Clicks per Second: </p>
+      <p id='clickvaluestring' class='fixed center'>Click Value: </p>
+      <p id='unlockstring' class='fixed center hidden'>Placeholder unlocked!</p>
+      <div id='savebuttonhovercontainer'>
+        <button id='savebutton' class='buttons hover-trigger fixed'>Save</button>
+        <p id='saveinfo' class='hover-target fixed center hidden'>Game autosaves every minute; You can also press Ctrl+S
+          to
           save.</p>
-        <p id="savingstring" class="savingstring fixed center">Saving...</p>
+        <p id='savingstring' class='savingstring fixed center hidden'>Saving...</p>
       </div>
-      <p id="bufflabel" class="fixed center">Your click value has been increased by 777% of your CpS for 10 seconds!</p>
-      <div id="achievementsbtnhovercontainer">
-        <button id="achievementsbutton" class="hover-trigger buttons fixed"></button>
-        <p id="achievementslabel" class="hover-target label fixed center">Achievements</p>
+      <p id='bufflabel' class='fixed center hidden'>Your click value has been increased by 777% of your CpS for 10
+        seconds!</p>
+      <div id='achievementsbtnhovercontainer'>
+        <button id='achievementsbutton' class='hover-trigger buttons fixed'></button>
+        <p id='achievementslabel' class='hover-target label fixed center hidden'>Achievements</p>
       </div>
-      <i id="achievementsbtnicon" class="fa-solid fa-star ach icons fixed center bgelement"></i>
-      <div id="settingsbtnhovercontainer">
-        <button id="settingsbutton" class="hover-trigger buttons fixed"></button>
-        <p id="settingslabel" class="hover-target label fixed center">Settings</p>
-      </div>
-    </div>
-    <div id="shoppanel">
-      <p id="shopstring" class="fixed">Shop</p>
-      <p id="autobuystring" class="fixed">Autobuy is enabled.</p>
-      <img id="shopicon" src="./img/shop/shoplogo.png" class="fixed">
-      <button id="upgradebutton" class="buttons btmbutton fixed">Upgrades</button>
-      <div id="clickerhovercontainer">
-        <button id="clickerbuy" class="hover-trigger shopbuttons fixed"></buton>
-        <p id="clickerinfo" class="hover-target shopinfostr shopstrings fixed">You have no clickers.</p>
-      </div>
-      <p id="clickerstring" class="fixed shopstrings">clicker</p>
-      <p id="clickercpsstring" class="fixed shopstrings">CpS: </p>
-      <p id="clickercoststring" class="fixed shopstrings">Cost: </p>
-      <p id="clickersownedstring" class="fixed shopstrings">Owned: </p>
-      <div id="superclicker">
-        <div id="superclickerhovercontainer">
-          <button id="superclickerbuy" class="hover-trigger shopbuttons fixed"></button>
-          <p id="superclickerinfo" class="hover-target shopinfostr shopstrings fixed">You have no super clickers.</p>
-        </div>
-        <p id="superclickerstring" class="fixed shopstrings">super clicker</p>
-        <P id="superclickercpsstring" class="fixed shopstrings">CpS: </P>
-        <p id="superclickercoststring" class="fixed shopstrings">Cost: </p>
-        <p id="superclickersownedstring" class="fixed shopstrings">Owned: </p>
-      </div>
-      <div id="doublepointer">
-        <div id="doublepointerhovercontainer">
-          <button id="doublepointerbuy" class="hover-trigger shopbuttons fixed"></button>
-          <p id="doublepointerinfo" class="hover-target shopinfostr shopstrings fixed">You have no double pointers.</p>
-        </div>
-        <p id="doublepointerstring" class="fixed shopstrings">double pointer</p>
-        <p id="doublepointercpsstring" class="fixed shopstrings">CpS: </p>
-        <p id="doublepointercoststring" class="fixed shopstrings">Cost: </p>
-        <p id="doublepointersownedstring" class="fixed shopstrings">Owned: </p>
+      <i id='achievementsbtnicon' class='fa-solid fa-star ach icons fixed center bgelement'></i>
+      <div id='settingsbtnhovercontainer'>
+        <button id='settingsbutton' class='hover-trigger buttons fixed'></button>
+        <p id='settingslabel' class='hover-target label fixed center hidden'>Settings</p>
       </div>
     </div>
-    <div id="upgradeshoppanel">
-      <div id="floatingushopicons">
-        <button id="cursorimg" class="shopbuttons bgelement hasanim fixed"></button>
-        <button id="supercursorimg" class="shopbuttons bgelement hasanim fixed"></button>
+    <div id='shoppanel' class='hidden'>
+      <p id='shopstring' class='fixed'>Shop</p>
+      <p id='autobuystring' class='fixed hidden'>Autobuy is enabled.</p>
+      <img id='shopicon' src='./img/shop/shoplogo.png' class='fixed'>
+      <button id='upgradebutton' class='buttons btmbutton fixed'>Upgrades</button>
+      <div id='clickerhovercontainer'>
+        <button id='clickerbuy' class='hover-trigger shopbuttons fixed shophover'></button>
+        <p id='clickerinfo' class='hover-target shopinfostr shopstrings fixed hidden'>You have no clickers.</p>
       </div>
-      <p id="upgradestring" class="fixed">Upgrades</p>
-      <img id="upgradeshopicon" src="./img/shop/shoplogo.png" class="fixed">
-      <button id="shopreturnbutton" class="buttons btmbutton fixed">Back</button>
-      <button id="cursorbuy" class="shopbuttons fixed"></button>
-      <p id="cursorstring" class="ushopstrings fixed">cursor</p>
-      <p id="cursorcpsstring" class="ushopstrings fixed">CpS: +50%</p>
-      <p id="cursorcoststring" class="ushopstrings fixed">Cost: 1,000,000</p>
-      <p id="cursorownedstring" class="ushopstrings fixed">Owned: </p>
-      <div id="supercursor">
-        <button id="supercursorbuy" class="shopbuttons fixed"></button>
-        <p id="supercursorstring" class="ushopstrings fixed">super cursor</p>
-        <p id="supercursorcpsstring" class="ushopstrings fixed">CpS: +75%</p>
-        <p id="supercursorcoststring" class="ushopstrings fixed">Cost: 10,000,000</p>
-        <p id="supercursorownedstring" class="ushopstrings fixed">Owned: </p>
+      <p id='clickerstring' class='fixed shopstrings'>clicker</p>
+      <p id='clickercpsstring' class='fixed shopstrings'>CpS: </p>
+      <p id='clickercoststring' class='fixed shopstrings'>Cost: </p>
+      <p id='clickersownedstring' class='fixed shopstrings'>Owned: </p>
+      <div id='superclicker' class='hidden'>
+        <div id='superclickerhovercontainer'>
+          <button id='superclickerbuy' class='hover-trigger shopbuttons fixed shophover'></button>
+          <p id='superclickerinfo' class='hover-target shopinfostr shopstrings fixed hidden'>You have no super clickers.
+          </p>
+        </div>
+        <p id='superclickerstring' class='fixed shopstrings'>super clicker</p>
+        <P id='superclickercpsstring' class='fixed shopstrings'>CpS: </P>
+        <p id='superclickercoststring' class='fixed shopstrings'>Cost: </p>
+        <p id='superclickersownedstring' class='fixed shopstrings'>Owned: </p>
       </div>
-      <div id="employee">
-        <button id="employeebuy" class="shopbuttons fixed"></button>
-        <p id="employeestring" class="ushopstrings fixed">employee</p>
-        <p id="employeecpsstring" class="ushopstrings fixed">CpS: +0.5% (Stacks)</p>
-        <p id="employeecoststring" class="ushopstrings fixed">Cost: 50,000,000,000</p>
-        <p id="employeesownedstring" class="ushopstrings fixed">Owned: </p>
+      <div id='doublepointer' class='hidden'>
+        <div id='doublepointerhovercontainer'>
+          <button id='doublepointerbuy' class='hover-trigger shopbuttons fixed shophover'></button>
+          <p id='doublepointerinfo' class='hover-target shopinfostr shopstrings fixed hidden'>You have no double
+            pointers.</p>
+        </div>
+        <p id='doublepointerstring' class='fixed shopstrings'>double pointer</p>
+        <p id='doublepointercpsstring' class='fixed shopstrings'>CpS: </p>
+        <p id='doublepointercoststring' class='fixed shopstrings'>Cost: </p>
+        <p id='doublepointersownedstring' class='fixed shopstrings'>Owned: </p>
       </div>
-      <div id="godfinger">
-        <button id="godfingerbuy" class="shopbuttons fixed"></button>
-        <p id="godfingerstring" class="ushopstrings fixed">god finger</p>
-        <p id="godfingerperkstring" class="ushopstrings fixed">Perk: +35% Click Value</p>
-        <p id="godfingercoststring" class="ushopstrings fixed">Cost: 5,000,000,000,000</p>
-        <p id="godfingerownedstring" class="ushopstrings fixed">Owned: </p>
+    </div>
+    <div id='upgradeshoppanel' class='hidden'>
+      <div id='floatingushopicons'>
+        <button id='cursorimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
+        <button id='supercursorimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
+        <button id='godfingerimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
+        <button id='clickerfusionimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
       </div>
-      <div id="clickerfusion">
-        <div id="clickerfusionhovercontainer">
-          <button id="clickerfusionbuy" class="hover-trigger shopbuttons fixed"></button>
-          <p id="clickerfusioninfo" class="hover-target shopinfostr fixed">Fuse 150 clickers together to multiply their
+      <p id='upgradestring' class='fixed'>Upgrades</p>
+      <img id='upgradeshopicon' src='./img/shop/shoplogo.png' class='fixed'>
+      <button id='shopreturnbutton' class='buttons btmbutton fixed'>Back</button>
+      <button id='cursorbuy' class='shopbuttons fixed shophover'></button>
+      <p id='cursorstring' class='ushopstrings fixed'>cursor</p>
+      <p id='cursorcpsstring' class='ushopstrings fixed'>CpS: +100%</p>
+      <p id='cursorcoststring' class='ushopstrings fixed'>Cost: 1,000,000</p>
+      <p id='cursorownedstring' class='ushopstrings fixed'>Owned: </p>
+      <div id='supercursor' class='hidden'>
+        <button id='supercursorbuy' class='shopbuttons fixed shophover'></button>
+        <p id='supercursorstring' class='ushopstrings fixed'>super cursor</p>
+        <p id='supercursorcpsstring' class='ushopstrings fixed'>CpS: +150%</p>
+        <p id='supercursorcoststring' class='ushopstrings fixed'>Cost: 10,000,000</p>
+        <p id='supercursorownedstring' class='ushopstrings fixed'>Owned: </p>
+      </div>
+      <div id='employee' class='hidden'>
+        <button id='employeebuy' class='shopbuttons fixed shophover'></button>
+        <p id='employeestring' class='ushopstrings fixed'>employee</p>
+        <p id='employeecpsstring' class='ushopstrings fixed'>CpS: +5% (Stacks)</p>
+        <p id='employeecoststring' class='ushopstrings fixed'>Cost: 50,000,000,000</p>
+        <p id='employeesownedstring' class='ushopstrings fixed'>Owned: </p>
+      </div>
+      <div id='godfinger' class='hidden'>
+        <button id='godfingerbuy' class='shopbuttons fixed shophover'></button>
+        <p id='godfingerstring' class='ushopstrings fixed'>god finger</p>
+        <p id='godfingerperkstring' class='ushopstrings fixed'>Perk: +35% Click Value</p>
+        <p id='godfingercoststring' class='ushopstrings fixed'>Cost: 5,000,000,000,000</p>
+        <p id='godfingerownedstring' class='ushopstrings fixed'>Owned: </p>
+      </div>
+      <div id='clickerfusion' class='hidden'>
+        <div id='clickerfusionhovercontainer'>
+          <button id='clickerfusionbuy' class='hover-trigger shopbuttons fixed shophover'></button>
+          <p id='clickerfusioninfo' class='hover-target shopinfostr fixed hidden'>Fuse 150 clickers together to multiply
+            their
             CpS by 150%.
             You
             can only do this once.</p>
         </div>
-        <p id="clickerfusionstring" class="ushopstrings fixed">clicker fusion</p>
-        <p id="clickerfusionperkstring" class="ushopstrings fixed">Hover for info.</p>
-        <p id="clickerfusioncoststring" class="ushopstrings fixed">Hover for info.</p>
-        <p id="clickerfusionownedstring" class="ushopstrings fixed">Owned: </p>
+        <p id='clickerfusionstring' class='ushopstrings fixed'>clicker fusion</p>
+        <p id='clickerfusionperkstring' class='ushopstrings fixed'>Hover for info.</p>
+        <p id='clickerfusioncoststring' class='ushopstrings fixed'>Hover for info.</p>
+        <p id='clickerfusionownedstring' class='ushopstrings fixed'>Owned: </p>
       </div>
     </div>
-    <div id="statspanel">
-      <p id="statsstring" class="fixed">Stats</p>
-      <img id="statsicon" src="./img/stats/statslogo.png" class="fixed">
-      <p id="timestring" class="statstrs">You have played for 0 seconds.</p>
-      <p id="lifetimeclicksstring" class="statstrs">You have obtained a total of 0 clicks.</p>
-      <p id="lifetimemanualclicksstring" class="statstrs">You have gotten 0 clicks from clicking.</p>
-      <p id="coinclickcountstring" class="statstrs">You have clicked the coin 0 times.</p>
-      <p id="totalclickhelpersstring" class="statstrs">You have bought 0 items.</p>
-      <p id="achievementsunlockedstring" class="statstrs">You have unlocked 0 achievements.</p>
-      <p id="rawcpsstring" class="statstrs">Your raw clicks per second is 0.</p>
-      <p id="rawcvstring" class="statstrs">Your raw click value is 0.</p>
+    <div id='statspanel' class='hidden'>
+      <p id='statsstring' class='fixed'>Stats</p>
+      <img id='statsicon' src='./img/stats/statslogo.png' class='fixed'>
+      <p id='timestring' class='statstrs'>You have played for 0 seconds.</p>
+      <p id='lifetimeclicksstring' class='statstrs'>You have obtained a total of 0 clicks.</p>
+      <p id='lifetimemanualclicksstring' class='statstrs'>You have gotten 0 clicks from clicking.</p>
+      <p id='coinclickcountstring' class='statstrs'>You have clicked the coin 0 times.</p>
+      <p id='totalclickhelpersstring' class='statstrs'>You have bought 0 items.</p>
+      <p id='achievementsunlockedstring' class='statstrs'>You have unlocked 0 achievements.</p>
+      <p id='rawcpsstring' class='statstrs'>Your raw clicks per second is 0.</p>
+      <p id='rawcvstring' class='statstrs'>Your raw click value is 0.</p>
     </div>
-    <div id="debuginputscreen">
-      <h1 id="debugscreenlabel" class="fixed">Debug Mode</h1>
-      <form id="debuginputfield" class="fixed">
-        <p id="dbip" class="fixed">Debug Console Access Key</p>
-        <label id="dbilabel" for="debugkeyinput"></label>
-        <input type="text" name="debugkeyinput" placeholder="Ctrl+Y on the title screen" id="debugkeyinput"
-          class="fixed center">
-        <button id="debugkeysubmit" class="buttons fixed">Submit</button>
+    <div id='debuginputscreen' class='hidden'>
+      <h1 id='debugscreenlabel' class='fixed'>Debug Mode</h1>
+      <form id='debuginputfield' class='fixed'>
+        <p id='dbip' class='fixed'>Debug Console Access Key</p>
+        <label id='dbilabel' for='debugkeyinput'></label>
+        <input type='text' name='debugkeyinput' placeholder='Ctrl+Y on the title screen' id='debugkeyinput'
+          class='fixed center'>
+        <button id='debugkeysubmit' class='buttons fixed'>Submit</button>
       </form>
-      <p id="incorrectkeyentered" class="fixed">Incorrect key.</p>
+      <p id='incorrectkeyentered' class='fixed hidden'>Incorrect key.</p>
     </div>
-    <div id="debugscreen">
-      <textarea readonly id="debugconsole" class="fixed">Debug Console: </textarea>
-      <form id="debugconsinput">
-        <label for="debugcmdinput"></label>
-        <input type="text" name="debugcmdinput" placeholder=">_" id="debugcmdinput" class="fixed">
+    <div id='debugscreen' class='hidden'>
+      <textarea readonly id='debugconsole' class='fixed'></textarea>
+      <form id='debugconsinput'>
+        <label for='debugcmdinput'></label>
+        <input type='text' name='debugcmdinput' placeholder='>_' id='debugcmdinput' class='fixed'>
       </form>
     </div>
-    <div id="achievementsscreen">
-      <h2 id="achievementsheader" class="fixed center">Achievements</h2>
-      <p id="achievementnamestring" class="fixed center">Journey Begins</p>
-      <p id="achievementdescriptionstring" class="fixed center">Obtain 1 lifetime click.</p>
-      <p id="achievementunlockedstring" class="fixed center">Unlocked: false</p>
-      <button id="journeybegins" class="ach buttons fixed"></button>
-      <button id="agoodstart" class="ach buttons fixed"></button>
-      <button id="gettingthere" class="ach buttons fixed"></button>
-      <button id="millionare" class="ach buttons fixed"></button>
-      <button id="coinpool" class="ach buttons fixed"></button>
-      <button id="abundance" class="ach buttons fixed"></button>
-      <button id="billionare" class="ach buttons fixed"></button>
-      <button id="excess" class="ach buttons fixed"></button>
-      <button id="planetofclicks" class="ach buttons fixed"></button>
-      <button id="trillionare" class="ach buttons fixed"></button>
-      <button id="pocketdimension" class="ach buttons fixed"></button>
-      <button id="fartoomany" class="ach buttons fixed"></button>
-      <button id="quadrillionare" class="ach buttons fixed"></button>
-      <button id="coinvortex" class="ach buttons fixed"></button>
-      <button id="coinshapedblackhole" class="ach buttons fixed"></button>
-      <button id="quintillionare" class="ach buttons fixed"></button>
-      <button id="clickbeyond" class="ach buttons fixed"></button>
-      <button id="distantbeginning" class="ach buttons fixed"></button>
-      <button id="sextillionare" class="ach buttons fixed"></button>
-      <button id="numberoverflow" class="ach buttons fixed"></button>
-      <button id="coinuniverse" class="ach buttons fixed"></button>
-      <button id="septillionare" class="ach buttons fixed"></button>
-      <button id="why" class="ach buttons fixed"></button>
-      <button id="twentyfingers" class="ach buttons fixed"></button>
-      <button id="fortheworthy" class="ach buttons fixed"></button>
-      <button id="breakpoint" class="ach buttons fixed"></button>
-      <button id="backtogame" class="ach buttons fixed">Back</button>
-      <i id="fortheworthyicon" class="fa-solid fa-star ach fixed icons center bgelement"></i>
-      <i id="breakpointicon" class="fa-solid fa-star ach fixed icons center bgelement"></i>
+    <div id='achievementsscreen' class='hidden'>
+      <h2 id='achievementsheader' class='fixed center'>Achievements</h2>
+      <p id='achievementnamestring' class='fixed center'>Journey Begins</p>
+      <p id='achievementdescriptionstring' class='fixed center'>Obtain 1 lifetime click.</p>
+      <p id='achievementunlockedstring' class='fixed center'>Unlocked: false</p>
+      <button id='journeybegins' class='ach buttons fixed'></button>
+      <button id='agoodstart' class='ach buttons fixed'></button>
+      <button id='gettingthere' class='ach buttons fixed'></button>
+      <button id='millionare' class='ach buttons fixed'></button>
+      <button id='coinpool' class='ach buttons fixed'></button>
+      <button id='abundance' class='ach buttons fixed'></button>
+      <button id='billionare' class='ach buttons fixed'></button>
+      <button id='excess' class='ach buttons fixed'></button>
+      <button id='planetofclicks' class='ach buttons fixed'></button>
+      <button id='trillionare' class='ach buttons fixed'></button>
+      <button id='pocketdimension' class='ach buttons fixed'></button>
+      <button id='fartoomany' class='ach buttons fixed'></button>
+      <button id='quadrillionare' class='ach buttons fixed'></button>
+      <button id='coinvortex' class='ach buttons fixed'></button>
+      <button id='coinshapedblackhole' class='ach buttons fixed'></button>
+      <button id='quintillionare' class='ach buttons fixed'></button>
+      <button id='clickbeyond' class='ach buttons fixed'></button>
+      <button id='distantbeginning' class='ach buttons fixed'></button>
+      <button id='sextillionare' class='ach buttons fixed'></button>
+      <button id='numberoverflow' class='ach buttons fixed'></button>
+      <button id='coinuniverse' class='ach buttons fixed'></button>
+      <button id='septillionare' class='ach buttons fixed'></button>
+      <button id='why' class='ach buttons fixed'></button>
+      <button id='twentyfingers' class='ach buttons fixed'></button>
+      <button id='fortheworthy' class='ach buttons fixed'></button>
+      <button id='breakpoint' class='ach buttons fixed hidden'></button>
+      <button id='cheater' class='ach buttons fixed hidden'></button>
+      <button id='backtogame' class='ach buttons fixed'>Back</button>
+      <i id='fortheworthyicon' class='fa-solid fa-star ach fixed icons center bgelement'></i>
+      <i id='breakpointicon' class='fa-solid fa-star ach fixed icons center bgelement hidden'></i>
+      <i id='cheatericon' class='fa-solid fa-star ach fixed icons center bgelement hidden'></i>
     </div>
-    <div id="settingsscreen">
-      <h1 id="settingsheader" class="fixed">Settings</h1>
-      <label for="volumeinput"></label>
-      <p id="volumestring" class="fixed">Volume (Accepts values between 0-100):</p>
-      <input name="volumeinput" id="volumeinput" class="fixed" type="text">
-      <div id="autobuyhovercontainer">
-        <p id="autobuysettingstr" class="fixed">Autobuy (Hover for info):</p>
-        <button id="autobuysetting" class="hover-trigger buttons fixed">OFF</button>
-        <p id="autobuyinfo" class="hover-target fixed">Automatically buys items for you whenever you have enough
+    <div id='settingsscreen' class='hidden'>
+      <h1 id='settingsheader' class='fixed'>Settings</h1>
+      <label for='volumeinput'></label>
+      <p id='volumestring' class='fixed'>Volume (Accepts values between 0-100):</p>
+      <input name='volumeinput' id='volumeinput' class='fixed' type='text'>
+      <div id='autobuyhovercontainer'>
+        <p id='autobuysettingstr' class='fixed'>Autobuy (Hover for info):</p>
+        <button id='autobuysetting' class='hover-trigger buttons fixed'>OFF</button>
+        <p id='autobuyinfo' class='hover-target fixed hidden'>Automatically buys items for you whenever you have enough
           clicks.</p>
       </div>
-      <button id="wipesavebutton" class="buttons btmbutton fixed">Wipe Save</button>
-      <button id="backtogame2" class="buttons fixed">Back</button>
+      <label for='bggrad1input'></label>
+      <p id='bggrad1string'>Background Gradient Center (Format: R, G, B):</p>
+      <input name='bggrad1input' id='bggrad1input' type='text'>
+      <label for='bggrad2input'></label>
+      <p id='bggrad2string'>Background Gradient Edge (Format: R, G, B):</p>
+      <input name='bggrad2input' id='bggrad2input' type='text'>
+      <p id='graphicssettingstr'>Graphics Mode:</p>
+      <div id='graphicssettinghovercontainer'>
+        <button id='graphicssetting' class='hover-trigger buttons'>Quality</button>
+        <p id='graphicssettinginfo' class='hover-target fixed hidden'>Setting this option to 'Performance' will stop the
+          creation of particle effects and will slightly reduce the speed at which values update. A page refresh is
+          required
+          for the graphics mode change to fully take effect.</p>
+      </div>
+      <button id='resetbgbutton' class='buttons fixed'>Reset Background</button>
+      <button id='wipesavebutton' class='buttons btmbutton fixed'>Wipe Save</button>
+      <button id='backtogame2' class='buttons fixed'>Back</button>
     </div>
   </div>
-  <script src="./js/main.js"></script>
+  <script src='./js/main.js'></script>
 </body>
 
 

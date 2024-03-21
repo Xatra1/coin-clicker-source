@@ -1,6 +1,6 @@
 var cmd = [];
 var arg = [];
-const man = '\nCoin Clicker Debug Console\n\nclear - Clears the console\necho - Outputs the given arguments\nhelp - Displays this manual\ndebAP - Toggles debug autoplay.\nexec - Executes JavaScript code.\neval - An alias for exec, has the same function.\npizza - Tells you how many $30 pizzas you could buy with your current amount of coins.\nrmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass "all" to log all of them.\n';
+const man = '\nCoin Clicker Debug Console\n\nclear - Clears the console\necho - Outputs the given arguments\nhelp - Displays this manual\ndebAP - Toggles debug autoplay.\nexec - Executes JavaScript code.\neval - An alias for exec, has the same function.\npizza - Tells you how many $30 pizzas you could buy with your current amount of coins.\nrmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass "all" to log all of them.\nTyping any command into the console that isn\'t recognized will have the same effect as using the \'exec\' or \'eval\' commands.\n\n';
 const cmdHist = [];
 var cmdHistInx = 1;
 
@@ -25,9 +25,13 @@ function commandInterpret() {
     } catch (error) {
       debugConsole += `${error}\n`;
     }
-  } else if (cmd == 'pizza') debugConsole += `You could buy ${Math.floor(stats.Clicks / 30)} $30 pizzas with your current amount of coins.\n`;
+  } else if (cmd == 'pizza') debugConsole += `You could buy ${(Math.floor(stats.Clicks / 30)).toLocaleString()} $30 pizzas with your current amount of coins.\n`;
   else if (cmd == 'rmsg') randomMsg(arg);
-  else debugConsole += "Unknown command. Run 'help' for more information.\n";
+  else try {
+    eval(commandInput.value);
+  } catch (error) {
+    debugConsole += `${error}\n`;
+  }
   if (arg.length > 0) cmdHist.push(`${cmd} ${arg}`);
   else cmdHist.push(cmd);
   cmdHistInx = cmdHist.length;
