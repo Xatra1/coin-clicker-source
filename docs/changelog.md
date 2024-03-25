@@ -39,7 +39,7 @@ Meanwhile, in Update 7, otherwise known as the "Animation" update, I plan to add
 - Lots of bug fixes and balancing.
 - And maybe some other things.
 
-# Build x.xanb
+# Build 5.0anb
 - Fixed a bug that allowed you to open the debug menu when the settings or achievement panels were open, causing overlap.
 - Fixed the issue with the debug console not displaying correctly on 1366x768 displays that was present in the last release.
 - New animations with new sound effects! (You can skip the intro animation with the space bar.)

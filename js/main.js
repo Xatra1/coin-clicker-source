@@ -1,6 +1,6 @@
 /*
 Coin Clicker Update 7 Codename 'Animation'
-Build 4.8 Animation Beta
+Build 5.0 Animation Beta
 */
 
 /* Spoilers ahead! */
@@ -216,7 +216,7 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
 
   //Namespaces
   init = { GameStarted: !1, DataLoaded: !1 },
-  buildInfo = { BuildStr: '4.8anb', BuildNum: 4.8, UpdName: 'animation', UpdNum: 7 },
+  buildInfo = { BuildStr: '5.0anb', BuildNum: 5.0, UpdName: 'animation', UpdNum: 7 },
   stats = { Clicks: 0, TrueClicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, Playtime: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, TotalClickHelpers: 0, AchievementsUnlocked: 0, HiddenAchievementsUnlocked: 0, OfflineClicksPSPercen: 0 },
   display = { Clicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, ClickerCPS: 0, ClickerCost: 0, SuperClickerCPS: 0, SuperClickerCost: 0, DoublePointerCPS: 0, DoublePointerCost: 0, EmployeeCost: 0 };
 
