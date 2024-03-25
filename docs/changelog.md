@@ -80,3 +80,8 @@ Meanwhile, in Update 7, otherwise known as the "Animation" update, I plan to add
 - There are now links to the game's GitHub and Surge pages in the bottom right of the title screen.
 - The game's code is now a bit smaller in line count, meaning that the game should load quicker! (The game was loading almost instantly anyway but shhh...)
 - The game's font is now Courier Regular instead of Courier New.
+
+# Build x.xanb
+- The game now has number shortening! For example, 1 quadrillion will simply be '1.000 quadrillion' rather than 1.000e+15. This is supported up to 999 duotrigintillion, where the game will then resort back to exponents.
+- Re-enabled autosaving.
+- The game will now use commas for the playtime count if it's greater than 1000 hours.
