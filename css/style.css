@@ -2,6 +2,13 @@
 
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
 
+/* Courier font face (Not all systems have this, so it is defined here.) */
+
+@font-face { 
+  font-family: 'CourierReg';
+  src: url('Courier.woff');
+}
+
 /* Animations */
 
 @keyframes coinOpacity {
@@ -29,16 +36,6 @@
 @keyframes titlestrsmov {
   100% {
     transform: translate3d(0, 71.5vh, 0);
-  }
-}
-
-@keyframes bmbarnotemov {
-  from {
-    transform: translate3d(0, 0, 0)
-  }
-
-  to {
-    transform: translate3d(0, 2vw, 0)
   }
 }
 
@@ -148,12 +145,12 @@
 
 @keyframes tsclickermov {
   from {
-    transform: translate3d(0, 0, 0) rotate(0deg);
+    transform: translate3d(0, 71.5vh, 0) rotate(0deg);
     opacity: 0%;
   }
 
   to {
-    transform: translate3d(4vw, -3.2vw, 0) rotate(320deg);
+    transform: translate3d(4vw, 68.3vh, 0) rotate(320deg);
     opacity: 100%;
   }
 }
@@ -248,7 +245,7 @@
   }
 
   to {
-    transform: translate3d(72.5vw, 23vw, 0) rotate(23deg);
+    transform: translate3d(72.5vw, 28vw, 0) rotate(23deg);
     height: 1.5vw;
     width: 1.5vw;
   }
@@ -262,7 +259,7 @@
   }
 
   to {
-    transform: translate3d(74.5vw, 18vw, 0);
+    transform: translate3d(74.5vw, 23vw, 0);
     height: 1.5vw;
     width: 1.5vw;
   }
@@ -296,7 +293,7 @@
   }
 
   to {
-    transform: translate3d(76.5vw, 8vw, 0);
+    transform: translate3d(76.5vw, 13vw, 0);
     height: 1.5vw;
     width: 1.5vw;
   }
@@ -310,7 +307,7 @@
   }
 
   to {
-    transform: translate3d(78.5vw, 3.4vw, 0) rotate(45deg);
+    transform: translate3d(78.5vw, 8.4vw, 0) rotate(45deg);
     height: 1.5vw;
     width: 1.5vw;
   }
@@ -321,9 +318,17 @@ body {
   background-image: radial-gradient(rgb(250, 224, 65), rgb(249, 160, 40));
   background-position: cover;
   background-size: 100%;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: CourierReg;
   font-size: 1vw;
   overflow: hidden;
+}
+
+a {
+  color: black;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 /* Classes */
@@ -354,7 +359,7 @@ body {
 .tsclicker {
   background: transparent no-repeat center;
   background-size: 90%;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: CourierReg;
   font-size: 1.1vw;
   cursor: pointer;
 }
@@ -381,7 +386,7 @@ body {
   height: 9.5vw;
   width: 9.5vw;
   top: 40vh;
-  left: 43vw;
+  left: 43.6vw;
   animation: coinOpacity 2.5s forwards;
 }
 
@@ -398,7 +403,7 @@ body {
 /* Game screen */
 
 .borders {
-  top: -0.2vw;
+  top: -0.1vh;
   height: 100vh;
   width: 0.05vw;
   display: none;
@@ -468,6 +473,17 @@ body {
   width: 3.1vw;
 }
 
+/* Settings panel */
+
+.input {
+  border: solid 0.05vw black;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1.2vw;
+  height: 1vw;
+  width: 10vw;
+}
+
 /* IDs and pseudoclasses */
 
 /* Multi-ID */
@@ -477,10 +493,7 @@ body {
 #settingsbtnhovercontainer .hover-trigger:hover+.hover-target,
 #clickerhovercontainer .hover-trigger:hover+.hover-target,
 #superclickerhovercontainer .hover-trigger:hover+.hover-target,
-#doublepointerhovercontainer .hover-trigger:hover+.hover-target,
-#clickerfusionhovercontainer .hover-trigger:hover+.hover-target,
-#autobuyhovercontainer .hover-trigger:hover+.hover-target,
-#graphicssettinghovercontainer .hover-trigger:hover+.hover-target {
+#doublepointerhovercontainer .hover-trigger:hover+.hover-target {
   display: block;
 }
 
@@ -502,14 +515,6 @@ body {
   left: 9vw;
 }
 
-#autobuyinfo,
-#graphicssettinginfo {
-  position: relative;
-  font-size: 1vw;
-  width: 25vw;
-  border: solid black 0.05vw;
-}
-
 /* Loading screen */
 
 #loadstring {
@@ -521,24 +526,30 @@ body {
 #bg {
   height: 2vw;
   width: 2vw;
-  top: -2vw;
+  top: -3vh;
   opacity: 40%;
   z-index: -1;
   animation: bgmove 4s linear forwards;
 }
 
 #skipintrostring {
-  top: -0.1vw;
-  left: 33.7vw;
+  top: -0.1vh;
+  left: 34.1vw;
   animation: coinOpacity 2.5s forwards;
 }
 
 #basedonbuildstring {
-  left: 82vw;
+  top: 102.5vh;
+  left: 86.5vw;
+}
+
+#surgelink {
+  top: 100.5vh;
+  left: 87vw;
 }
 
 #runningbrowserstring {
-  left: 29.5vw;
+  left: 30vw;
   width: 37vw;
 }
 
@@ -559,14 +570,14 @@ body {
   font-size: 1.5vw;
   width: 37vw;
   top: -17vh;
-  left: 29.5vw;
+  left: 30vw;
 }
 
 #startbutton {
   height: 3vw;
   width: 10vw;
   top: 100vh;
-  left: 43.2vw;
+  left: 43.6vw;
   animation: startmov 1.5s ease-out forwards;
 }
 
@@ -575,9 +586,10 @@ body {
   opacity: 0%;
   height: 4vw;
   width: 4vw;
-  top: 43vh;
+  top: -32vh;
   left: 46.9vw;
-  animation: tsclickermov 1.5s 0.5s forwards;
+  animation: titlestrsmov 1.5s forwards, tsclickermov 1.5s 1s forwards;
+  cursor: default;
 }
 
 #sourcenote {
@@ -586,7 +598,7 @@ body {
 
 #key {
   font-size: 1vw;
-  top: 2vw;
+  top: 2vh;
 }
 
 /* Game screen elements */
@@ -713,8 +725,8 @@ body {
 }
 
 #fpslabel {
-  display: none;
   /* The style.display value of this property cannot be modified unless it is declared here. */
+  display: none;
   top: -0.5vw;
 }
 
@@ -734,9 +746,10 @@ body {
 }
 
 #autobuystring {
+  width: 15vw;
   font-size: 0.8vw;
   top: 4vw;
-  left: 10vw;
+  left: 6vw;
 }
 
 #clickerinfo {
@@ -757,19 +770,19 @@ body {
 
 #clickerstring {
   top: 5vw;
-  left: 7.35vw;
+  left: 7.2vw;
 }
 
 #clickercpsstring {
-  top: 6vw;
+  top: 6.2vw;
 }
 
 #clickercoststring {
-  top: 7vw;
+  top: 7.2vw;
 }
 
 #clickersownedstring {
-  top: 8vw;
+  top: 8.2vw;
 }
 
 #superclickerinfo {
@@ -795,15 +808,15 @@ body {
 }
 
 #superclickercpsstring {
-  top: 11vw;
+  top: 11.2vw;
 }
 
 #superclickercoststring {
-  top: 12vw;
+  top: 12.2vw;
 }
 
 #superclickersownedstring {
-  top: 13vw;
+  top: 13.2vw;
 }
 
 #doublepointerinfo {
@@ -829,15 +842,15 @@ body {
 }
 
 #doublepointercpsstring {
-  top: 16vw;
+  top: 16.2vw;
 }
 
 #doublepointercoststring {
-  top: 17vw;
+  top: 17.2vw;
 }
 
 #doublepointersownedstring {
-  top: 18vw;
+  top: 18.2vw;
 }
 
 /* Upgrade shop panel elements */
@@ -874,15 +887,15 @@ body {
 }
 
 #cursorcpsstring {
-  top: 6vw;
+  top: 6.2vw;
 }
 
 #cursorcoststring {
-  top: 7vw;
+  top: 7.2vw;
 }
 
 #cursorownedstring {
-  top: 8vw;
+  top: 8.2vw;
 }
 
 #supercursorimg {
@@ -903,22 +916,22 @@ body {
 }
 
 #supercursorcpsstring {
-  top: 11vw;
+  top: 11.2vw;
 }
 
 #supercursorcoststring {
-  top: 12vw;
+  top: 12.2vw;
 }
 
 #supercursorownedstring {
-  top: 13vw;
+  top: 13.2vw;
 }
 
 #employeeimg {
   background-image: url('../img/shop/employee.png');
   border: none;
   top: 17vw;
-  animation: employeemov 2s forwards, employeerock 2s 3s linear alternate infinite;
+  animation: employeemov 2s forwards;
 }
 
 #employeebuy {
@@ -932,15 +945,15 @@ body {
 }
 
 #employeecpsstring {
-  top: 16vw;
+  top: 16.2vw;
 }
 
 #employeecoststring {
-  top: 17vw;
+  top: 17.2vw;
 }
 
 #employeesownedstring {
-  top: 18vw;
+  top: 18.2vw;
 }
 
 #godfingerimg {
@@ -961,15 +974,15 @@ body {
 }
 
 #godfingerperkstring {
-  top: 21vw;
+  top: 21.2vw;
 }
 
 #godfingercoststring {
-  top: 22vw;
+  top: 22.2vw;
 }
 
 #godfingerownedstring {
-  top: 23vw;
+  top: 23.2vw;
 }
 
 #clickerfusioninfo {
@@ -995,15 +1008,15 @@ body {
 }
 
 #clickerfusionperkstring {
-  top: 26vw;
+  top: 26.2vw;
 }
 
 #clickerfusioncoststring {
-  top: 27vw;
+  top: 27.2vw;
 }
 
 #clickerfusionownedstring {
-  top: 28vw;
+  top: 28.2vw;
 }
 
 /* Stats panel elements */
@@ -1051,6 +1064,10 @@ body {
 
 #rawcvstring {
   top: 9vw;
+}
+
+#offlinecpsstring {
+  top: 9.5vw;
 }
 
 /* Debug screen elements */
@@ -1341,79 +1358,62 @@ body {
   font-size: 1.2vw;
   height: 1vw;
   width: 7vw;
-  top: 5vw;
-  left: 56.3vw;
+  top: 10.5vh;
+  left: 56vw;
 }
 
 #volumestring {
   font-size: 0.9vw;
-  top: 4.2vw;
-  left: 33.5vw;
+  top: 8.9vh;
+  left: 35vw;
 }
 
 #autobuysettingstr {
   font-size: 0.9vw;
   position: fixed;
-  top: 6vw;
+  top: 12.2vh;
   left: 39vw;
 }
 
 #autobuysetting {
   height: 1.5vw;
   width: 5vw;
-  top: 6.75vw;
+  top: 13.4vh;
   left: 54vw;
 }
 
 #graphicssetting {
-  position: relative;
   height: 2vw;
   width: 9vw;
-  top: -35vh;
-  left: 49.5vw;
+  top: 17vh;
+  left: 53vw;
 }
 
 #graphicssettingstr {
-  position: relative;
-  top: -14.5vw;
-  left: 40vw;
+  font-size: 0.9vw;
+  top: 16.3vh;
+  left: 35vw;
 }
 
 #bggrad1input {
-  position: relative;
-  border: solid 0.05vw black;
-  background: transparent;
-  font-family: inherit;
-  font-size: 1.2vw;
-  height: 1vw;
-  width: 10vw;
-  top: -24.6vh;
+  top: 22vh;
   left: 56.3vw;
 }
 
 #bggrad1string {
-  position: relative;
   font-size: 0.9vw;
-  top: -20.5vh;
+  top: 20.5vh;
   left: 31.5vw;
 }
 
 #bggrad2input {
-  position: relative;
-  border: solid 0.05vw black;
-  background: transparent;
-  font-family: inherit;
-  font-size: 1.2vw;
-  height: 1vw;
-  width: 10vw;
-  top: -29vh;
+  top: 26vh;
   left: 55.7vw;
 }
 
 #bggrad2string {
-  position: relative;
   font-size: 0.9vw;
-  top: -25vh;
+  top: 24.5vh;
   left: 31.8vw;
 }
 

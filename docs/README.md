@@ -8,6 +8,7 @@ Coin Clicker is a web-based clicker game inspired by idle games like Cookie Clic
 
 # Download
 You can get any stable release of the game from the Releases tab on the right. Simply pick the version you want, and click 'Source code (zip)'  
+The game is also available for play [here.](https://coin-clicker.surge.sh)
 If you want to get a **legacy** release of the game, check [here.](https://github.com/Xatra1/coin-clicker-archive)
   
 # Credits

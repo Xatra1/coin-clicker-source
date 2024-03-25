@@ -1,4 +1,4 @@
-Build 4.5ab
+# Build 4.5ab
 - Added the Clicker Fusion, an upgrade which requires 150 clickers to unlock and obtain, and will multiply the CPS of all of your current clickers by 150%.
 - Fixed several bugs when buying items from the shop while buffs were active as well (for real this time) and a bug with your CPS retaining its doubled status when saving and reloading. (This bug also occurred with the click value buff.)
 - Modified some of the shop prices to make them much more early-game friendly.
@@ -22,7 +22,7 @@ Build 4.5ab
 - Reworked the way saving works to allow for price changes to take effect on items you have not yet unlocked in future updates.
 - The debug console can now interpret a few commands, run 'help' for more info. (Currently does not display properly on 1366x768, this will be fixed in the future.)
 
-Notes and Extra Changes: 
+## Notes and Extra Changes: 
 - Your save WILL BE ERASED when opening this version of the game due to format inconsistencies.
 - I am currently working on making namespaces for the game's variables. Expect things to break in the next few releases!
 - You can no longer save when a buff is occurring due to how the shop now handles buffs when calculating CpS values and prices after buying items.
@@ -39,17 +39,17 @@ Meanwhile, in Update 7, otherwise known as the "Animation" update, I plan to add
 - Lots of bug fixes and balancing.
 - And maybe some other things.
 
-Build x.xanb
+# Build x.xanb
 - Fixed a bug that allowed you to open the debug menu when the settings or achievement panels were open, causing overlap.
 - Fixed the issue with the debug console not displaying correctly on 1366x768 displays that was present in the last release.
 - New animations with new sound effects! (You can skip the intro animation with the space bar.)
 - The game now automatically saves just before reloading the page.
 - You can now enable debug mode (Skips the title screen and unlocks all shop items by default) by pressing Ctrl+Alt+F on the title screen, enable debug autoplay by pressing Ctrl+Alt+A on the title screen, and enable both with Ctrl+Alt+C
-- Added the background music from Cookie Clicker. (Click - C418)
+- Added the background music from Cookie Clicker (Click - C418). It only plays after unlocking the 'Journey Begins' achievement, and it's volume will automatically decrease to a third of the volume you have set in settings when navigating away from the page.
 - The save keybind has changed from S to Ctrl+S.
 - Keybinds now also accept input from capital letters as well as lowercase. (Just in case caps lock is on)
 - Fixed a bug where the playtime counter wouldn't convert the time to hours until it reached 120 minutes.
-- Added a new ambient background that appears once you unlock the 'Millionare' achievement, which will appear on the title screen as well.
+- Added a new ambient background that appears once you unlock the 'Millionare' achievement, which will appear on the title screen as well. It will also increase in frequency and even have the coin particles added to it as well, depending on how many achievements you have.
 - The game should now work on multiple resolutions!
 - The wipe save button was moved to the Settings screen.
 - Fixed a few bugs with Clicker Fusion.
@@ -64,10 +64,19 @@ Build x.xanb
 - The game's background gradient is now customizable.
 - Added an option to change the graphics mode, which will disable the game's particle effects and decrease the speed that the game's values update.
 - Reworked the way the click value buff works so that it will not trigger if the tab is inactive or if the coin is not visible.
-- More shop rebalancing, to make prices more fair.
+- More shop rebalancing, to make the game far quicker. Double Pointer now requires 10 Super Clickers to unlock.
 - The title of the page will now change to 'Title updates paused.' if the tab is inactive.
 - The game now has an FPS tracker that can be toggled on and off with Shift+F
-- Your clicks now gain 10% of your CpS every second while offline.
+- Employees now generate offline CpS. Every second you're offline, you will get +1% of your CpS for each employee you have.
 - 'Clicks' are now referred to as 'Coins'.
 - The game now reports the browser version as well as a more accurate browser name, if supported.
 - Strings which have quickly updating values (coins, CpS, etc) now have a slight transition when increasing and lowering values.
+- Your playtime does not start to increase until you click the coin for the first time.
+- The CpS and click value buffs now have randomized lengths. The CpS buff can range from 15 to 60 seconds and the click value buff can range from 5 to 20.
+- You can now press the spacebar to 'click' the coin.
+- You can now press the A, S, and U keys to toggle the Achievements, Settings, and Upgrade Shop panels, respectively, as well as B, which enables autobuy.
+- Autobuy will now purchase the item that costs the least first, rather than going down the list of shop items.
+- The game is now hosted with [Surge!](https://coin-clicker.surge.sh)
+- There are now links to the game's GitHub and Surge pages in the bottom right of the title screen.
+- The game's code is now a bit smaller in line count, meaning that the game should load quicker! (The game was loading almost instantly anyway but shhh...)
+- The game's font is now Courier Regular instead of Courier New.

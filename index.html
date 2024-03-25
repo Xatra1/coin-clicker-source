@@ -36,7 +36,9 @@
       <p id='sourcenote' class='hasanim fixed'></p>
       <p id='skipintrostring' class='hasanim fixed'>Press the space bar to skip directly to the game.</p>
       <p id='runningbrowserstring' class='hasanim btmstr center fixed'></p>
-      <p id='basedonbuildstring' class='hasanim btmstr fixed'>based on code.org build 4.41b</p>
+      <a id='basedonbuildstring' class='hasanim btmstr fixed' href='https://github.com/Xatra1/coin-clicker-source'>This
+        project on GitHub</a>
+      <a id='surgelink' class='hasanim btmstr fixed' href='https://coin-clicker.surge.sh'>This project on Surge</a>
       <h2 id='betastring' class='hasanim titlestr fixed'>beta v7</h2>
       <p id='buildstring' class='hasanim btmstr fixed'></p>
       <h1 id='title' class='hasanim titlestr fixed'>coin clicker</h1>
@@ -61,7 +63,7 @@
       <p id='clickstring' class='fixed center'>Clicks: </p>
       <p id='cpsstring' class='fixed center'>Clicks per Second: </p>
       <p id='clickvaluestring' class='fixed center'>Click Value: </p>
-      <p id='unlockstring' class='fixed center hidden'>Placeholder unlocked!</p>
+      <p id='unlockstring' class='fixed center hidden'></p>
       <div id='savebuttonhovercontainer'>
         <button id='savebutton' class='buttons hover-trigger fixed'>Save</button>
         <p id='saveinfo' class='hover-target fixed center hidden'>Game autosaves every minute; You can also press Ctrl+S
@@ -69,8 +71,7 @@
           save.</p>
         <p id='savingstring' class='savingstring fixed center hidden'>Saving...</p>
       </div>
-      <p id='bufflabel' class='fixed center hidden'>Your click value has been increased by 777% of your CpS for 10
-        seconds!</p>
+      <p id='bufflabel' class='fixed center hidden'></p>
       <div id='achievementsbtnhovercontainer'>
         <button id='achievementsbutton' class='hover-trigger buttons fixed'></button>
         <p id='achievementslabel' class='hover-target label fixed center hidden'>Achievements</p>
@@ -83,7 +84,7 @@
     </div>
     <div id='shoppanel' class='hidden'>
       <p id='shopstring' class='fixed'>Shop</p>
-      <p id='autobuystring' class='fixed hidden'>Autobuy is enabled.</p>
+      <p id='autobuystring' class='fixed hidden center'>Autobuy is enabled.</p>
       <img id='shopicon' src='./img/shop/shoplogo.png' class='fixed'>
       <button id='upgradebutton' class='buttons btmbutton fixed'>Upgrades</button>
       <div id='clickerhovercontainer'>
@@ -130,20 +131,20 @@
       <button id='cursorbuy' class='shopbuttons fixed shophover'></button>
       <p id='cursorstring' class='ushopstrings fixed'>cursor</p>
       <p id='cursorcpsstring' class='ushopstrings fixed'>CpS: +100%</p>
-      <p id='cursorcoststring' class='ushopstrings fixed'>Cost: 1,000,000</p>
+      <p id='cursorcoststring' class='ushopstrings fixed'>Cost: 1,000,000,000</p>
       <p id='cursorownedstring' class='ushopstrings fixed'>Owned: </p>
       <div id='supercursor' class='hidden'>
         <button id='supercursorbuy' class='shopbuttons fixed shophover'></button>
         <p id='supercursorstring' class='ushopstrings fixed'>super cursor</p>
         <p id='supercursorcpsstring' class='ushopstrings fixed'>CpS: +150%</p>
-        <p id='supercursorcoststring' class='ushopstrings fixed'>Cost: 10,000,000</p>
+        <p id='supercursorcoststring' class='ushopstrings fixed'>Cost: 150,000,000,000</p>
         <p id='supercursorownedstring' class='ushopstrings fixed'>Owned: </p>
       </div>
       <div id='employee' class='hidden'>
         <button id='employeebuy' class='shopbuttons fixed shophover'></button>
         <p id='employeestring' class='ushopstrings fixed'>employee</p>
-        <p id='employeecpsstring' class='ushopstrings fixed'>CpS: +5% (Stacks)</p>
-        <p id='employeecoststring' class='ushopstrings fixed'>Cost: 50,000,000,000</p>
+        <p id='employeecpsstring' class='ushopstrings fixed'>CpS: +5% and +0.1% offline</p>
+        <p id='employeecoststring' class='ushopstrings fixed'>Cost: 500,000,000,000</p>
         <p id='employeesownedstring' class='ushopstrings fixed'>Owned: </p>
       </div>
       <div id='godfinger' class='hidden'>
@@ -154,14 +155,8 @@
         <p id='godfingerownedstring' class='ushopstrings fixed'>Owned: </p>
       </div>
       <div id='clickerfusion' class='hidden'>
-        <div id='clickerfusionhovercontainer'>
-          <button id='clickerfusionbuy' class='hover-trigger shopbuttons fixed shophover'></button>
-          <p id='clickerfusioninfo' class='hover-target shopinfostr fixed hidden'>Fuse 150 clickers together to multiply
-            their
-            CpS by 150%.
-            You
-            can only do this once.</p>
-        </div>
+        <button id='clickerfusionbuy' class='shopbuttons fixed shophover'
+          title='Fuse 150 clickers together to multiply their CpS by 150%. You can only do this once.'></button>
         <p id='clickerfusionstring' class='ushopstrings fixed'>clicker fusion</p>
         <p id='clickerfusionperkstring' class='ushopstrings fixed'>Hover for info.</p>
         <p id='clickerfusioncoststring' class='ushopstrings fixed'>Hover for info.</p>
@@ -179,6 +174,7 @@
       <p id='achievementsunlockedstring' class='statstrs'>You have unlocked 0 achievements.</p>
       <p id='rawcpsstring' class='statstrs'>Your raw clicks per second is 0.</p>
       <p id='rawcvstring' class='statstrs'>Your raw click value is 0.</p>
+      <p id='offlinecpsstring' class='statstrs hidden'>You produce 0% of your clicks per second while offline.</p>
     </div>
     <div id='debuginputscreen' class='hidden'>
       <h1 id='debugscreenlabel' class='fixed'>Debug Mode</h1>
@@ -240,26 +236,18 @@
       <label for='volumeinput'></label>
       <p id='volumestring' class='fixed'>Volume (Accepts values between 0-100):</p>
       <input name='volumeinput' id='volumeinput' class='fixed' type='text'>
-      <div id='autobuyhovercontainer'>
-        <p id='autobuysettingstr' class='fixed'>Autobuy (Hover for info):</p>
-        <button id='autobuysetting' class='hover-trigger buttons fixed'>OFF</button>
-        <p id='autobuyinfo' class='hover-target fixed hidden'>Automatically buys items for you whenever you have enough
-          clicks.</p>
-      </div>
+      <p id='autobuysettingstr' class='fixed'>Autobuy (Hover for info):</p>
+      <button id='autobuysetting' class='buttons fixed'
+        title='Automatically buys items for you whenever you have enough clicks'>OFF</button>
       <label for='bggrad1input'></label>
-      <p id='bggrad1string'>Background Gradient Center (Format: R, G, B):</p>
-      <input name='bggrad1input' id='bggrad1input' type='text'>
+      <p id='bggrad1string' class='fixed'>Background Gradient Center (Format: R, G, B):</p>
+      <input name='bggrad1input' id='bggrad1input' type='text' class='input fixed'>
       <label for='bggrad2input'></label>
-      <p id='bggrad2string'>Background Gradient Edge (Format: R, G, B):</p>
-      <input name='bggrad2input' id='bggrad2input' type='text'>
-      <p id='graphicssettingstr'>Graphics Mode:</p>
-      <div id='graphicssettinghovercontainer'>
-        <button id='graphicssetting' class='hover-trigger buttons'>Quality</button>
-        <p id='graphicssettinginfo' class='hover-target fixed hidden'>Setting this option to 'Performance' will stop the
-          creation of particle effects and will slightly reduce the speed at which values update. A page refresh is
-          required
-          for the graphics mode change to fully take effect.</p>
-      </div>
+      <p id='bggrad2string' class='fixed'>Background Gradient Edge (Format: R, G, B):</p>
+      <input name='bggrad2input' id='bggrad2input' type='text' class='input fixed'>
+      <p id='graphicssettingstr' class='fixed'>Graphics Mode (Hover for Info):</p>
+      <button id='graphicssetting' class='buttons fixed'
+        title="Setting this option to 'Performance' will stop the creation of particle effects and will slightly reduce the speed at which values update.">Quality</button>
       <button id='resetbgbutton' class='buttons fixed'>Reset Background</button>
       <button id='wipesavebutton' class='buttons btmbutton fixed'>Wipe Save</button>
       <button id='backtogame2' class='buttons fixed'>Back</button>
