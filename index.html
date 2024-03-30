@@ -55,11 +55,13 @@
       <img id='rightborder' class='borders fixed' src='./img/border.png'>
     </div>
     <div id='gamescreen' class='hidden'>
-      <button id='coin' class='gamecoin buttons fixed'></button>
-      <button id='clickerimg' class='coinattachment fixed shopbuttons hasanim bgelement'></button>
-      <button id='superclickerimg' class='coinattachment fixed shopbuttons hasanim bgelement hidden'></button>
-      <button id='doublepointerimg' class='coinattachment fixed shopbuttons hasanim bgelement hidden'></button>
-      <button id='employeeimg' class='coinattachment shopbuttons bgelement hasanim fixed hidden'></button>
+      <button tabindex='-1' id='coin' class='gamecoin buttons fixed'></button>
+      <button tabindex='-1' id='clickerimg' class='coinattachment fixed shopbuttons hasanim bgelement'></button>
+      <button tabindex='-1' id='superclickerimg'
+        class='coinattachment fixed shopbuttons hasanim bgelement hidden'></button>
+      <button tabindex='-1' id='doublepointerimg'
+        class='coinattachment fixed shopbuttons hasanim bgelement hidden'></button>
+      <button tabindex='-1' id='employeeimg' class='coinattachment shopbuttons bgelement hasanim fixed hidden'></button>
       <p id='clickstring' class='fixed center'>Clicks: </p>
       <p id='cpsstring' class='fixed center'>Clicks per Second: </p>
       <p id='clickvaluestring' class='fixed center'>Click Value: </p>
@@ -120,10 +122,10 @@
     </div>
     <div id='upgradeshoppanel' class='hidden'>
       <div id='floatingushopicons'>
-        <button id='cursorimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
-        <button id='supercursorimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
-        <button id='godfingerimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
-        <button id='clickerfusionimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
+        <button tabindex='-1' id='cursorimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
+        <button tabindex='-1' id='supercursorimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
+        <button tabindex='-1' id='godfingerimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
+        <button tabindex='-1' id='clickerfusionimg' class='shopbuttons bgelement hasanim fixed hidden'></button>
       </div>
       <p id='upgradestring' class='fixed'>Upgrades</p>
       <img id='upgradeshopicon' src='./img/shop/shoplogo.png' class='fixed'>
@@ -189,7 +191,7 @@
     </div>
     <div id='debugscreen' class='hidden'>
       <textarea readonly id='debugconsole' class='fixed'></textarea>
-      <form id='debugconsinput'>
+      <form id='debugconsinput' autocomplete='off'>
         <label for='debugcmdinput'></label>
         <input type='text' name='debugcmdinput' placeholder='>_' id='debugcmdinput' class='fixed'>
       </form>

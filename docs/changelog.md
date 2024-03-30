@@ -21,7 +21,6 @@
 - Your raw CpS and raw click value are now displayed in the stats panel.
 - Reworked the way saving works to allow for price changes to take effect on items you have not yet unlocked in future updates.
 - The debug console can now interpret a few commands, run 'help' for more info. (Currently does not display properly on 1366x768, this will be fixed in the future.)
-
 ## Notes and Extra Changes: 
 - Your save WILL BE ERASED when opening this version of the game due to format inconsistencies.
 - I am currently working on making namespaces for the game's variables. Expect things to break in the next few releases!
@@ -29,12 +28,11 @@
 - Everything in the main code is no longer one big function, making all variables global. Much easier to debug!
 - Removed a reference to update 5 that was being logged in the console.
 - Your click value will no longer get updated during a double CpS buff. It will update when the buff ends. (This is a side effect of the buff fixes for the shop)
-- Autobuy cannot buy the Clicker Fusion.
-
+- Autobuy cannot buy the Clicker Fusion.  
+  
 And with that, Update 6 is now complete.
 Yeah, I know I didn't add a lot of the stuff I had originally planned, but I decided to significantly polish the game before doing that. The *true* content update will happen soon. 
 Meanwhile, in Update 7, otherwise known as the "Animation" update, I plan to add the following:
-
 - Animations for things like the coin and shop items.
 - Lots of bug fixes and balancing.
 - And maybe some other things.
@@ -81,7 +79,33 @@ Meanwhile, in Update 7, otherwise known as the "Animation" update, I plan to add
 - The game's code is now a bit smaller in line count, meaning that the game should load quicker! (The game was loading almost instantly anyway but shhh...)
 - The game's font is now Courier Regular instead of Courier New.
 
-# Build x.xanb
-- The game now has number shortening! For example, 1 quadrillion will simply be '1.000 quadrillion' rather than 1.000e+15. This is supported up to 999 duotrigintillion, where the game will then resort back to exponents.
+# Build 5.1anb
+This release fixes a few bugs from the last version and adds some additional features, as well as clarifying on the number shortening that was not mentioned previously.  
+- The game now has number shortening! For example, 1 quadrillion will simply be '1.000 quadrillion' rather than 1.000e+15. This is supported up to 999 duotrigintillion (9.99e+101), where the game will then resort back to exponents. This is soon planned to be a toggle.
 - Re-enabled autosaving.
 - The game will now use commas for the playtime count if it's greater than 1000 hours.
+- Your debug console command history is now included in your save data.
+- The background particles now appear on all screens.
+- Fixed a bug with double pointer values not displaying.
+- Slightly reworked the title screen animation.
+- Added partial gamepad support.
+## Gamepad Controls
+Note that all controllers should be supported, the PlayStation button names are just an example.  
+If your gamepad is detected, it's name should appear near the bottom of the screen.
+- Cross to start the game.  
+- Circle/Cross (with game started): Clicks the coin.  
+- Square: Toggle upgrade shop.  
+- Triangle: Save the game.  
+- Share: Toggle achievements panel. You can then use the left and right dpad buttons to navigate through the list of achievements.  
+- Options: Toggle settings panel.  
+- L1: Buys the clicker. If the upgrade shop is open, the cursor will be bought instead.  
+- R1: Buys the super clicker. If the upgrade shop is open, the super cursor will be bought instead.  
+- L2: Buys the double pointer. If the upgrade shop is open, the employee will be bought instead.  
+- R2: Buys the god finger.  
+- L3: Toggles autobuy.  
+- R3: Reloads the game.  
+- Dpad Up: Wipes your save. You will need to refresh manually using R3 to confirm the save wipe, or you can save again with Triangle.  
+- Dpad Left: Buys the clicker fusion.  
+### Extras
+- The game's stack trace is now included in the debug console whenever an error occurs.
+- The changelog file has been modified so older releases have better formatting.

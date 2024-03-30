@@ -1,6 +1,6 @@
 /*
 Coin Clicker Update 7 Codename 'Animation'
-Build 5.0 Animation Beta
+Build 5.1 Animation Beta
 */
 
 /* Spoilers ahead! */
@@ -11,14 +11,13 @@ const loadingScreen = document.getElementById('loadingscreen'),
   eElement = document.createElement('p');
 
 function errorHandler(error) {
-  eElement.textContent = `Error in script: ${error}`;
+  eElement.textContent = `Error in script. Check debug console for full stack trace. (${error})`;
   eElement.style.position = 'fixed';
-  eElement.style.top = '1vw';
-  eElement.style.fontSize = '15px';
+  eElement.style.top = '-0.3vh';
+  eElement.style.fontSize = '0.7vw';
   eElement.style.display = 'block';
-  console.error(error);
-  debugConsole += `${error}\n`;
   document.body.appendChild(eElement);
+  debugConsole += `${error.stack}\n`;
 }
 
 const runningBrowserString = document.getElementById('runningbrowserstring'),
@@ -207,19 +206,45 @@ const sourceNote = document.getElementById('sourcenote'),
 //Audio files
 var bgm = document.getElementById('bgm'), //C418 - Click
   sfx = document.getElementById('sfx'), //Click
-  sfx5 = document.getElementById('sfx5'); //Shop Buy
+  sfx5 = document.getElementById('sfx5'), //Shop Buy
+  sfx6 = document.getElementById('sfx6'); //Coin Whoosh
 const sfx2 = document.getElementById('sfx2'), //Shop Unlock
   sfx3 = document.getElementById('sfx3'), //Achievement Unlock
   sfx4 = document.getElementById('sfx4'), //Special Achievement/Clicker Fusion Unlock
-  sfx6 = document.getElementById('sfx6'), //Coin Whoosh
   sfx7 = document.getElementById('sfx7'), //Title Screen String Whoosh
   sfx7point1 = document.getElementById('sfx7.1'), //Title Screen String Whoosh
 
   //Namespaces
   init = { GameStarted: !1, DataLoaded: !1 },
-  buildInfo = { BuildStr: '5.0anb', BuildNum: 5.0, UpdName: 'animation', UpdNum: 7 },
+  buildInfo = { BuildStr: '5.1anb', BuildNum: 5.1, UpdName: 'animation', UpdNum: 7 },
   stats = { Clicks: 0, TrueClicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, Playtime: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, TotalClickHelpers: 0, AchievementsUnlocked: 0, HiddenAchievementsUnlocked: 0, OfflineClicksPSPercen: 0 },
-  display = { Clicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, ClickerCPS: 0, ClickerCost: 0, SuperClickerCPS: 0, SuperClickerCost: 0, DoublePointerCPS: 0, DoublePointerCost: 0, EmployeeCost: 0, Playtime: 0 };
+  display = { Clicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, ClickerCPS: 0, ClickerCost: 0, SuperClickerCPS: 0, SuperClickerCost: 0, DoublePointerCPS: 0, DoublePointerCost: 0, EmployeeCost: 0, Playtime: 0 },
+
+  lib = {
+    rng: (min, max) => {
+      return Math.floor((Math.random() * (max - min) + min))
+    },
+    achLabelSwitch: (index) => {
+      sfx.play();
+      achNameStr.textContent = achNames[index];
+      achDescStr.textContent = achDescs[index];
+      if (achArr[index]) achUnlockStr.textContent = 'Unlocked.';
+      else achUnlockStr.textContent = 'Not unlocked.';
+    },
+    intTooLarge: () => {
+      for (var i in intArray) if (intArray[i] >= 9.99e+101) return true;
+    },
+    getFps: () => {
+      window.requestAnimationFrame(() => {
+        let now = performance.now();
+        while (times.length > 0 && times[0] <= now - 1000) times.shift();
+        times.push(now);
+        fps = times.length;
+        fpsLabel.textContent = `FPS: ${fps}`;
+        lib.getFps();
+      });
+    }
+  };
 
 //Background elements
 var bg = document.createElement('img'),
@@ -238,9 +263,9 @@ var bg = document.createElement('img'),
   superClickersOwned = 0,
   superClickerCPSWorth = 0,
   doublePointerUnlocked = !1,
-  doublePointerCPS = 3000000,
+  doublePointerCPS = 50000000,
   doublePointerScale = 75,
-  doublePointerCost = 500000000,
+  doublePointerCost = 5000000000,
   doublePointersOwned = 0,
   doublePointerCPSWorth = 0,
   doAutobuy = !1,
@@ -282,6 +307,7 @@ var bg = document.createElement('img'),
 
   //Achievement screen variables
   achStr = 'none',
+  gpAchIndex = 0,
 
   //Audio variables
   volume = 1.0,
@@ -296,11 +322,11 @@ var bg = document.createElement('img'),
   updInterval,
   bgUpdInterval = 250,
   bgMax = 100,
-  createCoinBg = !1,
   fps,
 
   //Animation variables
   startBgCreate = !1,
+  createCoinBg = !1,
   prompting = !1,
 
   //Debug mode variables
@@ -314,6 +340,7 @@ var bg = document.createElement('img'),
   //Debug console variables
   cmd = [],
   arg = [],
+  cmdHist = [],
   cmdHistInx = 1,
 
   //Screen size variables
@@ -324,6 +351,7 @@ var bg = document.createElement('img'),
 
   //Miscellaneous variables
   numberShorten = !0,
+  gamepad,
 
   //Arrays
   intArray = [],
@@ -335,9 +363,8 @@ const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare
   achDescs = ['Obtain 1 lifetime coin.', 'Obtain 10,000 lifetime coins.', 'Obtain 100,000 lifetime coins.', 'Obtain 1,000,000 lifetime coins.', 'Obtain 10,000,000 lifetime coins.', 'Obtain 100,000,000 lifetime coins.', 'Obtain 1,000,000,000 lifetime coins.', 'Obtain 10,000,000,000 lifetime coins.', 'Obtain 100,000,000,000 lifetime coins.', 'Obtain 1,000,000,000,000 lifetime coins.', 'Obtain 10,000,000,000,000 lifeitme coins.', 'Obtain 1.000e14 (100 trillion) lifetime coins.', 'Obtain 1.000e15 (1 quadrillion) lifetime coins.', 'Obtain 1.000e16 (10 quadrillion) lifetime coins.', 'Obtain 1.000e17 (100 quadrillion) lifetime coins.', 'Obtain 1.000e18 (1 quintillion) lifetime coins.', 'Obtain 1.000e19 (10 quadrillion) lifetime coins.', 'Obtain 1.000e20 (100 quintillion) lifetime coins.', 'Obtain 1.000e21 (1 sextillion) lifetime coins.', 'Obtain 1.000e22 (10 sextillion) lifetime coins.', 'Obtain 1.000e23 (100 sextillion) lifetime coins.', 'Obtain 1.000e24 (1 septillion) lifetime coins.', 'Obtain 1.000e25 (10 septillion) lifetime coins.', 'Obtain 1.000e26 (100 septillion) lifetime coins.', 'Obtain 1.000e27 (1 octillion) lifetime coins.', 'Obtain far more lifetime coins than you should have.', 'Hack in some money using the debug console.'],
   achReq = [1, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 10000000000, 100000000000, 1000000000000, 10000000000000, 100000000000000, 100000000000000, 1000000000000000, 10000000000000000n, 100000000000000000n, 1000000000000000000n, 10000000000000000000n, 100000000000000000000n, 1000000000000000000000n, 10000000000000000000000n, 100000000000000000000000n, 1000000000000000000000000n, 10000000000000000000000000n, 100000000000000000000000000n, Number.MAX_VALUE, Number.MAX_VALUE * Number.MAX_VALUE],
   buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
-  logChoices = ['Stay a while, and listen.', 'Boo!', 'I think you may have hit the wrong button.', 'Looking for bugs?', 'You\'re not supposed to be here.', '<insert random variable here>', 'Quit hacking in money!', 'Didn\'t expect to see you here.', 'Is this thing on?', 'I\'ve always wondered what it would look like if I wrote a really long message into the debug console so I\'m just gonna keep typing until I feel like I\'ve typed enough which is actually a lot harder than it seems considering I need to figure out what to type anyways how are you enjoying the game? I\'ve worked very hard on it and it honestly kinda sucks but who cares at least you might be having fun! This game was honestly heavily inspired by cookie clicker and that game is really really good (way better than this one) so you should go play that instead unless you want to be so rich there won\'t even be enough money on the planet to match what you have.', 'Introducing Coin Clicker: Now with less fall damage!', 'Maybe you could buy a cookie with all the coins you have.', 'Why not try tha \'pizza\' command?', 'Legend says a hidden achievement will appear if you somehow obtain infinite coins... But who listens to stuff like that anyway?', 'Hey you should try running \'wipeSave();\' in the input box, it won\'t hurt anything I promise', `Man this whole '${buildInfo.UpdName}' update isn't that great huh?`, 'Oops, all coins!', 'This whole random quote feature isn\'t a complete waste of time, I swear.', 'Magic!', 'What? I like equal signs.', `Imagine having only ${textArray[0]} coins`, 'Finally! I\'ve been stuck on this island for years!', 'NOTICE: Due to people trying to steal our coins from the local Coin Clicker Bank, players will now only be receiving 0.01% of their current coins per second. We apologize for the inconvenience.', 'Could you open a new window? It\'s hot in here!', 'Get out of my room!', 'Thank you for playing Coin Clicker.'],
-  man = '\nCoin Clicker Debug Console\n\nclear - Clears the console\necho - Outputs the given arguments\nhelp - Displays this manual\nexec - Executes JavaScript code.\neval - An alias for exec, has the same function.\npizza - Tells you how many $30 pizzas you could buy with your current amount of coins.\nrmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass "all" to log all of them.\nTyping any command into the console that isn\'t recognized will have the same effect as using the \'exec\' or \'eval\' commands.\n\n',
-  cmdHist = [],
+  logChoices = ['Stay a while, and listen.', 'Boo!', 'I think you may have hit the wrong button.', 'Looking for bugs?', 'You\'re not supposed to be here.', '<insert random variable here>', 'Quit hacking in money!', 'Didn\'t expect to see you here.', 'Is this thing on?', 'I\'ve always wondered what it would look like if I wrote a really long message into the debug console so I\'m just gonna keep typing until I feel like I\'ve typed enough which is actually a lot harder than it seems considering I need to figure out what to type anyways how are you enjoying the game? I\'ve worked very hard on it and it honestly kinda sucks but who cares at least you might be having fun! This game was honestly heavily inspired by cookie clicker and that game is really really good (way better than this one) so you should go play that instead unless you want to be so rich there won\'t even be enough money on the planet to match what you have.', 'Introducing Coin Clicker: Now with less fall damage!', 'Maybe you could buy a cookie with all the coins you have.', 'Why not try tha \'pizza\' command?', 'Legend says a hidden achievement will appear if you somehow obtain infinite coins... But who listens to stuff like that anyway?', 'Hey you should try running \'wipeSave();\' in the input box, it won\'t hurt anything I promise', `Man this whole '${buildInfo.UpdName}' update isn't that great huh?`, 'Oops, all coins!', 'This whole random quote feature isn\'t a complete waste of time, I swear.', 'Magic!', 'What? I like equal signs.', `Imagine having only 0 coins`, 'Finally! I\'ve been stuck on this island for years!', 'NOTICE: Due to people trying to steal our coins from the local Coin Clicker Bank, players will now only be receiving 0.01% of their current coins per second. We apologize for the inconvenience.', 'Could you open a new window? It\'s hot in here!', 'Get out of my room!', 'Thank you for playing Coin Clicker.'],
+  man = '\nCoin Clicker Debug Console\n\nclear - Clears the console.\necho - Outputs the given arguments.\nhelp - Displays this manual.\nexec - Executes JavaScript code.\neval - An alias for exec, has the same function.\npizza - Tells you how many $30 pizzas you could buy with your current amount of coins.\nrmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass "all" to log all of them.\nclhis - Clears the command history.\nTyping any command into the console that isn\'t recognized will have the same effect as using the \'exec\' or \'eval\' commands.\n\n',
   saveData = [],
   shopData = [],
   times = [];
@@ -363,16 +390,11 @@ for (let i = 0; i < debugLogs.length; i++) console.debug(`%c [Debug] %c${debugLo
 for (let i = 0; i < 30; i++) achArr.push(!1);
 loadGame();
 if (graphicsMode == 'Quality') updInterval = 1; else updInterval = 50;
-getFps();
+lib.getFps();
 
 //Functions
-function rng(min, max) { return Math.floor((Math.random() * (max - min) + min)) }
-function achLabelSwitch(index) { sfx.play(); achNameStr.textContent = achNames[index]; achDescStr.textContent = achDescs[index]; if (achArr[index] == !0) achUnlockStr.textContent = 'Unlocked.'; else achUnlockStr.textContent = 'Not unlocked.'; }
-function intTooLarge() { for (var i in intArray) if (intArray[i] >= 9.99e+101) return true; }
-function getFps() { window.requestAnimationFrame(() => { let now = performance.now(); while (times.length > 0 && times[0] <= now - 1000) times.shift(); times.push(now); fps = times.length; fpsLabel.textContent = `FPS: ${fps}`; getFps(); }); }
 function autoplay() { if (debugAutoplay && readyToSave) { manualSave = !0; saveGame(); readyToSave = !1; } else if (debugAutoplay && init.GameStarted) { doAutobuy = !0; autoBuyStr.textContent = 'Autobuy is enabled. (Forced)'; saveInfoString.textContent = 'Saving is disabled.'; coin.click(); } }
-function wipeSave() { if (readyToSave || debugAutoplay) { $('.hasanim').css('-webkit-animation-play-state', 'paused'); let prompt = confirm('This is completely irreversible! Are you sure you wish to continue?'); if (prompt) { localStorage.removeItem('saveData'); localStorage.removeItem('shopData'); readyToSave = !readyToSave; /*False*/ location.reload(); } else if (!readyToSave) readyToSave = !0; } }
-function createBase64Key() { try { if (!init.GameStarted || debug) { generatedKey = 'debug'; let addArray = ['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']; for (let i = 45; i > 0; i--) { let val = rng(1, addArray.length - 1); generatedKey += addArray[val]; if (i == 1) { let base64key = btoa(generatedKey); key.textContent = base64key; key.id = 'key'; console.log(`Unencoded: ${generatedKey}`); console.log(`Base64: ${base64key}`); debugConsole += `Unencoded: ${generatedKey}\n`; debugConsole += `Base64: ${base64key}\n`; } } } } catch (error) { errorHandler(error); } }
+function createBase64Key() { try { if (!init.GameStarted || debug) { generatedKey = 'debug'; let addArray = ['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']; for (let i = 45; i > 0; i--) { let val = lib.rng(1, addArray.length - 1); generatedKey += addArray[val]; if (i == 1) { let base64key = btoa(generatedKey); key.textContent = base64key; key.id = 'key'; console.log(`Unencoded: ${generatedKey}`); console.log(`Base64: ${base64key}`); debugConsole += `Unencoded: ${generatedKey}\n`; debugConsole += `Base64: ${base64key}\n`; } } } } catch (error) { errorHandler(error); } }
 function buffRemoval() { try { buffStr.style.display = 'none'; if (buff == 'cpsDouble') { stats.ClicksPS = stats.RawClicksPS; stats.ClickValue = stats.RawClickVal; } else if (buff == 'cv777%CpS') stats.ClickValue = stats.RawClickVal; else if (buff == 'bonusClicks') clicksAdded = 0; buff = 'none'; } catch (error) { errorHandler(error); } }
 
 function randomMsg(arg) {
@@ -389,7 +411,7 @@ function randomMsg(arg) {
       debugConsole += `${i}: === ${selectedMsg} ===\n`;
     }
   } else {
-    selectedMsg = logChoices[rng(1, logChoices.length - 1)];
+    selectedMsg = logChoices[lib.rng(1, logChoices.length - 1)];
     console.log(`=== %c${selectedMsg}%c ===`, yellow, def);
     debugConsole += `=== ${selectedMsg} ===\n`;
   }
@@ -454,7 +476,7 @@ function updateScreen() {
         doublePointerImg.style.display = 'block';
         doublePointerUnlocked = !doublePointerUnlocked; //True
         SHT = 500;
-      } else if (doublePointerUnlocked && doublePointersOwned == 0) {
+      } else if (doublePointerUnlocked) {
         doublePointerGroup.style.display = 'block';
         doublePointerCPSString.textContent = `CpS: +${textArray[13]}`;
         doublePointerCostString.textContent = `Cost: ${textArray[14]}`;
@@ -509,19 +531,19 @@ function updateScreen() {
       if (superClickerUnlocked) { if (display.SuperClickerCPS < superClickerCPS) display.SuperClickerCPS += Math.ceil(diffArr[10] / 15); else if (display.SuperClickerCPS > superClickerCPS) display.SuperClickerCPS -= Math.ceil(diffArr[10] / 15); if (display.SuperClickerCost < superClickerCost) display.SuperClickerCost += Math.ceil(diffArr[11] / 15); else if (display.SuperClickerCost > superClickerCost) display.SuperClickerCost -= Math.ceil(diffArr[11] / 15); }
       if (doublePointerUnlocked) { if (display.DoublePointerCPS < doublePointerCPS) display.DoublePointerCPS += Math.ceil(diffArr[12] / 15); else if (display.DoublePointerCPS > doublePointerCPS) display.DoublePointerCPS -= Math.ceil(diffArr[12] / 15); if (display.DoublePointerCost < doublePointerCost) display.DoublePointerCost += Math.ceil(diffArr[13] / 15); else if (display.DoublePointerCost > doublePointerCost) display.DoublePointerCost -= Math.ceil(diffArr[13] / 15); }
       if (employeeUnlocked) { if (display.EmployeeCost < employeeCost) display.EmployeeCost += Math.ceil(diffArr[14] / 15); else if (display.EmployeeCost > employeeCost) display.EmployeeCost -= Math.ceil(diffArr[14] / 15); }
-    } else bgm.volume = volume / 3;
+    } else { bgm.volume = volume / 3; $('.bg').remove(); }
     setTimeout(updateScreen, updInterval);
   } catch (error) { errorHandler(error); }
 }
 
 class numberFix {
   constructor() {
-    if (!numberShorten || intTooLarge()) {
-      for (var name in this) if (!isFinite(this[name]) && !isNaN(this[name]) && (this[name] >= Number.MAX_VALUE || this[name] <= Number.MIN_VALUE)) this[name] = Number.MAX_VALUE;
+    for (let name in this) if (!isFinite(this[name]) && !isNaN(this[name]) && (this[name] >= Number.MAX_VALUE || this[name] <= Number.MIN_VALUE)) this[name] = Number.MAX_VALUE;
+    if (!numberShorten || lib.intTooLarge()) {
       for (let i = 0; i < intArray.length; i++) {
         intArray[i] = Math.abs(intArray[i]);
         if (isNaN(intArray[i])) intArray[i] = 0;
-        if (Number.prototype.toLocaleString() == undefined) if (intArray[i] >= 150000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); else textArray[i] = intArray[i].toLocaleString();
+        if (Number.prototype.toLocaleString() != undefined) if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); else textArray[i] = intArray[i].toLocaleString();
         else {
           if (intArray[i] < 100000000000000) {
             textArray[i] = intArray[i].toString();
@@ -541,36 +563,36 @@ class numberFix {
 function createBgElem() {
   try {
     if (startBgCreate && achArr[3]) {
-      if ((titleScreen.style.display == 'block' || game.style.display != 'none') && graphicsMode == 'Quality') {
+      if (graphicsMode == 'Quality') {
         bg = document.createElement('img');
         bg.src = './img/bgdollar.png';
         bg.id = 'bg';
         bg.className = 'bg fixed';
-        bg.style.left = `${rng(1, screenWidth)}px`;
-        if (!init.GameStarted) titleScreen.appendChild(bg); else game.appendChild(bg);
+        bg.style.left = `${lib.rng(1, screenWidth)}px`;
+        document.body.appendChild(bg);
         if (achArr[9]) {
-          if ((titleScreen.style.display == 'block' || game.style.display != 'none') && graphicsMode == 'Quality') {
+          if (graphicsMode == 'Quality') {
             bg = document.createElement('img');
             bg.src = './img/coin.png';
             bg.id = 'bg';
             bg.className = 'bg hasanim fixed';
-            bg.style.left = `${rng(1, screenWidth)}px`;
-            if (!init.GameStarted) titleScreen.appendChild(bg); else game.appendChild(bg);
+            bg.style.left = `${lib.rng(1, screenWidth)}px`;
+            document.body.appendChild(bg);
           }
         }
         if (achArr[24]) {
           bgMax = 275;
-          if ((titleScreen.style.display == 'block' || game.style.display != 'none') && graphicsMode == 'Quality') {
+          if (graphicsMode == 'Quality') {
             bg = document.createElement('i');
             bg.id = 'bg';
             bg.className = 'fa-solid fa-star ach fixed hasanim bg';
             if (!achArr[26]) bg.style.color = `rgb(0, ${green}, 0)`; else bg.style.color = `rgb(${red}, 0, 0)`;
-            bg.style.left = `${rng(1, screenWidth)}px`;
+            bg.style.left = `${lib.rng(1, screenWidth)}px`;
             bg.style.fontSize = '1.7vw';
-            if (!init.GameStarted) titleScreen.appendChild(bg); else game.appendChild(bg);
+            document.body.appendChild(bg);
           }
         }
-      } else $('.bg').remove();
+      }
     } setTimeout(createBgElem, bgUpdInterval);
   } catch (error) { errorHandler(error) }
 }
@@ -612,7 +634,6 @@ function loadGame() {
             employeeUnlocked = shopDat[17];
             employeeCost = shopDat[18];
             employeesOwned = shopDat[19];
-            if (loadData[19]) stats.OfflineClicksPSPercen = loadData[19]; else stats.OfflineClicksPSPercen = employeesOwned / 100;
           }
           if (clickersOwned >= 150) { clickerFusionUnlocked = shopDat[20]; clickerFusionOwned = shopDat[21]; }
         }
@@ -632,6 +653,7 @@ function loadGame() {
           keyEntered = loadData[12];
           if (loadData[13]) lastSavedTime = loadData[13];
           if (loadData[14]) stats.TrueClicks = loadData[14];
+          if (loadData[19]) stats.OfflineClicksPSPercen = loadData[19]; else stats.OfflineClicksPSPercen = employeesOwned / 10;
           if (loadData[18] && stats.ClicksPS > 0 && stats.OfflineClicksPSPercen > 0) {
             let loadTimestamp = Math.floor((new Date()).getTime() / 1000),
               saveTimestamp = loadData[18],
@@ -644,6 +666,7 @@ function loadGame() {
             if (offlineCpS == 1) unlockString.textContent = `Your employees produced ${offlineCpS} coin while you were away.`; else unlockString.textContent = `Your employees produced ${offlineCpS} coins while you were away.`;
             SHT = 500;
           }
+          if (loadData[20]) cmdHist = loadData[20];
           if (clickersOwned >= 1) { clickerImg.style.animation = 'clickermov 2s forwards'; setTimeout(function () { clickerImg.style.transform = 'translate3d(35.5vw, 7.2vw, 0) rotate(172deg)'; clickerImg.style.animation = 'clickerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
           if (superClickersOwned >= 1) { superClickerImg.style.animation = 'superclickermov 2s forwards'; setTimeout(function () { superClickerImg.style.transform = 'translate3d(44vw, 2vw, 0) rotate(175deg)'; superClickerImg.style.animation = 'superclickerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
           if (doublePointersOwned >= 1) { doublePointerImg.style.animation = 'doublepointermov 2s forwards'; setTimeout(function () { doublePointerImg.style.transform = 'translate3d(39.8vw, 6.9vw, 0) rotate(90deg)'; doublePointerImg.style.animation = 'doublepointerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
@@ -691,9 +714,7 @@ function loadGame() {
 function saveGame() {
   try {
     if (readyToSave && init.GameStarted) {
-      if (buff != 'none') {
-        savingString.textContent = 'You cannot save when a buff is occurring.'; savingString.style.display = 'block'; SHT = 500;
-      } else {
+      if (buff != 'none') { savingString.textContent = 'You cannot save when a buff is occurring.'; savingString.style.display = 'block'; SHT = 500; } else {
         let saveTime = Math.floor((new Date()).getTime() / 1000);
         lastSavedTime = new Date();
         lastSavedTime = lastSavedTime.toString();
@@ -702,7 +723,7 @@ function saveGame() {
         readyToSave = !1;
         savingString.textContent = 'Saving...';
         savingString.style.display = 'block';
-        let varsToPush = [buildInfo.BuildNum, debugAutoplay, stats.Clicks, stats.ClickValue, stats.ClicksPS, stats.LifetimeClicks, stats.LifetimeManualClicks, stats.CoinClickCount, stats.TotalClickHelpers, stats.Playtime, volume, doAutobuy, keyEntered, lastSavedTime, stats.TrueClicks, bgGradCenterInput.value, bgGradEdgeInput.value, graphicsMode, saveTime];
+        let varsToPush = [buildInfo.BuildNum, debugAutoplay, stats.Clicks, stats.ClickValue, stats.ClicksPS, stats.LifetimeClicks, stats.LifetimeManualClicks, stats.CoinClickCount, stats.TotalClickHelpers, stats.Playtime, volume, doAutobuy, keyEntered, lastSavedTime, stats.TrueClicks, bgGradCenterInput.value, bgGradEdgeInput.value, graphicsMode, saveTime, stats.OfflineClicksPSPercen, cmdHist];
         let shopVars = [cursorOwned, clickerCPS, clickerCPSWorth, clickerCost, clickersOwned];
         if (superClickerUnlocked) {
           shopVars.push(superClickerCPS);
@@ -737,15 +758,35 @@ function saveGame() {
   } catch (error) { errorHandler(error) }
 }
 
+function wipeSave(gamepadActive) {
+  if (readyToSave || debugAutoplay) {
+    if (!gamepadActive) {
+      let prompt = confirm('This is completely irreversible! Are you sure you wish to continue?');
+      if (prompt) {
+        localStorage.removeItem('saveData');
+        localStorage.removeItem('shopData');
+        readyToSave = !readyToSave; /*False*/
+        location.reload();
+      }
+    } else if (gamepadActive) {
+      localStorage.removeItem('saveData');
+      localStorage.removeItem('shopData');
+      readyToSave = !readyToSave;
+      unlockString.textContent = 'Save removed. Press R3 to confirm. (You can save again to reverse this if this was a mistake.)';
+      SHT = 500;
+    } else if (!readyToSave) readyToSave = !0;
+  }
+}
+
 function buffRNGCalc() {
   try {
     let max = 301,
       min = 0,
       buffTime;
     buffRNG = 0;
-    if (forceBuff && buff == 'none') buffRNG = 100; else if (!forceBuff && buff == 'none') buffRNG = rng(min, max);
-    if ((document.hidden || game.style.display != 'block') && buffRNG == 200) buffRNG = rng(min, max);
-    if (buffRNG == 100 && buff == 'none') { if (stats.ClicksPS > 0) { buffTime = rng(15000, 60000); buffStr.textContent = `Your CpS has been doubled for ${Math.round(buffTime / 1000)} seconds!`; buffStr.style.display = 'block'; stats.RawClicksPS = stats.ClicksPS; stats.ClicksPS = Math.round(stats.ClicksPS * 2); buff = 'cpsDouble'; window.setTimeout(buffRemoval, buffTime); } } else if (buffRNG == 200 && buff == 'none') { if (stats.ClicksPS > 0) { buffTime = rng(5000, 20000); buffStr.textContent = `Your click value has been increased by 777% of your CpS for ${Math.round(buffTime / 1000)} seconds!`; buffStr.style.display = 'block'; stats.RawClickVal = stats.ClickValue; stats.ClickValue += Math.round(stats.ClicksPS * 7.77); buff = 'cv777%CpS'; window.setTimeout(buffRemoval, buffTime); } } else if (buffRNG == 300 && buff == 'none') { if (stats.ClicksPS > 0 && stats.Clicks > 0) { clicksAdded = Math.round(0.3 * stats.ClicksPS + 0.1 * stats.Clicks); stats.Clicks += clicksAdded; stats.TrueClicks += clicksAdded; new numberFix(); buffStr.style.display = 'block'; buff = 'bonusClicks'; window.setTimeout(buffRemoval, 2000); } }
+    if (forceBuff && buff == 'none') buffRNG = 100; else if (!forceBuff && buff == 'none') buffRNG = lib.rng(min, max);
+    if ((document.hidden || game.style.display != 'block') && buffRNG == 200) buffRNG = lib.rng(min, max);
+    if (buffRNG == 100 && buff == 'none') { if (stats.ClicksPS > 0) { buffTime = lib.rng(15000, 60000); buffStr.textContent = `Your CpS has been doubled for ${Math.round(buffTime / 1000)} seconds!`; buffStr.style.display = 'block'; stats.RawClicksPS = stats.ClicksPS; stats.ClicksPS = Math.round(stats.ClicksPS * 2); buff = 'cpsDouble'; window.setTimeout(buffRemoval, buffTime); } } else if (buffRNG == 200 && buff == 'none') { if (stats.ClicksPS > 0) { buffTime = lib.rng(5000, 20000); buffStr.textContent = `Your click value has been increased by 777% of your CpS for ${Math.round(buffTime / 1000)} seconds!`; buffStr.style.display = 'block'; stats.RawClickVal = stats.ClickValue; stats.ClickValue += Math.round(stats.ClicksPS * 7.77); buff = 'cv777%CpS'; window.setTimeout(buffRemoval, buffTime); } } else if (buffRNG == 300 && buff == 'none') { if (stats.ClicksPS > 0 && stats.Clicks > 0) { clicksAdded = Math.round(0.3 * stats.ClicksPS + 0.1 * stats.Clicks); stats.Clicks += clicksAdded; stats.TrueClicks += clicksAdded; new numberFix(); buffStr.style.display = 'block'; buff = 'bonusClicks'; window.setTimeout(buffRemoval, 2000); } }
   } catch (error) { errorHandler(error); }
 }
 
@@ -786,9 +827,9 @@ function commandInterpret() {
   else if (cmd == 'exec' || cmd == 'eval') { try { eval(arg); debugConsole += 'Command executed.\n'; } catch (error) { debugConsole += `${error}\n`; } }
   else if (cmd == 'pizza') debugConsole += `You could buy ${(Math.floor(stats.Clicks / 30)).toLocaleString()} $30 pizzas with your current amount of coins.\n`;
   else if (cmd == 'rmsg') randomMsg(arg);
+  else if (cmd == 'clhis') cmdHist = [];
   else try { eval(commandInput.value); } catch (error) { debugConsole += `${error}\n`; }
-  cmdHist.push(commandInput.value);
-  cmdHistInx = cmdHist.length;
+  if (cmd != 'clhis') { cmdHist.push(commandInput.value); cmdHistInx = cmdHist.length; }
   cmd = [];
   arg = [];
   commandInput.value = '';
@@ -877,9 +918,9 @@ clickerBuy.addEventListener('click', function () {
     if (buff == 'cpsDouble') {
       stats.ClicksPS += (clickerCPS * 2);
       stats.RawClicksPS += clickerCPS;
-      clickerCPS += Math.abs(Math.round(clickersOwned * 2 + Math.abs(0.03 * stats.RawClicksPS) + rng(3, 15)));
-      clickerCost += Math.round(clickersOwned + (clickerScale * stats.RawClicksPS) + clickersOwned * 3 + rng(100, 200));
-    } else { stats.ClicksPS += clickerCPS; clickerCPS += Math.abs(Math.round(clickersOwned * 2 + Math.abs((0.03 * stats.ClicksPS)) + rng(3, 15))); clickerCost += Math.round(clickersOwned + (clickerScale * stats.ClicksPS) + clickersOwned * 3 + rng(100, 200)); }
+      clickerCPS += Math.abs(Math.round(clickersOwned * 2 + Math.abs(0.03 * stats.RawClicksPS) + lib.rng(3, 15)));
+      clickerCost += Math.round(clickersOwned + (clickerScale * stats.RawClicksPS) + clickersOwned * 3 + lib.rng(100, 200));
+    } else { stats.ClicksPS += clickerCPS; clickerCPS += Math.abs(Math.round(clickersOwned * 2 + Math.abs((0.03 * stats.ClicksPS)) + lib.rng(3, 15))); clickerCost += Math.round(clickersOwned + (clickerScale * stats.ClicksPS) + clickersOwned * 3 + lib.rng(100, 200)); }
     if (buff != 'none') stats.RawClickVal += Math.round(clickersOwned * 0.5 + 0.10 * stats.RawClicksPS); else stats.ClickValue += Math.round(clickersOwned * 0.5 + 0.10 * stats.RawClicksPS);
     if (clickersOwned == 1) { clickerImg.style.animation = 'clickermov 2s forwards'; setTimeout(function () { clickerImg.style.transform = 'translate3d(35.5vw, 7.2vw, 0) rotate(172deg)'; clickerImg.style.animation = 'clickerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
     stats.TotalClickHelpers++;
@@ -901,8 +942,8 @@ superClickerBuy.addEventListener('click', function () {
       stats.ClicksPS += (superClickerCPS * 2);
       stats.RawClicksPS += superClickerCPS;
       superClickerCPS += Math.abs(Math.round(superClickersOwned * 15 + (0.2 * stats.RawClicksPS)));
-      superClickerCost += Math.round((superClickerScale * stats.RawClicksPS) + superClickersOwned * 4 + rng(10000, 30000));
-    } else { stats.ClicksPS += superClickerCPS; superClickerCPS += Math.abs(Math.round(superClickersOwned * 15 + (0.2 * stats.ClicksPS))); superClickerCost += Math.round((superClickerScale * stats.ClicksPS) + superClickersOwned * 4 + rng(10000, 30000)); }
+      superClickerCost += Math.round((superClickerScale * stats.RawClicksPS) + superClickersOwned * 4 + lib.rng(10000, 30000));
+    } else { stats.ClicksPS += superClickerCPS; superClickerCPS += Math.abs(Math.round(superClickersOwned * 15 + (0.2 * stats.ClicksPS))); superClickerCost += Math.round((superClickerScale * stats.ClicksPS) + superClickersOwned * 4 + lib.rng(10000, 30000)); }
     if (buff != 'none') stats.RawClickVal += Math.round(superClickersOwned * 2 + 0.01 * stats.RawClicksPS); else stats.ClickValue += Math.round(superClickersOwned * 2 + 0.01 * stats.RawClicksPS);
     if (superClickersOwned == 1) { superClickerImg.style.animation = 'superclickermov 2s forwards'; setTimeout(function () { superClickerImg.style.transform = 'translate3d(44vw, 2vw, 0) rotate(175deg)'; superClickerImg.style.animation = 'superclickerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
     stats.TotalClickHelpers++;
@@ -923,9 +964,9 @@ doublePointerBuy.addEventListener('click', function () {
     if (buff == 'cpsDouble') {
       stats.ClicksPS += (doublePointerCPS * 2);
       stats.RawClicksPS += doublePointerCPS;
-      doublePointerCPS += Math.abs(Math.round(doublePointersOwned * 5 + (0.4 * stats.RawClicksPS) + rng(1000, 3000)));
-      doublePointerCost += Math.round(doublePointersOwned + (doublePointerScale * stats.RawClicksPS) + doublePointersOwned * 5 + rng(250000, 500000));
-    } else { stats.ClicksPS += doublePointerCPS; doublePointerCPS += Math.abs(Math.round(doublePointersOwned * 5 + (0.4 * stats.ClicksPS) + rng(1000, 3000))); doublePointerCost += Math.round(doublePointersOwned + (doublePointerScale * stats.ClicksPS) + doublePointersOwned * 5 + rng(500000, 1000000)); }
+      doublePointerCPS += Math.abs(Math.round(doublePointersOwned * 5 + (0.4 * stats.RawClicksPS) + lib.rng(1000, 3000)));
+      doublePointerCost += Math.round(doublePointersOwned + (doublePointerScale * stats.RawClicksPS) + doublePointersOwned * 5 + lib.rng(250000, 500000));
+    } else { stats.ClicksPS += doublePointerCPS; doublePointerCPS += Math.abs(Math.round(doublePointersOwned * 5 + (0.4 * stats.ClicksPS) + lib.rng(1000, 3000))); doublePointerCost += Math.round(doublePointersOwned + (doublePointerScale * stats.ClicksPS) + doublePointersOwned * 5 + lib.rng(500000, 1000000)); }
     if (buff != 'none') stats.RawClickVal += Math.round(doublePointersOwned * 3 + 0.03 * stats.RawClicksPS); else stats.ClickValue += Math.round(doublePointersOwned * 3 + 0.03 * stats.RawClicksPS);
     if (doublePointersOwned == 1) { doublePointerImg.style.animation = 'doublepointermov 2s forwards'; setTimeout(function () { doublePointerImg.style.transform = 'translate3d(39.8vw, 6.9vw, 0) rotate(90deg)'; doublePointerImg.style.animation = 'doublepointerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
     doublePointerScale += 10;
@@ -1071,51 +1112,60 @@ saveButton.addEventListener('mouseover', function () { savingString.style.top = 
 saveButton.addEventListener('mouseleave', function () { savingString.style.top = '2.6vw'; });
 wipeSaveButton.addEventListener('click', function () { sfx.play(); wipeSave(); });
 debugKeySubmit.addEventListener('click', function (event) { event.preventDefault(); try { let dmkInput = atob(debugKeyInput.value); } catch (error) { dmkInput = debugKeyInput.value; } if (dmkInput == generatedKey) { debugKeyInputScreen.style.display = 'none'; debugScreen.style.display = 'block'; keyEntered = !keyEntered; /*True*/ } else { incorrectKeyLabel.style.display = 'block'; incorrectKeyLabel.textContent = 'Incorrect key.'; SHT = 500; } });
-achievementsButton.addEventListener('click', function () { game.style.display = 'none'; achievementsPanel.style.display = 'block'; let index = 0; achLabelSwitch(index); });
+achievementsButton.addEventListener('click', function () { game.style.display = 'none'; achievementsPanel.style.display = 'block'; let index = 0; lib.achLabelSwitch(index); });
 backToGame.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; achievementsPanel.style.display = 'none'; });
-journeyBegins.addEventListener('click', function () { let index = 0; achLabelSwitch(index); });
-aGoodStart.addEventListener('click', function () { let index = 1; achLabelSwitch(index); });
-gettingThere.addEventListener('click', function () { let index = 2; achLabelSwitch(index); });
-millionare.addEventListener('click', function () { let index = 3; achLabelSwitch(index); });
-coinPool.addEventListener('click', function () { let index = 4; achLabelSwitch(index); });
-abundance.addEventListener('click', function () { let index = 5; achLabelSwitch(index); });
-billionare.addEventListener('click', function () { let index = 6; achLabelSwitch(index); });
-excess.addEventListener('click', function () { let index = 7; achLabelSwitch(index); });
-planetOfClicks.addEventListener('click', function () { let index = 8; achLabelSwitch(index); });
-trillionare.addEventListener('click', function () { let index = 9; achLabelSwitch(index); });
-pocketDimension.addEventListener('click', function () { let index = 10; achLabelSwitch(index); });
-farTooMany.addEventListener('click', function () { let index = 11; achLabelSwitch(index); });
-quadrillionare.addEventListener('click', function () { let index = 12; achLabelSwitch(index); });
-coinVortex.addEventListener('click', function () { let index = 13; achLabelSwitch(index); });
-coinShapedBlackHole.addEventListener('click', function () { let index = 14; achLabelSwitch(index); });
-quintillionare.addEventListener('click', function () { let index = 15; achLabelSwitch(index); });
-clickBeyond.addEventListener('click', function () { let index = 16; achLabelSwitch(index); });
-distantBeginning.addEventListener('click', function () { let index = 17; achLabelSwitch(index); });
-sextillionare.addEventListener('click', function () { let index = 18; achLabelSwitch(index); });
-numberOverflow.addEventListener('click', function () { let index = 19; achLabelSwitch(index); });
-coinUniverse.addEventListener('click', function () { let index = 20; achLabelSwitch(index); });
-septillionare.addEventListener('click', function () { let index = 21; achLabelSwitch(index); });
-why.addEventListener('click', function () { let index = 22; achLabelSwitch(index); });
-twentyFingers.addEventListener('click', function () { let index = 23; achLabelSwitch(index); });
-forTheWorthy.addEventListener('click', function () { let index = 24; achLabelSwitch(index); });
-breakpoint.addEventListener('click', function () { let index = 25; achLabelSwitch(index); });
-cheater.addEventListener('click', function () { let index = 26; achLabelSwitch(index); });
+journeyBegins.addEventListener('click', function () { let index = 0; lib.achLabelSwitch(index); });
+aGoodStart.addEventListener('click', function () { let index = 1; lib.achLabelSwitch(index); });
+gettingThere.addEventListener('click', function () { let index = 2; lib.achLabelSwitch(index); });
+millionare.addEventListener('click', function () { let index = 3; lib.achLabelSwitch(index); });
+coinPool.addEventListener('click', function () { let index = 4; lib.achLabelSwitch(index); });
+abundance.addEventListener('click', function () { let index = 5; lib.achLabelSwitch(index); });
+billionare.addEventListener('click', function () { let index = 6; lib.achLabelSwitch(index); });
+excess.addEventListener('click', function () { let index = 7; lib.achLabelSwitch(index); });
+planetOfClicks.addEventListener('click', function () { let index = 8; lib.achLabelSwitch(index); });
+trillionare.addEventListener('click', function () { let index = 9; lib.achLabelSwitch(index); });
+pocketDimension.addEventListener('click', function () { let index = 10; lib.achLabelSwitch(index); });
+farTooMany.addEventListener('click', function () { let index = 11; lib.achLabelSwitch(index); });
+quadrillionare.addEventListener('click', function () { let index = 12; lib.achLabelSwitch(index); });
+coinVortex.addEventListener('click', function () { let index = 13; lib.achLabelSwitch(index); });
+coinShapedBlackHole.addEventListener('click', function () { let index = 14; lib.achLabelSwitch(index); });
+quintillionare.addEventListener('click', function () { let index = 15; lib.achLabelSwitch(index); });
+clickBeyond.addEventListener('click', function () { let index = 16; lib.achLabelSwitch(index); });
+distantBeginning.addEventListener('click', function () { let index = 17; lib.achLabelSwitch(index); });
+sextillionare.addEventListener('click', function () { let index = 18; lib.achLabelSwitch(index); });
+numberOverflow.addEventListener('click', function () { let index = 19; lib.achLabelSwitch(index); });
+coinUniverse.addEventListener('click', function () { let index = 20; lib.achLabelSwitch(index); });
+septillionare.addEventListener('click', function () { let index = 21; lib.achLabelSwitch(index); });
+why.addEventListener('click', function () { let index = 22; lib.achLabelSwitch(index); });
+twentyFingers.addEventListener('click', function () { let index = 23; lib.achLabelSwitch(index); });
+forTheWorthy.addEventListener('click', function () { let index = 24; lib.achLabelSwitch(index); });
+breakpoint.addEventListener('click', function () { let index = 25; lib.achLabelSwitch(index); });
+cheater.addEventListener('click', function () { let index = 26; lib.achLabelSwitch(index); });
 cmdForm.addEventListener("submit", function (event) { event.preventDefault(); commandInterpret(); });
 settingsButton.addEventListener('click', function () { sfx.play(); settingsPanel.style.display = 'block'; game.style.display = 'none'; });
 backToGame2.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; settingsPanel.style.display = 'none'; });
-volumeInput.addEventListener('change', function () { try { if (volumeInput.value >= 0 && volumeInput.value <= 100) { volume = volumeInput.value / 100; let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1]; for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume; } else volumeInput.value = ''; } catch (error) { errorHandler(error); } });
+volumeInput.addEventListener('change', function () { try { let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1]; if (volumeInput.value >= 0 && volumeInput.value <= 100) { volume = volumeInput.value / 100; for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume; } else volumeInput.value = volume * 100; } catch (error) { errorHandler(error); } });
 autoBuyBtn.addEventListener('click', function () { if (doAutobuy) { autoBuyBtn.textContent = 'OFF'; doAutobuy = !1; } else { autoBuyBtn.textContent = 'ON'; doAutobuy = !0; } });
 bgGradCenterInput.addEventListener('change', function () { document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`; });
 bgGradEdgeInput.addEventListener('change', function () { document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`; });
 graphicsBtn.addEventListener('click', function () { if (graphicsMode == 'Quality') graphicsMode = 'Performance'; else graphicsMode = 'Quality'; graphicsBtn.textContent = graphicsMode; });
 resetBgButton.addEventListener('click', function () { let prompt = confirm('This is completely irreversible! Are you sure you wish to continue? (You will need to save again for these changes to stay.)'); if (prompt) { bgGradCenterInput.value = '250, 224, 65'; bgGradEdgeInput.value = '249, 160, 40'; document.body.style.backgroundImage = 'radial-gradient(rgb(250, 224, 65), rgb(249, 160, 40))'; } });
-bgm.addEventListener('ended', function () { bgm = new Audio(); bgm.src = './snd/bgm.mp3'; bgm.play(); });
+bgm.addEventListener('ended', function () { setTimeout(function () { bgm = new Audio(); bgm.src = './snd/bgm.mp3'; bgm.play(); }, 1000) });
 
 window.addEventListener('beforeunload', function (event) {
   event.stopImmediatePropagation();
   $('.bg').remove();
   $('.coinparticle').remove();
   if (buff == 'none' && (doAutosave || debug)) saveGame(); else event.preventDefault();
+});
+
+window.addEventListener('gamepadconnected', function (event) {
+  event.gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 100, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+  setTimeout(function () { event.gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 100, weakMagnitude: 1.0, strongMagnitude: 1.0 }); }, 500);
+  globalThis.gamepad = event.gamepad;
+  this.setInterval(function () { gamepad = navigator.getGamepads()[0] }, 1);
+  unlockString.textContent = `Gamepad connected: ${event.gamepad.id}`;
+  SHT = 500;
 });
 
 document.addEventListener('loadevt', function () {
@@ -1127,10 +1177,13 @@ document.addEventListener('loadevt', function () {
     $('#skipintrostring').css('-webkit-animation-play-state', 'running');
     setTimeout(function () {
       if (!init.GameStarted) sfx6.play();
-      smallCoin1.style.animation = 'smallCoinMove1 1.5s 0.5s forwards';
-      smallCoin2.style.animation = 'smallCoinMove2 1.5s 0.5s forwards';
       smallCoin3.style.animation = 'smallCoinMove3 1.5s 0.5s forwards';
       smallCoin4.style.animation = 'smallCoinMove4 1.5s 0.5s forwards';
+      sfx6 = new Audio();
+      sfx6.src = './snd/coinwhoosh.mp3';
+      setTimeout(function () { if (!init.GameStarted) sfx6.play(); }, 500);
+      smallCoin1.style.animation = 'smallCoinMove1 1.5s 0.8s forwards';
+      smallCoin2.style.animation = 'smallCoinMove2 1.5s 0.8s forwards';
       setTimeout(function () { setTimeout(function () { if (!init.GameStarted) sfx7.play(); if (!prompting) { $('#title').css('-webkit-animation-play-state', 'running'); $('#tsclicker').css('-webkit-animation-play-state', 'running'); } skipIntroString.style.animation = 'btmstringmov 1s ease-in forwards'; setTimeout(function () { if (!init.GameStarted) sfx7point1.play(); if (!prompting) $('#betastring').css('-webkit-animation-play-state', 'running'); setTimeout(function () { if (!init.GameStarted) sfx7.play(); if (!prompting) $('#updatestring').css('-webkit-animation-play-state', 'running'); setTimeout(function () { smallCoin3.style.rotate = '270deg'; smallCoin4.style.rotate = '270deg'; smallCoin1.style.animation = 'smallCoinSpin1 10s linear infinite'; smallCoin2.style.animation = 'smallCoinSpin2 10s linear infinite'; smallCoin3.style.animation = 'smallCoinSpin3 10s linear infinite'; smallCoin4.style.animation = 'smallCoinSpin4 10s linear infinite'; setTimeout(function () { if (!prompting) $('#startbutton').css('-webkit-animation-play-state', 'running'); setTimeout(function () { if (!prompting) { $('.btmstr').css('-webkit-animation-play-state', 'running'); $('#bmbarnote').css('-webkit-animation-play-state', 'running'); } }, 1600); /*8.4s*/ }, 1800); /*6.8s*/ }, 900); /*5.0s*/ }, 400); /*4.1s*/ }, 500); /*3.7s*/ }, 300); /*3.2s*/ }, 1200); /*2.9s*/
     }, 1700); /*1.7s*/
   } catch (error) { errorHandler(error); }
@@ -1226,8 +1279,8 @@ setInterval(cpsClick, 100);
 setInterval(rgChange, 25);
 setInterval(function () { if (doAutosave && buff == 'none' && init.GameStarted && achArr[0]) { manualSave = !1; saveGame(); } else if (buff != 'none') autosavePending = !autosavePending /*True*/ }, 60000);
 setInterval(function () { if (textSwitch && !debugAutoplay) { saveInfoString.textContent = `Last saved: ${lastSavedTime}`; textSwitch = !1; } else if (!textSwitch && !debugAutoplay) { if (doAutosave) saveInfoString.textContent = 'Game autosaves every minute; You can also press Ctrl+S to save.'; else saveInfoString.textContent = 'Autosave is disabled. You will need to save manually.'; textSwitch = !0; } }, 3000);
+var buttonPressed = !1;
 setInterval(function () { if (achArr[0]) stats.Playtime += 1000; buffRNGCalc(); }, 1000);
-
 setInterval(function () {
   SHT--;
   if (SHT == 0) {
@@ -1268,6 +1321,75 @@ setInterval(function () {
   }
   if (achArr[6]) { bgUpdInterval = 100; bgMax = 105; }
   if (achArr[9]) { bgUpdInterval = 50; createCoinBg = !0; bgMax = 210; }
+  if (gamepad) {
+    cross = gamepad.buttons[0].pressed;
+    circle = gamepad.buttons[1].pressed;
+    square = gamepad.buttons[2].pressed;
+    triangle = gamepad.buttons[3].pressed;
+    l1 = gamepad.buttons[4].pressed;
+    r1 = gamepad.buttons[5].pressed;
+    l2 = gamepad.buttons[6].pressed;
+    r2 = gamepad.buttons[7].pressed;
+    share = gamepad.buttons[8].pressed;
+    options = gamepad.buttons[9].pressed;
+    l3 = gamepad.buttons[10].pressed;
+    r3 = gamepad.buttons[11].pressed;
+    dpadUp = gamepad.buttons[12].pressed;
+    dpadDown = gamepad.buttons[13].pressed;
+    dpadLeft = gamepad.buttons[14].pressed;
+    dpadRight = gamepad.buttons[15].pressed;
+    if (!cross && !circle && !square && !triangle && !l1 && !r1 && !l2 && !r2 && !share && !options && !l3 && !r3 && !dpadUp && !dpadDown && !dpadLeft && !dpadRight) buttonPressed = !1;
+    if (cross && !init.GameStarted) startButton.click();
+    if ((circle || cross) && init.GameStarted && !buttonPressed) { buttonPressed = !0; coin.click(); }
+    if (square && init.GameStarted && !buttonPressed) {
+      buttonPressed = !0;
+      gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+      if (shopPanel.style.display == 'block') upgradeButton.click();
+      else if (upgradeShopPanel.style.display == 'block') upgradeRTS.click();
+    }
+    if (triangle && init.GameStarted && !buttonPressed) {
+      buttonPressed = !0;
+      gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+      manualSave = !0;
+      saveGame();
+    }
+    if (share && init.GameStarted && !buttonPressed) {
+      buttonPressed = !0;
+      gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+      if (game.style.display == 'block') achievementsButton.click();
+      else if (achievementsPanel.style.display == 'block') backToGame.click();
+    }
+    if (options && init.GameStarted && !buttonPressed) {
+      buttonPressed = !0;
+      gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+      if (game.style.display == 'block') settingsButton.click();
+      else if (settingsPanel.style.display == 'block') backToGame2.click();
+    }
+    if (l1 && init.GameStarted && !buttonPressed) {
+      buttonPressed = !0;
+      gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+      if (upgradeShopPanel.style.display == 'none') clickerBuy.click();
+      else cursorBuy.click();
+    }
+    if (r1 && init.GameStarted && !buttonPressed && (superClickerUnlocked || superCursorUnlocked)) {
+      buttonPressed = !0;
+      gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+      if (upgradeShopPanel.style.display == 'none') superClickerBuy.click();
+      else superCursorBuy.click();
+    }
+    if (l2 && init.GameStarted && !buttonPressed && (doublePointerUnlocked || employeeUnlocked)) {
+      buttonPressed = !0;
+      gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
+      if (upgradeShopPanel.style.display == 'none') doublePointerBuy.click();
+      else employeeBuy.click();
+    }
+    if (l3 && init.GameStarted && !buttonPressed) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); autoBuyBtn.click(); }
+    if (r3) location.reload();
+    if (dpadUp) { let gamepadActive = true; wipeSave(gamepadActive); }
+    if (r2 && init.GameStarted && !buttonPressed && godFingerUnlocked) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); if (upgradeShopPanel.style.display == 'block') godFingerBuy.click(); }
+    if (dpadLeft && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') { buttonPressed = !0; if (gpAchIndex > 0) gpAchIndex--; lib.achLabelSwitch(gpAchIndex); } else if (dpadLeft && init.GameStarted && !buttonPressed && upgradeShopPanel.style.display == 'block' && clickerFusionUnlocked) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); clickerFusionBuy.click(); }
+    if (dpadRight && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') { buttonPressed = !0; if (gpAchIndex < 24) gpAchIndex++; lib.achLabelSwitch(gpAchIndex); }
+  }
 }, 1);
 
 const loadEvt = new Event('loadevt');
