@@ -39,7 +39,7 @@ function sysCheck() {
   while (index > -1 && userAgent.indexOf(browsers[index]) == -1) index--;
   if (index > -1) browserStr = browsers[index];
   if (browserStr == 'Chrome') brandIndex = 0; else if (browserStr == 'OPR') brandIndex = 2;
-  if (userAgentData != undefined) { os = userAgentData.platform; browserStr = `${userAgentData.brands[brandIndex].brand} v${userAgentData.brands[brandIndex].version}`; } else { while (osIndex > -1 && userAgent.indexOf(oses[osIndex]) == -1) osIndex--; if (osIndex > -1) os = oses[osIndex]; if (os == 'X11') os = 'Unix'; }
+  if (userAgentData != undefined) { os = userAgentData.platform; browserStr = `${userAgentData.brands[brandIndex].brand} v${userAgentData.brands[brandIndex].version}`; } else if (userAgent.includes('PlayStation')) os = 'PlayStation'; else { while (osIndex > -1 && userAgent.indexOf(oses[osIndex]) == -1) osIndex--; if (osIndex > -1) os = oses[osIndex]; if (os == 'X11') os = 'Unix'; }
   if (browserStr == 'Edg') browserStr = 'Edge'; else if (browserStr == 'OPR') browserStr = 'Opera';
   if (url == 'https://coin-clicker.surge.sh/') url = 'Surge'; else if (url == 'http://coinclicker.cc/') url = 'Dev Webserver'; else if (window.location.pathname.includes('index.html')) url = 'Local File';
   runningBrowserString.textContent = `${browserStr} on ${os} saying hello from ${url}`;
