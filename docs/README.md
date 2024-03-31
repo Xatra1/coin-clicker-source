@@ -11,7 +11,7 @@ You can get any stable release of the game from the Releases tab on the right. S
 The game is also available for play [here.](https://coin-clicker.surge.sh)  
 If you want to get a **legacy** release of the game (a build that came out prior to build 3.11rb), check [here.](https://github.com/Xatra1/coin-clicker-archive)  
   
-**Note:** If you are playing on a platform that says 'Undetected' in the string below the start button, please use the tool [here](https://coincompatdbgr.surge.sh) (source code for this tool can be found [here](https://github.com/Xatra1/coin-clicker-compatibility-debugger)) to determine whether your platform supports userAgentData (denoted by the 'true/false' at the top of the screen when launching the game) and your userAgentString (displayed at the bottom of the screen after the animations have finished). Afterwards, file an issue including a screenshot of those two items and a possible detection fix will then be implemented.
+**Note:** If you are playing on a platform that says 'Undetected' in the string below the start button, please use the tool [here](https://coincompatdbgr.surge.sh) (source code for this tool can be found [here](https://github.com/Xatra1/coin-clicker-compatibility-debugger)) to determine whether your platform supports userAgentData (denoted by the 'true/false' at the top of the screen when launching the game) and your userAgentString (displayed at the bottom of the screen after the animations have finished). Afterwards, file an issue with the 'detection-issue' label including a screenshot of those two items and a possible detection fix will then be implemented.
   
 # Credits
 Icons made by Font Awesome, with the exception of "septillionachievements.png", which is made by IconsMind.  
