@@ -109,3 +109,8 @@ If your gamepad is detected, it's name should appear near the bottom of the scre
 ### Extras
 - The game's stack trace is now included in the debug console whenever an error occurs.
 - The changelog file has been modified so older releases have better formatting.
+
+# Build x.xanb
+- Implemented embed information and google ownership verification into the Surge page. It should now appear in google searches.
+- The PlayStation web browser should now be properly detected.
+- A [Compatibility Debugger](https://coincompatdbgr.surge.sh) has been released to allow for debugging undetected platforms. More info can be found in the README.
