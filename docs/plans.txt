@@ -1,0 +1,3 @@
+- A toggle for number shortening
+- Seasonal events
+- Some sort of 'special currency' that you can use to unlock additional rewards, like exclusive upgrades
