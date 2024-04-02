@@ -1,4 +1,5 @@
-Bugs marked with a ! are critical, and bugs marked with a ? need further testing to see if they're a recurring problem.
+Bugs marked with a ! are critical, and bugs marked with a ? need further testing to see if they're a recurring problem.  
+Bugs that are crossed out have already been fixed.
 # Build 5.11anb
 - ~~Animated upgrade shop items have a box shadow when hovering.~~
 - ~~! The player's offline CpS percentage has a huge decimal depending on how many employees are owned.~~
