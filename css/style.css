@@ -351,7 +351,7 @@ a {
 }
 
 .buttons:not(#coin, #wipesavebutton, .bgelement, #fortheworthy, #breakpoint, #cheater):hover,
-.shopbuttons:hover {
+.shopbuttons:not(#cursorimg, #supercursorimg, #godfingerimg, #employeeimg):hover {
   box-shadow: 0.05vw 0.05vw 0.2px black, -0.05vw -0.05vw 0.2px black;
 }
 
@@ -873,6 +873,7 @@ a {
   border: none;
   top: 7vw;
   animation: cursormov 2s ease-out forwards;
+  cursor: default;
 }
 
 #cursorbuy {
@@ -903,6 +904,7 @@ a {
   border: none;
   top: 12vw;
   animation: supercursormov 2s forwards;
+  cursor: default;
 }
 
 #supercursorbuy {
@@ -932,6 +934,7 @@ a {
   border: none;
   top: 17vw;
   animation: employeemov 2s forwards;
+  cursor: default;
 }
 
 #employeebuy {
@@ -961,6 +964,7 @@ a {
   border: none;
   top: 22vw;
   animation: godfingermov 2s forwards;
+  cursor: default;
 }
 
 #godfingerbuy {

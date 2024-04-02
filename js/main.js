@@ -1,9 +1,9 @@
 /*
 Coin Clicker Update 7 Codename 'Animation'
-Build 5.1 Animation Beta
-*/
+Build 5.11 Animation Beta
 
-/* Spoilers ahead! */
+Spoilers ahead! 
+*/
 
 //Loading screen and error handler
 const loadingScreen = document.getElementById('loadingscreen'),
@@ -12,12 +12,12 @@ const loadingScreen = document.getElementById('loadingscreen'),
 
 function errorHandler(error) {
   eElement.textContent = `Error in script. Check debug console for full stack trace. (${error})`;
+  debugConsole += `${error.stack}\n`;
   eElement.style.position = 'fixed';
   eElement.style.top = '-0.3vh';
   eElement.style.fontSize = '0.7vw';
   eElement.style.display = 'block';
   document.body.appendChild(eElement);
-  debugConsole += `${error.stack}\n`;
 }
 
 const runningBrowserString = document.getElementById('runningbrowserstring'),
@@ -41,7 +41,7 @@ function sysCheck() {
   if (browserStr == 'Chrome') brandIndex = 0; else if (browserStr == 'OPR') brandIndex = 2;
   if (userAgentData != undefined) { os = userAgentData.platform; browserStr = `${userAgentData.brands[brandIndex].brand} v${userAgentData.brands[brandIndex].version}`; } else if (userAgent.includes('PlayStation')) os = 'PlayStation'; else { while (osIndex > -1 && userAgent.indexOf(oses[osIndex]) == -1) osIndex--; if (osIndex > -1) os = oses[osIndex]; if (os == 'X11') os = 'Unix'; }
   if (browserStr == 'Edg') browserStr = 'Edge'; else if (browserStr == 'OPR') browserStr = 'Opera';
-  if (url == 'https://coin-clicker.surge.sh/') url = 'Surge'; else if (url == 'http://coinclicker.cc/') url = 'Dev Webserver'; else if (window.location.pathname.includes('index.html')) url = 'Local File';
+  if (url == 'https://coin-clicker.surge.sh/') url = 'Surge'; else if (window.location.pathname.includes('index.html')) url = 'Local File';
   runningBrowserString.textContent = `${browserStr} on ${os} saying hello from ${url}`;
   titleScreen.style.display = 'block';
 }
@@ -216,7 +216,7 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
 
   //Namespaces
   init = { GameStarted: !1, DataLoaded: !1 },
-  buildInfo = { BuildStr: '5.1anb', BuildNum: 5.1, UpdName: 'animation', UpdNum: 7 },
+  buildInfo = { BuildStr: '5.11anb', BuildNum: 5.11, UpdName: 'animation', UpdNum: 7 },
   stats = { Clicks: 0, TrueClicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, Playtime: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, TotalClickHelpers: 0, AchievementsUnlocked: 0, HiddenAchievementsUnlocked: 0, OfflineClicksPSPercen: 0 },
   display = { Clicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, ClickerCPS: 0, ClickerCost: 0, SuperClickerCPS: 0, SuperClickerCost: 0, DoublePointerCPS: 0, DoublePointerCost: 0, EmployeeCost: 0, Playtime: 0 },
 
@@ -232,7 +232,7 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
       else achUnlockStr.textContent = 'Not unlocked.';
     },
     intTooLarge: () => {
-      for (var i in intArray) if (intArray[i] >= 9.99e+101) return true;
+      for (var i in intArray) if (intArray[i] >= 9.99e+101) return true; else return false;
     },
     getFps: () => {
       window.requestAnimationFrame(() => {
@@ -296,7 +296,7 @@ var bg = document.createElement('img'),
   textSwitch = !1,
   manualSave = !1,
   readyToSave = !0,
-  doAutosave = !0,
+  doAutosave = !1,
   achCheck = !0,
   SHT,
 
@@ -360,7 +360,7 @@ var bg = document.createElement('img'),
   costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString, employeeCostString, godFingerCostString],
   costArray = [Math.abs(clickerCost), Math.abs(superClickerCost), Math.abs(doublePointerCost), Math.abs(cursorCost), Math.abs(superCursorCost), Math.abs(employeeCost), Math.abs(godFingerCost)];
 const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare', 'Coin Pool', 'Abundance', 'Billionare', 'Excess', 'Planet of Coins', 'Trillionare', 'Pocket Dimension', 'Far Too Many', 'Quadrillionare', 'Coin Vortex', 'Coin-Shaped Black Hole', 'Quintillionare', 'Click Beyond', 'Distant Beginning', 'Sextillionare', 'Number Overflow', 'Coin Universe', 'Septillionare', 'Why?', '20 Fingers', 'For the Worthy', 'Breaking Point', 'Cheater'],
-  achDescs = ['Obtain 1 lifetime coin.', 'Obtain 10,000 lifetime coins.', 'Obtain 100,000 lifetime coins.', 'Obtain 1,000,000 lifetime coins.', 'Obtain 10,000,000 lifetime coins.', 'Obtain 100,000,000 lifetime coins.', 'Obtain 1,000,000,000 lifetime coins.', 'Obtain 10,000,000,000 lifetime coins.', 'Obtain 100,000,000,000 lifetime coins.', 'Obtain 1,000,000,000,000 lifetime coins.', 'Obtain 10,000,000,000,000 lifeitme coins.', 'Obtain 1.000e14 (100 trillion) lifetime coins.', 'Obtain 1.000e15 (1 quadrillion) lifetime coins.', 'Obtain 1.000e16 (10 quadrillion) lifetime coins.', 'Obtain 1.000e17 (100 quadrillion) lifetime coins.', 'Obtain 1.000e18 (1 quintillion) lifetime coins.', 'Obtain 1.000e19 (10 quadrillion) lifetime coins.', 'Obtain 1.000e20 (100 quintillion) lifetime coins.', 'Obtain 1.000e21 (1 sextillion) lifetime coins.', 'Obtain 1.000e22 (10 sextillion) lifetime coins.', 'Obtain 1.000e23 (100 sextillion) lifetime coins.', 'Obtain 1.000e24 (1 septillion) lifetime coins.', 'Obtain 1.000e25 (10 septillion) lifetime coins.', 'Obtain 1.000e26 (100 septillion) lifetime coins.', 'Obtain 1.000e27 (1 octillion) lifetime coins.', 'Obtain far more lifetime coins than you should have.', 'Hack in some money using the debug console.'],
+  achDescs = ['Obtain 1 lifetime coin.', 'Obtain 10 thousand lifetime coins.', 'Obtain 100 thousand lifetime coins.', 'Obtain 1 million lifetime coins.', 'Obtain 10 million lifetime coins.', 'Obtain 100 million lifetime coins.', 'Obtain 1 billion lifetime coins.', 'Obtain 10 billion lifetime coins.', 'Obtain 100 billion lifetime coins.', 'Obtain 1 trillion lifetime coins.', 'Obtain 10 trillion lifeitme coins.', 'Obtain 100 trillion lifetime coins.', 'Obtain 1 quadrillion lifetime coins.', 'Obtain 10 quadrillion lifetime coins.', 'Obtain 100 quadrillion lifetime coins.', 'Obtain 1 quintillion lifetime coins.', 'Obtain 10 quadrillion lifetime coins.', 'Obtain 100 quintillion lifetime coins.', 'Obtain 1 sextillion lifetime coins.', 'Obtain 10 sextillion lifetime coins.', 'Obtain 100 sextillion lifetime coins.', 'Obtain 1 septillion lifetime coins.', 'Obtain 10 septillion lifetime coins.', 'Obtain 100 septillion lifetime coins.', 'Obtain 1 octillion lifetime coins.', 'Obtain far more lifetime coins than you should have.', 'Hack in some money using the debug console.'],
   achReq = [1, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 10000000000, 100000000000, 1000000000000, 10000000000000, 100000000000000, 100000000000000, 1000000000000000, 10000000000000000n, 100000000000000000n, 1000000000000000000n, 10000000000000000000n, 100000000000000000000n, 1000000000000000000000n, 10000000000000000000000n, 100000000000000000000000n, 1000000000000000000000000n, 10000000000000000000000000n, 100000000000000000000000000n, Number.MAX_VALUE, Number.MAX_VALUE * Number.MAX_VALUE],
   buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
   logChoices = ['Stay a while, and listen.', 'Boo!', 'I think you may have hit the wrong button.', 'Looking for bugs?', 'You\'re not supposed to be here.', '<insert random variable here>', 'Quit hacking in money!', 'Didn\'t expect to see you here.', 'Is this thing on?', 'I\'ve always wondered what it would look like if I wrote a really long message into the debug console so I\'m just gonna keep typing until I feel like I\'ve typed enough which is actually a lot harder than it seems considering I need to figure out what to type anyways how are you enjoying the game? I\'ve worked very hard on it and it honestly kinda sucks but who cares at least you might be having fun! This game was honestly heavily inspired by cookie clicker and that game is really really good (way better than this one) so you should go play that instead unless you want to be so rich there won\'t even be enough money on the planet to match what you have.', 'Introducing Coin Clicker: Now with less fall damage!', 'Maybe you could buy a cookie with all the coins you have.', 'Why not try tha \'pizza\' command?', 'Legend says a hidden achievement will appear if you somehow obtain infinite coins... But who listens to stuff like that anyway?', 'Hey you should try running \'wipeSave();\' in the input box, it won\'t hurt anything I promise', `Man this whole '${buildInfo.UpdName}' update isn't that great huh?`, 'Oops, all coins!', 'This whole random quote feature isn\'t a complete waste of time, I swear.', 'Magic!', 'What? I like equal signs.', `Imagine having only 0 coins`, 'Finally! I\'ve been stuck on this island for years!', 'NOTICE: Due to people trying to steal our coins from the local Coin Clicker Bank, players will now only be receiving 0.01% of their current coins per second. We apologize for the inconvenience.', 'Could you open a new window? It\'s hot in here!', 'Get out of my room!', 'Thank you for playing Coin Clicker.'],
@@ -368,7 +368,6 @@ const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare
   saveData = [],
   shopData = [],
   times = [];
-
 //Initial run updates and calls
 let yellow = 'color: yellow;',
   def = 'color: inherit;',
@@ -422,7 +421,7 @@ function updateScreen() {
     if (buff == 'none' && init.GameStarted) { stats.RawClicksPS = stats.ClicksPS; stats.RawClickVal = stats.ClickValue; document.title = `${textArray[0]} coins | Coin Clicker Beta v${buildInfo.UpdNum}`; } else if (init.GameStarted) document.title = `A buff is active! | Coin Clicker Beta v${buildInfo.UpdNum}`; else document.title = `Coin Clicker Beta v${buildInfo.UpdNum}`;
     if (!document.hidden) {
       bgm.volume = volume;
-      intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, clickersOwned, display.SuperClickerCPS, display.SuperClickerCost, superClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, doublePointersOwned, display.EmployeeCost, employeesOwned, display.RawClickVal, display.RawClicksPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, stats.OfflineClicksPSPercen * 100, cursorCost, superCursorCost, godFingerCost];
+      intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, clickersOwned, display.SuperClickerCPS, display.SuperClickerCost, superClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, doublePointersOwned, display.EmployeeCost, employeesOwned, display.RawClickVal, display.RawClicksPS, clickerCPSWorth, superClickerCPSWorth, doublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, (stats.OfflineClicksPSPercen * 100).toFixed(1), cursorCost, superCursorCost, godFingerCost];
       new numberFix();
       document.getElementById('debugconsole').value = debugConsole;
       clickString.textContent = `Coins: ${textArray[0]}`;
@@ -438,7 +437,7 @@ function updateScreen() {
         upgStrArr = [cursorOwnedString, superCursorOwnedString, godFingerOwnedString, clickerFusionOwnedString],
         upgCosArr = [textArray[27], textArray[28], textArray[29], 'None. Requires 150 clickers.'],
         upgCosStrArr = [cursorCostString, superCursorCostString, godFingerCostString, clickerFusionCostString];
-      for (var i in upgVarArr) { if (upgVarArr[i]) { upgStrArr[i].textContent = 'Owned'; upgCosStrArr[i].textContent = 'Cost: Bought.'; } else { upgStrArr[i].textContent = 'Not owned.'; upgCosStrArr[i].textContent = `Cost: ${upgCosArr[i]}`; } }
+      for (var i in upgVarArr) { if (upgVarArr[i]) { upgStrArr[i].textContent = 'Owned.'; upgCosStrArr[i].textContent = 'Cost: Bought.'; } else { upgStrArr[i].textContent = 'Not owned.'; upgCosStrArr[i].textContent = `Cost: ${upgCosArr[i]}`; } }
       employeeCostString.textContent = `Cost: ${textArray[16]}`;
       employeesOwnedString.textContent = `Owned: ${textArray[17]}`;
       let reqSingle = [1000, 60000, 3600000];
@@ -453,7 +452,7 @@ function updateScreen() {
       achievementsUnlockedString.textContent = `You have unlocked ${textArray[23]} (${Math.round(intArray[23] / 25 * 100)}%) out of 25 achievements.`;
       rawCPSString.textContent = `Your raw coins per second is ${textArray[19]}.`;
       rawCVString.textContent = `Your raw click value is ${textArray[18]}.`;
-      offlineCPSString.textContent = `Your employees gather ${textArray[26]}% of your clicks per second while offline.`;
+      offlineCPSString.textContent = `Your employees gather ${textArray[26]}% of your coins per second while offline.`;
       if (achArr[26]) { breakpoint.style.display = 'block'; bpIcon.style.display = 'block'; }
       if (achArr[27]) { cheater.style.display = 'block'; cheaterIcon.style.display = 'block'; }
       if (buff == 'bonusClicks') buffStr.textContent = `You got ${textArray[24]} bonus coins!`;
@@ -487,14 +486,14 @@ function updateScreen() {
         superCursorGroup.style.display = 'block';
         superCursorUnlocked = !superCursorUnlocked; //True
         SHT = 500;
-      } else if (superCursorUnlocked) { superCursorGroup.style.display = 'block'; cursorCost = 'Owned'; }
+      } else if (superCursorUnlocked) { superCursorGroup.style.display = 'block'; cursorCost = 'Owned.'; }
       if (cursorOwned && superCursorOwned && !employeeUnlocked) {
         if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Employee unlocked!';
         employeeGroup.style.display = 'block';
         employeeUnlocked = !employeeUnlocked; //True
         SHT = 500;
-      } else if (employeeUnlocked) { employeeGroup.style.display = 'block'; superCursorCost = 'Owned'; }
-      if (clickersOwned >= 125 && superClickersOwned >= 10 && doublePointersOwned >= 3 && employeeUnlocked && !godFingerUnlocked) {
+      } else if (employeeUnlocked) { employeeGroup.style.display = 'block'; superCursorCost = 'Owned.'; }
+      if (clickersOwned >= 75 && superClickersOwned >= 20 && doublePointersOwned >= 3 && employeeUnlocked && !godFingerUnlocked) {
         if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'God Finger unlocked!';
         godFingerGroup.style.display = 'block';
         godFingerUnlocked = !godFingerUnlocked; //True
@@ -528,9 +527,9 @@ function updateScreen() {
       if (display.CoinClickCount < stats.CoinClickCount) display.CoinClickCount += Math.ceil(diffArr[7] / 15); else if (display.CoinClickCount > stats.CoinClickCount) display.CoinClickCount -= Math.ceil(diffArr[7] / 15);
       if (display.ClickerCPS < clickerCPS) display.ClickerCPS += Math.ceil(diffArr[8] / 15); else if (display.ClickerCPS > clickerCPS) display.ClickerCPS -= Math.ceil(diffArr[8] / 15);
       if (display.ClickerCost < clickerCost) display.ClickerCost += Math.ceil(diffArr[9] / 15); else if (display.ClickerCost > clickerCost) display.ClickerCost -= Math.ceil(diffArr[9] / 15);
-      if (superClickerUnlocked) { if (display.SuperClickerCPS < superClickerCPS) display.SuperClickerCPS += Math.ceil(diffArr[10] / 15); else if (display.SuperClickerCPS > superClickerCPS) display.SuperClickerCPS -= Math.ceil(diffArr[10] / 15); if (display.SuperClickerCost < superClickerCost) display.SuperClickerCost += Math.ceil(diffArr[11] / 15); else if (display.SuperClickerCost > superClickerCost) display.SuperClickerCost -= Math.ceil(diffArr[11] / 15); }
-      if (doublePointerUnlocked) { if (display.DoublePointerCPS < doublePointerCPS) display.DoublePointerCPS += Math.ceil(diffArr[12] / 15); else if (display.DoublePointerCPS > doublePointerCPS) display.DoublePointerCPS -= Math.ceil(diffArr[12] / 15); if (display.DoublePointerCost < doublePointerCost) display.DoublePointerCost += Math.ceil(diffArr[13] / 15); else if (display.DoublePointerCost > doublePointerCost) display.DoublePointerCost -= Math.ceil(diffArr[13] / 15); }
-      if (employeeUnlocked) { if (display.EmployeeCost < employeeCost) display.EmployeeCost += Math.ceil(diffArr[14] / 15); else if (display.EmployeeCost > employeeCost) display.EmployeeCost -= Math.ceil(diffArr[14] / 15); }
+      if (display.SuperClickerCPS < superClickerCPS) display.SuperClickerCPS += Math.ceil(diffArr[10] / 15); else if (display.SuperClickerCPS > superClickerCPS) display.SuperClickerCPS -= Math.ceil(diffArr[10] / 15); if (display.SuperClickerCost < superClickerCost) display.SuperClickerCost += Math.ceil(diffArr[11] / 15); else if (display.SuperClickerCost > superClickerCost) display.SuperClickerCost -= Math.ceil(diffArr[11] / 15);
+      if (display.DoublePointerCPS < doublePointerCPS) display.DoublePointerCPS += Math.ceil(diffArr[12] / 15); else if (display.DoublePointerCPS > doublePointerCPS) display.DoublePointerCPS -= Math.ceil(diffArr[12] / 15); if (display.DoublePointerCost < doublePointerCost) display.DoublePointerCost += Math.ceil(diffArr[13] / 15); else if (display.DoublePointerCost > doublePointerCost) display.DoublePointerCost -= Math.ceil(diffArr[13] / 15);
+      if (display.EmployeeCost < employeeCost) display.EmployeeCost += Math.ceil(diffArr[14] / 15); else if (display.EmployeeCost > employeeCost) display.EmployeeCost -= Math.ceil(diffArr[14] / 15);
     } else { bgm.volume = volume / 3; $('.bg').remove(); }
     setTimeout(updateScreen, updInterval);
   } catch (error) { errorHandler(error); }
@@ -570,7 +569,7 @@ function createBgElem() {
         bg.className = 'bg fixed';
         bg.style.left = `${lib.rng(1, screenWidth)}px`;
         document.body.appendChild(bg);
-        if (achArr[9]) {
+        if (achArr[10]) {
           if (graphicsMode == 'Quality') {
             bg = document.createElement('img');
             bg.src = './img/coin.png';
@@ -763,10 +762,94 @@ function wipeSave(gamepadActive) {
     if (!gamepadActive) {
       let prompt = confirm('This is completely irreversible! Are you sure you wish to continue?');
       if (prompt) {
+        readyToSave = !1;
         localStorage.removeItem('saveData');
         localStorage.removeItem('shopData');
-        readyToSave = !readyToSave; /*False*/
-        location.reload();
+        stats.Clicks = 0;
+        stats.TrueClicks = 0;
+        stats.ClicksPS = 0;
+        stats.ClickValue = 1;
+        stats.Playtime = 0;
+        stats.LifetimeClicks = 0;
+        stats.LifetimeManualClicks = 0;
+        stats.CoinClickCount = 0;
+        stats.TotalClickHelpers = 0;
+        stats.AchievementsUnlocked = 0;
+        stats.RawClicksPS = 0;
+        stats.RawClickVal = 0;
+        stats.OfflineClicksPSPercen = 0;
+        offlineCPSString.style.display = 'none';
+        clickerCPS = 5;
+        clickerCost = 25;
+        clickersOwned = 0;
+        clickerCPSWorth = 0;
+        superClickerCPS = 7500;
+        superClickerCost = 3000000;
+        superClickersOwned = 0;
+        superClickerUnlocked = !1;
+        superClickerCPSWorth = 0;
+        doublePointerCPS = 50000000;
+        doublePointerCost = 5000000000;
+        doublePointersOwned = 0;
+        doublePointerUnlocked = !1;
+        doublePointerCPSWorth = 0;
+        cursorCost = 1000000000;
+        cursorOwned = !1;
+        superCursorCost = 150000000000;
+        superCursorOwned = !1;
+        superCursorUnlocked = !1;
+        employeeCost = 250000000000;
+        employeesOwned = 0;
+        employeeUnlocked = !1;
+        godFingerCost = 5000000000000;
+        godFingerOwned = !1;
+        godFingerUnlocked = !1;
+        clickerFusionOwned = !0;
+        clickerFusionUnlocked = !1;
+        superClickerGroup.style.display = 'none';
+        doublePointerGroup.style.display = 'none';
+        superCursorGroup.style.display = 'none';
+        employeeGroup.style.display = 'none';
+        godFingerGroup.style.display = 'none';
+        clickerFusionGroup.style.display = 'none';
+        clickerImg.style.animation = '';
+        clickerImg.style.transform = '';
+        superClickerImg.style.animation = '';
+        superClickerImg.style.transform = '';
+        doublePointerImg.style.animation = '';
+        doublePointerImg.style.transform = '';
+        cursorImg.style.animation = '';
+        cursorImg.style.transform = '';
+        superCursorImg.style.animation = '';
+        superCursorImg.style.transform = '';
+        employeeImg.style.animation = '';
+        employeeImg.style.transform = '';
+        godFingerImg.style.animation = '';
+        godFingerImg.style.transform = '';
+        clickerFusionImg.style.animation = '';
+        clickerFusionImg.style.transform = '';
+        clickerInfo.textContent = 'You have no clickers.';
+        superClickerInfo.textContent = 'You have no super clickers.';
+        doublePointerInfo.textContent = 'You have no double pointers.';
+        doAutobuy = !1;
+        graphicsMode = 'Quality';
+        bgGradCenterInput.value = '250, 224, 65';
+        bgGradEdgeInput.value = '249, 160, 40';
+        document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`;
+        for (let i in achArr) achArr[i] = !1;
+        cheater.style.display = 'none';
+        cheaterIcon.style.display = 'none';
+        breakpoint.style.display = 'none';
+        bpIcon.style.display = 'none';
+        timePlayedString.textContent = 'You have played for 0 seconds.';
+        let bgmFade = setInterval(function () {
+          if (volume <= 0.0) {
+            clearInterval(bgmFade);
+            bgm.pause();
+            bgm.currentTime = 0;
+            volume = 1;
+          } else { volume -= 0.1; volume = volume.toFixed(2); }
+        }, 200);
       }
     } else if (gamepadActive) {
       localStorage.removeItem('saveData');
@@ -979,7 +1062,7 @@ upgradeButton.addEventListener('click', function () {
   sfx5 = new Audio();
   sfx5.src = './snd/shopbuy.mp3';
   shopPanel.style.display = 'none';
-  cursorImg.style.display = 'block';
+  if (cursorOwned) cursorImg.style.display = 'block';
   upgradeShopPanel.style.display = 'block';
   if (clickersOwned == 0) clickerImg.style.display = 'none';
   if (superClickersOwned == 0) superClickerImg.style.display = 'none';
@@ -1022,7 +1105,7 @@ cursorBuy.addEventListener('click', function () {
     stats.TotalClickHelpers++;
     cursorImg.parentNode.removeChild(cursorImg);
     statsPanel.appendChild(cursorImg);
-    cursorImg.style.animationPlayState = 'running';
+    if (cursorOwned) cursorImg.style.animationPlayState = 'running';
   }
 });
 
@@ -1144,7 +1227,7 @@ cheater.addEventListener('click', function () { let index = 26; lib.achLabelSwit
 cmdForm.addEventListener("submit", function (event) { event.preventDefault(); commandInterpret(); });
 settingsButton.addEventListener('click', function () { sfx.play(); settingsPanel.style.display = 'block'; game.style.display = 'none'; });
 backToGame2.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; settingsPanel.style.display = 'none'; });
-volumeInput.addEventListener('change', function () { try { let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1]; if (volumeInput.value >= 0 && volumeInput.value <= 100) { volume = volumeInput.value / 100; for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume; } else volumeInput.value = volume * 100; } catch (error) { errorHandler(error); } });
+volumeInput.addEventListener('change', function () { try { let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1]; if (volumeInput.value >= 0 && volumeInput.value <= 100 && readyToSave) { volume = volumeInput.value / 100; for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume; } else volumeInput.value = volume * 100; } catch (error) { errorHandler(error); } });
 autoBuyBtn.addEventListener('click', function () { if (doAutobuy) { autoBuyBtn.textContent = 'OFF'; doAutobuy = !1; } else { autoBuyBtn.textContent = 'ON'; doAutobuy = !0; } });
 bgGradCenterInput.addEventListener('change', function () { document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`; });
 bgGradEdgeInput.addEventListener('change', function () { document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`; });
@@ -1213,21 +1296,21 @@ document.addEventListener('keydown', function (event) {
     } else if (event.key == ' ' && titleScreen.style.display == 'block') startButton.click();
     else if ((event.key == 'f' || event.key == 'F') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
-      debug = !debug; /*True*/
-      doAutosave = !doAutosave; /*False*/
+      debug = !debug; //True
+      doAutosave = !doAutosave; //False
       startButton.click();
     } else if ((event.key == 'a' || event.key == 'A') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
-      prompting = !prompting; /*True*/
+      prompting = !prompting; //True
       let prompt = confirm('Debug autoplay is purely for testing and your save will be wiped upon the next page load if you use it. Are you sure? (Pressing cancel will not affect your save.)');
       if (prompt) {
         debugAutoplay = !debugAutoplay; /*True*/ startButton.click();
-      } else prompting = !prompting /*False*/
+      } else prompting = !prompting //False
     } else if ((event.key == 'c' || event.key == 'C') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
-      debug = !debug; /*True*/
-      doAutosave = !doAutosave; /*False*/
-      prompting = !prompting; /*True*/
+      debug = !debug; //True
+      doAutosave = !doAutosave; //False
+      prompting = !prompting; //True
       let prompt = confirm('Debug autoplay is purely for testing and your save will be wiped upon the next page load if you use it. Are you sure? (Pressing cancel will just enable debug mode, not debug autoplay.)');
       if (prompt) debugAutoplay = !debugAutoplay; /*True*/ else prompting = !prompting; /*False*/
       startButton.click();
@@ -1272,8 +1355,8 @@ document.addEventListener('mousemove', function (event) {
 betaString.addEventListener('animationend', function () { startBgCreate = !startBgCreate /*True*/ });
 
 //Function intervals
-setTimeout(createBgElem, bgUpdInterval); //These are intervals, but are set up 
-setTimeout(updateScreen, updInterval); //differently to allow for live updating.
+setTimeout(createBgElem, bgUpdInterval); //These are intervals, but are set up differently
+setTimeout(updateScreen, updInterval); //to allow for live updating of the interval times.
 setInterval(autoplay, 150);
 setInterval(cpsClick, 100);
 setInterval(rgChange, 25);
