@@ -110,11 +110,11 @@ If your gamepad is detected, it's name should appear near the bottom of the scre
 - The game's stack trace is now included in the debug console whenever an error occurs.
 - The changelog file has been modified so older releases have better formatting.
 
-# Build x.xanb
-- Implemented embed information and google ownership verification into the Surge page. It should now appear in google searches.
+# Build 5.2anb
+- The game no longer includes browser brand detection due to being unable to detect brands properly.
 - The PlayStation web browser should now be properly detected.
-- A [Compatibility Debugger](https://coincompatdbgr.surge.sh) has been released to allow for debugging undetected platforms. More info can be found in the README.
 - The God Finger unlock requirement has been changed to 75 clickers, 20 super clickers, and 3 double pointers.
 - The game no longer needs to refresh when wiping your save. (This is not true if your save is wiped using a gamepad, as the save wipe still needs to be confirmed with a refresh.)
 - The coin particles now appear when the 'Trillionare' achievement is unlocked, rather than 'Planet of Coins'
 - Slightly modified achievement descriptions.
+- Added an 'exit' command to the debug console that will hide it from view. It can still be accessed after exiting by pressing Alt+Y.
