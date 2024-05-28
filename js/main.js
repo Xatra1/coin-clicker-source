@@ -1,17 +1,24 @@
-/*
-Coin Clicker Update 7 Codename 'Animation'
-Build 5.11 Animation Beta
+//*********************************************************************************************************************
+//*********************************************************************************************************************
+//                                       Coin Clicker Update 7 Codename 'Animation'
+//                                               Build 5.2 Animation Beta
+//
+//                                                    Spoilers ahead!
+//*********************************************************************************************************************
+//*********************************************************************************************************************
 
-Spoilers ahead! 
-*/
 
-//Loading screen and error handler
+
+//***************************************/
+//  Loading screen and error handler
+//***************************************/
+
 const loadingScreen = document.getElementById('loadingscreen'),
   hiddenWhileLoading = document.getElementById('hideloading'),
   error = document.createElement('p');
 
 function errorHandler(err) {
-  error.textContent = `Script error: ${err}\nCall Stack:${err.stack}`;
+  error.textContent = `Script error: ${err.stack}`;
   error.style.position = 'fixed';
   error.style.top = '-0.3vh';
   error.style.fontSize = '0.7vw';
@@ -19,6 +26,7 @@ function errorHandler(err) {
   document.body.appendChild(error);
 }
 
+// Create initial variables and call system check function
 const runningBrowserString = document.getElementById('runningbrowserstring'),
   titleScreen = document.getElementById('titlescreen');
 var debugConsole = document.getElementById('debugconsole').textContent,
@@ -27,29 +35,48 @@ var debugConsole = document.getElementById('debugconsole').textContent,
   url = window.location.href;
 sysCheck();
 
+// Snoop through the client's user agent string to find various aspects of the system such as browser and OS.
 function sysCheck() {
+  // Shorthands, arrays, and indexes
   let userAgent = navigator.userAgent,
     userAgentData = navigator.userAgentData,
     browsers = ['MSIE', 'Firefox', 'Safari', 'Chrome', 'OPR', 'Edg'],
     oses = ['X11', 'Windows', 'Mac', 'Linux'],
     index = browsers.length - 1,
     osIndex = oses.length - 1;
+
+  // Find the browser brand
   while (index > -1 && userAgent.indexOf(browsers[index]) == -1) index--;
   if (index > -1) browserStr = browsers[index];
+
+  // Use user agent data to easily find the client's platform if their browser supports it
   if (userAgentData != undefined) os = userAgentData.platform;
+
+  // Manually set PlayStation as the OS if it's found in the user agent string. (Does not get automatically detected)
   else if (userAgent.includes('PlayStation')) os = 'PlayStation';
+
+  // Perform a similar user agent string snoop to find the OS.
   else {
     while (osIndex > -1 && userAgent.indexOf(oses[osIndex]) == -1) osIndex--;
     if (osIndex > -1) os = oses[osIndex];
     if (os == 'X11') os = 'Unix';
   }
+
+  // Normalize browser strings
   if (browserStr == 'Edg') browserStr = 'Edge'; else if (browserStr == 'OPR') browserStr = 'Opera';
+
+  // Attempt to detect and shorten proper URL
   if (url == 'https://coin-clicker.surge.sh/') url = 'Surge'; else if (window.location.pathname.includes('index.html')) url = 'Local File';
+
+  // Assemble a title screen string and display the title screen.
   runningBrowserString.textContent = `${browserStr} on ${os} saying hello from ${url}`;
   titleScreen.style.display = 'block';
 }
 
-//Title screen
+//***************************************/
+//             Title screen
+//***************************************/
+
 const sourceNote = document.getElementById('sourcenote'),
   buildString = document.getElementById('buildstring'),
   basedOnBuildString = document.getElementById('basedonbuildstring'),
@@ -65,7 +92,10 @@ const sourceNote = document.getElementById('sourcenote'),
   title = document.getElementById('title'),
   key = document.createElement('p'),
 
-  //Game screen
+  //***************************************/
+  //             Game screen
+  //***************************************/
+
   game = document.getElementById('gamescreen'),
   coin = document.getElementById('coin'),
   clickString = document.getElementById('clickstring'),
@@ -78,7 +108,10 @@ const sourceNote = document.getElementById('sourcenote'),
   buffStr = document.getElementById('bufflabel'),
   fpsLabel = document.getElementById('fpslabel'),
 
-  //Shop panel
+  //***************************************/
+  //              Shop panel
+  //***************************************/
+
   shopPanel = document.getElementById('shoppanel'),
   autoBuyStr = document.getElementById('autobuystring'),
   clickerBuy = document.getElementById('clickerbuy'),
@@ -102,7 +135,10 @@ const sourceNote = document.getElementById('sourcenote'),
   doublePointerInfo = document.getElementById('doublepointerinfo'),
   doublePointerImg = document.getElementById('doublepointerimg'),
 
-  //Upgrade shop panel
+  //***************************************/
+  //          Upgrade shop panel
+  //***************************************/
+
   upgradeShopPanel = document.getElementById('upgradeshoppanel'),
   upgradeButton = document.getElementById('upgradebutton'),
   upgradeRTS = document.getElementById('shopreturnbutton'),
@@ -132,7 +168,10 @@ const sourceNote = document.getElementById('sourcenote'),
   clickerFusionInfo = document.getElementById('clickerfusioninfo'),
   clickerFusionImg = document.getElementById('clickerfusionimg'),
 
-  //Stat panel
+  //***************************************/
+  //             Stats panel
+  //***************************************/
+
   statsPanel = document.getElementById('statspanel'),
   timePlayedString = document.getElementById('timestring'),
   lifetimeClicksString = document.getElementById('lifetimeclicksstring'),
@@ -144,7 +183,10 @@ const sourceNote = document.getElementById('sourcenote'),
   rawCVString = document.getElementById('rawcvstring'),
   offlineCPSString = document.getElementById('offlinecpsstring'),
 
-  //Debug screen
+  //***************************************/
+  //             Debug screen
+  //***************************************/
+
   debugKeyInputScreen = document.getElementById('debuginputscreen'),
   debugKeyInput = document.getElementById('debugkeyinput'),
   debugKeySubmit = document.getElementById('debugkeysubmit'),
@@ -153,7 +195,10 @@ const sourceNote = document.getElementById('sourcenote'),
   cmdForm = document.getElementById('debugconsinput'),
   commandInput = document.getElementById('debugcmdinput'),
 
-  //Achievement screen
+  //***************************************/
+  //          Achievements screen
+  //***************************************/
+
   achievementsButton = document.getElementById('achievementsbutton'),
   achievementsLabel = document.getElementById('achievementslabel'),
   achievementsPanel = document.getElementById('achievementsscreen'),
@@ -192,7 +237,10 @@ const sourceNote = document.getElementById('sourcenote'),
   bpIcon = document.getElementById('breakpointicon'),
   cheaterIcon = document.getElementById('cheatericon'),
 
-  //Settings screen
+  //***************************************/
+  //           Settings screen
+  //***************************************/
+
   settingsButton = document.getElementById('settingsbutton'),
   settingsLabel = document.getElementById('settingslabel'),
   settingsPanel = document.getElementById('settingsscreen'),
@@ -206,7 +254,10 @@ const sourceNote = document.getElementById('sourcenote'),
   wipeSaveButton = document.getElementById('wipesavebutton'),
   backToGame2 = document.getElementById('backtogame2');
 
-//Audio files
+//****************************************/
+//              Audio files
+//****************************************/
+
 var bgm = document.getElementById('bgm'), //C418 - Click
   sfx = document.getElementById('sfx'), //Click
   sfx5 = document.getElementById('sfx5'), //Shop Buy
@@ -217,15 +268,27 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
   sfx7 = document.getElementById('sfx7'), //Title Screen String Whoosh
   sfx7point1 = document.getElementById('sfx7.1'), //Title Screen String Whoosh
 
-  //Namespaces
+  //***************************************/
+  //              Namespaces
+  //***************************************/
+
+  // Flags that control many different behaviors of the game
   init = { GameStarted: !1, DataLoaded: !1 },
-  buildInfo = { BuildStr: '5.11anb', BuildNum: 5.11, UpdName: 'animation', UpdNum: 7 },
+
+  // Build information
+  buildInfo = { BuildStr: '5.2anb', BuildNum: 5.2, UpdName: 'animation', UpdNum: 7 },
+
+  // Values in this namespace get incremented until they're equal to their respective true values.
   display = { Clicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, ClickerCPS: 0, ClickerCost: 0, SuperClickerCPS: 0, SuperClickerCost: 0, DoublePointerCPS: 0, DoublePointerCost: 0, EmployeeCost: 0, Playtime: 0 },
 
+  // Basic, smaller functions that provide general functionality
   lib = {
+    // Return a random number between min and max
     rng: (min, max) => {
       return Math.floor((Math.random() * (max - min) + min))
     },
+
+    // Change the achievement name, description, and unlock string to be equal to the index of the button clicked.
     achLabelSwitch: (index) => {
       sfx.play();
       achNameStr.textContent = achNames[index];
@@ -233,9 +296,14 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
       if (achArr[index]) achUnlockStr.textContent = 'Unlocked.';
       else achUnlockStr.textContent = 'Not unlocked.';
     },
+
+    // Used by the number formatter to determine if a number is too large to use a generic name
+    // todo: Allow this function to determine the exact value that is too large to format, and ignore that value specifically instead of all integers.
     intTooLarge: () => {
       for (var i in intArray) if (intArray[i] >= 9.99e+101) return true; else return false;
     },
+
+    // Looping function that displays the framerate of the game
     getFps: () => {
       window.requestAnimationFrame(() => {
         let now = performance.now();
@@ -248,13 +316,21 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
     }
   };
 
-//Classes
+//***************************************/
+//                Classes
+//***************************************/
+
+// Base stats
 class baseStats { constructor() { this.Clicks = 0; this.TrueClicks = 0; this.ClickValue = 1; this.RawClickVal = 1; this.ClicksPS = 0; this.RawClicksPS = 0; this.Playtime = 0; this.LifetimeClicks = 0; this.LifetimeManualClicks = 0; this.CoinClickCount = 0; this.TotalClickHelpers = 0; this.AchievementsUnlocked = 0; this.HiddenAchievementsUnlocked = 0; this.OfflineClicksPSPercen = 0; } };
-class baseShop { constructor() { this.ClickerCPS = 5; this.ClickerCost = 25; this.ClickerScale = 5; this.ClickersOwned = 0; this.ClickerCPSWorth = 0; this.SuperClickerUnlocked = !1; this.SuperClickerCPS = 7500; this.SuperClickerCost = 3000000; this.SuperClickerScale = 25; this.SuperClickersOwned = 0; this.SuperClickerCPSWorth = 0; this.DoublePointerUnlocked = !1; this.DoublePointerCPS = 50000000; this.DoublePointerScale = 75; this.DoublePointerCost = 5000000000; this.DoublePointersOwned = 0; this.DoublePointerCPSWorth = 0; this.DoAutobuy = !1; } }
-class baseUpgShop { constructor() { this.CursorCPS = 1.00; this.CursorCost = 1000000000; this.CursorOwned = !1; this.SuperCursorUnlocked = !1; this.SuperCursorCPS = 1.50; this.SuperCursorCost = 150000000000; this.SuperCursorOwned = !1; this.EmployeeUnlocked = !1; this.EmployeeCPS = 0.05; this.EmployeeCost = 250000000000; this.EmployeesOwned = 0; this.GodFingerUnlocked = !1; this.GodFingerCV = 0.35; this.GodFingerCost = 5000000000000; this.GodFingerOwned = !1; this.ClickerFusionCost = ''; this.ClickerFusionUnlocked = !1; this.ClickerFusionOwned = !1; } }
+
+// Base shop values
+class baseShop { constructor() { this.ClickerCPS = 5; this.ClickerCost = 25; this.ClickerScale = 5; this.ClickersOwned = 0; this.ClickerCPSWorth = 0; this.SuperClickerUnlocked = !1; this.SuperClickerCPS = 7500; this.SuperClickerCost = 3000000; this.SuperClickerScale = 25; this.SuperClickersOwned = 0; this.SuperClickerCPSWorth = 0; this.DoublePointerUnlocked = !1; this.DoublePointerCPS = 50000000; this.DoublePointerScale = 75; this.DoublePointerCost = 5000000000; this.DoublePointersOwned = 0; this.DoublePointerCPSWorth = 0; this.DoAutobuy = !1; } };
+
+// Base upgrade shop values
+class baseUpgShop { constructor() { this.CursorCPS = 1.00; this.CursorCost = 1000000000; this.CursorOwned = !1; this.SuperCursorUnlocked = !1; this.SuperCursorCPS = 1.50; this.SuperCursorCost = 150000000000; this.SuperCursorOwned = !1; this.EmployeeUnlocked = !1; this.EmployeeCPS = 0.05; this.EmployeeCost = 250000000000; this.EmployeesOwned = 0; this.GodFingerUnlocked = !1; this.GodFingerCV = 0.35; this.GodFingerCost = 5000000000000; this.GodFingerOwned = !1; this.ClickerFusionCost = ''; this.ClickerFusionUnlocked = !1; this.ClickerFusionOwned = !1; } };
 
 //Class initializations
-//This makes the classea above work similarly to the old namespace implementation, but allows them to be recreated to restore original values.
+//This makes the classes above work similarly to the old namespace implementation, but allows them to be recreated to restore original values.
 var stats = new baseStats(),
   shop = new baseShop(),
   uShop = new baseUpgShop(),
@@ -327,47 +403,101 @@ var stats = new baseStats(),
   numberShorten = !0,
   gamepad,
 
-  //Arrays
+  //***************************************/
+  //                Arrays
+  //***************************************/
+
+  // Integers that need to be formatted.
   intArray = [],
+
+  // Strings formed by formatting the numbers in intArray.
   textArray = [],
-  achArr = [], //The rest is filled when the game starts.
+
+  // Booleans that determine achievements unlocked
+  achArr = [],
+
+  // Item cost strings
   costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString, employeeCostString, godFingerCostString],
+
+  // Item costs
   costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)];
-  
+
+// Achievement names
 const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare', 'Coin Pool', 'Abundance', 'Billionare', 'Excess', 'Planet of Coins', 'Trillionare', 'Pocket Dimension', 'Far Too Many', 'Quadrillionare', 'Coin Vortex', 'Coin-Shaped Black Hole', 'Quintillionare', 'Click Beyond', 'Distant Beginning', 'Sextillionare', 'Number Overflow', 'Coin Universe', 'Septillionare', 'Why?', '20 Fingers', 'For the Worthy', 'Breaking Point', 'Cheater'],
+
+  // Achievement descriptions
   achDescs = ['Obtain 1 lifetime coin.', 'Obtain 10 thousand lifetime coins.', 'Obtain 100 thousand lifetime coins.', 'Obtain 1 million lifetime coins.', 'Obtain 10 million lifetime coins.', 'Obtain 100 million lifetime coins.', 'Obtain 1 billion lifetime coins.', 'Obtain 10 billion lifetime coins.', 'Obtain 100 billion lifetime coins.', 'Obtain 1 trillion lifetime coins.', 'Obtain 10 trillion lifeitme coins.', 'Obtain 100 trillion lifetime coins.', 'Obtain 1 quadrillion lifetime coins.', 'Obtain 10 quadrillion lifetime coins.', 'Obtain 100 quadrillion lifetime coins.', 'Obtain 1 quintillion lifetime coins.', 'Obtain 10 quadrillion lifetime coins.', 'Obtain 100 quintillion lifetime coins.', 'Obtain 1 sextillion lifetime coins.', 'Obtain 10 sextillion lifetime coins.', 'Obtain 100 sextillion lifetime coins.', 'Obtain 1 septillion lifetime coins.', 'Obtain 10 septillion lifetime coins.', 'Obtain 100 septillion lifetime coins.', 'Obtain 1 octillion lifetime coins.', 'Obtain far more lifetime coins than you should have.', 'Hack in some money using the debug console.'],
+
+  // Lifetime click requirements for unlocking achievements. The last two values are placeholders for the hidden achievements.
   achReq = [1, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 10000000000, 100000000000, 1000000000000, 10000000000000, 100000000000000, 100000000000000, 1000000000000000, 10000000000000000n, 100000000000000000n, 1000000000000000000n, 10000000000000000000n, 100000000000000000000n, 1000000000000000000000n, 10000000000000000000000n, 100000000000000000000000n, 1000000000000000000000000n, 10000000000000000000000000n, 100000000000000000000000000n, Number.MAX_VALUE, Number.MAX_VALUE * Number.MAX_VALUE],
+
+  // Shop buttons for autoplay to click on.
   buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
+
+  // Messages to be randomly logged to the console or when 'rmsg' is used in the debug console.
   logChoices = ['Stay a while, and listen.', 'Boo!', 'I think you may have hit the wrong button.', 'Looking for bugs?', 'You\'re not supposed to be here.', '<insert random variable here>', 'Quit hacking in money!', 'Didn\'t expect to see you here.', 'Is this thing on?', 'I\'ve always wondered what it would look like if I wrote a really long message into the debug console so I\'m just gonna keep typing until I feel like I\'ve typed enough which is actually a lot harder than it seems considering I need to figure out what to type anyways how are you enjoying the game? I\'ve worked very hard on it and it honestly kinda sucks but who cares at least you might be having fun! This game was honestly heavily inspired by cookie clicker and that game is really really good (way better than this one) so you should go play that instead unless you want to be so rich there won\'t even be enough money on the planet to match what you have.', 'Introducing Coin Clicker: Now with less fall damage!', 'Maybe you could buy a cookie with all the coins you have.', 'Why not try tha \'pizza\' command?', 'Legend says a hidden achievement will appear if you somehow obtain infinite coins... But who listens to stuff like that anyway?', 'Hey you should try running \'wipeSave();\' in the input box, it won\'t hurt anything I promise', `Man this whole '${buildInfo.UpdName}' update isn't that great huh?`, 'Oops, all coins!', 'This whole random quote feature isn\'t a complete waste of time, I swear.', 'Magic!', 'What? I like equal signs.', `Imagine having only 0 coins`, 'Finally! I\'ve been stuck on this island for years!', 'NOTICE: Due to people trying to steal our coins from the local Coin Clicker Bank, players will now only be receiving 0.01% of their current coins per second. We apologize for the inconvenience.', 'Could you open a new window? It\'s hot in here!', 'Get out of my room!', 'Thank you for playing Coin Clicker.'],
+
+  // Help manual for the debug console.
   man = 'Coin Clicker Debug Console\n\nclear - Clears the console.\necho - Outputs the given arguments.\nhelp - Displays this manual.\nexec - Executes JavaScript code.\neval - An alias for exec, has the same function.\npizza - Tells you how many $30 pizzas you could buy with your current amount of coins.\nrmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass "all" to log all of them.\nclhis - Clears the command history.\nexit - Hides the debug console. You can press Alt+Y to show the console again after running this command.\n\nTyping any command into the console that isn\'t recognized will have the same effect as using the \'exec\' or \'eval\' commands.\n',
+
+  // Save and shop data
   saveData = [],
   shopData = [],
+
+  // Used for obtaining FPS
   times = [];
 
-//Initial run updates and calls
+//***************************************/
+//    Initial run updates and calls
+//***************************************/
+
+// CSS style variables for modifying the color of the browser console text
 let yellow = 'color: yellow;',
   def = 'color: inherit;',
+  // Strings to log to the browser console
   debugLogs = [`${browserStr}, ${os}, ${url}`, `Running beta ${buildInfo.UpdNum} codename '${buildInfo.UpdName}' build ${buildInfo.BuildStr}`];
+
+// Set the backgroundImage style element of the document body. This affects nothing visually, but will allow this setting to be modified appropriately by the player.
 document.body.style.backgroundImage = 'radial-gradient(rgb(250, 224, 65), rgb(249, 160, 40))';
+
+// Hide parts of the game that should not yet be displayed.
 fpsLabel.style.display = 'none';
 achievementsPanel.style.display = 'none';
 settingsPanel.style.display = 'none';
 upgradeShopPanel.style.display = 'none';
+
+// Empty the values of debug inputs.
 debugKeyInput.value = '';
 commandInput.value = '';
+
+// Set the values of setting input boxes to their defaults.
 bgGradCenterInput.value = '250, 224, 65';
 bgGradEdgeInput.value = '249, 160, 40';
 volumeInput.value = volume * 100;
+
+// Assemble build information strings
 updateString.textContent = `the ${buildInfo.UpdName} update`;
 buildString.textContent = `build ${buildInfo.BuildStr}`;
+
+// Log to the debug and browser consoles.
 debugConsole += 'Type \'help\' for a list of commands. You can press Alt+Y to get back to the game screen.\n';
 for (let i = 0; i < debugLogs.length; i++) console.debug(`%c [Debug] %c${debugLogs[i]}`, yellow, def);
+
+// Fill the achievement unlock array 
 for (let i = 0; i < 30; i++) achArr.push(!1);
+
+// Load game and modify updInterval if a graphics mode change was detected.
 loadGame();
 if (graphicsMode == 'Quality') updInterval = 1; else updInterval = 50;
+
+// Start obtaining framerate.
 lib.getFps();
 
-//Functions
+//***************************************/
+//              Functions
+//***************************************/
+
+// Automate the game if the autoplay keybind was pressed on the title screen.
 function autoplay() {
   if (debugAutoplay && readyToSave) {
     manualSave = !0;
@@ -381,20 +511,28 @@ function autoplay() {
   }
 }
 
+// Log a message depending on the value of arg.
 function randomMsg(arg) {
+  // CSS style variables and selected message
   let selectedMsg,
     yellow = 'color: yellow;',
     def = 'color: inherit;';
+
+  // If arg is an integer, log the specific index of arg
   if (!isNaN(parseInt(arg))) {
     selectedMsg = logChoices[arg];
     console.log(`=== %c${selectedMsg}%c ===`, yellow, def);
     debugConsole += `=== ${selectedMsg} ===\n`;
+
+    // If arg is 'all', log all messages
   } else if (arg == 'all') {
     for (let i = 0; i < logChoices.length; i++) {
       selectedMsg = logChoices[i];
       console.log(`${i}: === %c${selectedMsg}%c ===`, yellow, def);
       debugConsole += `${i}: === ${selectedMsg} ===\n`;
     }
+
+    // Otherwise, log a random message.
   } else {
     selectedMsg = logChoices[lib.rng(1, logChoices.length - 1)];
     console.log(`=== %c${selectedMsg}%c ===`, yellow, def);
@@ -402,35 +540,78 @@ function randomMsg(arg) {
   }
 }
 
+// Update various elements of the game that require it and check for unlocked items.
 function updateScreen() {
   try {
+    // Update title to display clicks count or 'A buff is active!' if a buff occurs.
     if (buff == 'none' && init.GameStarted) { stats.RawClicksPS = stats.ClicksPS; stats.RawClickVal = stats.ClickValue; document.title = `${textArray[0]} coins | Coin Clicker Beta v${buildInfo.UpdNum}`; } else if (init.GameStarted) document.title = `A buff is active! | Coin Clicker Beta v${buildInfo.UpdNum}`; else document.title = `Coin Clicker Beta v${buildInfo.UpdNum}`;
     if (!document.hidden) {
+      // Reverse the background music volume decrease caused by hiding the tab.
       bgm.volume = volume;
+
+      // Update the integer array
       intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, shop.ClickersOwned, display.SuperClickerCPS, display.SuperClickerCost, shop.SuperClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, shop.DoublePointersOwned, display.EmployeeCost, uShop.EmployeesOwned, display.RawClickVal, display.RawClicksPS, shop.ClickersOwned, shop.SuperClickerCPSWorth, shop.DoublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, (stats.OfflineClicksPSPercen * 100).toFixed(1), uShop.CursorCost, uShop.SuperCursorCost, uShop.GodFingerCost];
+
+      // Call number formatting function
       numberFix();
+
+      // Update debug console
       document.getElementById('debugconsole').value = debugConsole;
+
+      //***************************************/
+      //         Text string updates
+      //***************************************/
+
+      // Main game panel
       clickString.textContent = `Coins: ${textArray[0]}`;
       cpsString.textContent = `Coins per Second: ${textArray[2]}`;
       clickValueString.textContent = `Click Value: ${textArray[1]}`;
       clickerCPSString.textContent = `CpS: +${textArray[7]}`;
       clickerCostString.textContent = `Cost: ${textArray[8]}`;
       clickersOwnedString.textContent = `Owned: ${textArray[9]}`;
+
+      // Shop panel
       if (shop.ClickersOwned != 0) clickerInfo.textContent = `Your ${textArray[9]} clicker(s) account for ${textArray[20]} (${Math.round(intArray[20] / stats.RawClicksPS * 100)}%) raw CpS.`;
       if (shop.SuperClickerCPSWorth != 0) superClickerInfo.textContent = `Your ${textArray[12]} super clicker(s) account for  ${textArray[21]} (${Math.round(intArray[21] / stats.RawClicksPS * 100)}%) raw CpS.`;
       if (shop.DoublePointerCPSWorth != 0) doublePointerInfo.textContent = `Your ${textArray[15]} double pointer(s) account for ${textArray[22]} (${Math.round(intArray[22] / stats.RawClicksPS * 100)}%) raw CpS.`;
-      let upgVarArr = [uShop.CursorOwned, uShop.SuperCursorOwned, uShop.GodFingerOwned, uShop.ClickerFusionOwned],
-        upgStrArr = [cursorOwnedString, superCursorOwnedString, godFingerOwnedString, clickerFusionOwnedString],
-        upgCosArr = [textArray[27], textArray[28], textArray[29], 'None. Requires 150 clickers.'],
-        upgCosStrArr = [cursorCostString, superCursorCostString, godFingerCostString, clickerFusionCostString];
+
+      //***************************************/
+      //         Upgrade shop panel
+      //***************************************/
+
+      // Arrays to iterate through in the loop below.
+      let upgVarArr = [uShop.CursorOwned, uShop.SuperCursorOwned, uShop.GodFingerOwned, uShop.ClickerFusionOwned], // Array of the upgrades owned.
+        upgStrArr = [cursorOwnedString, superCursorOwnedString, godFingerOwnedString, clickerFusionOwnedString], // Strings to be modified
+        upgCosArr = [textArray[27], textArray[28], textArray[29], 'None. Requires 150 clickers.'], // Costs to check
+        upgCosStrArr = [cursorCostString, superCursorCostString, godFingerCostString, clickerFusionCostString]; // Cost strings to be modified
+
+      // Modify the strings of upgrade shop items depending on if the item was bought or not.
       for (var i in upgVarArr) { if (upgVarArr[i]) { upgStrArr[i].textContent = 'Owned.'; upgCosStrArr[i].textContent = 'Cost: Bought.'; } else { upgStrArr[i].textContent = 'Not owned.'; upgCosStrArr[i].textContent = `Cost: ${upgCosArr[i]}`; } }
       employeeCostString.textContent = `Cost: ${textArray[16]}`;
       employeesOwnedString.textContent = `Owned: ${textArray[17]}`;
-      let reqSingle = [1000, 60000, 3600000];
-      let req = [2000, 120000, 5400000];
-      let units = ['second', 'minute', 'hour'];
-      let unitsPlural = ['seconds', 'minutes', 'hours'];
-      for (let i = 0; i < req.length; i++) { if (stats.Playtime >= req[i]) { display.Playtime = (Math.floor(stats.Playtime / reqSingle[i])).toLocaleString(); timePlayedString.textContent = `You have played for ${display.Playtime} ${unitsPlural[i]}.`; } else if (stats.Playtime >= reqSingle[i] && stats.Playtime < req[i]) { display.Playtime = (Math.floor(stats.Playtime / reqSingle[i])).toLocaleString(); timePlayedString.textContent = `You have played for ${display.Playtime} ${units[i]}.` } }
+
+      //***************************************/
+      //             Stats panel
+      //***************************************/
+
+      // Arrays used for the playtime counter
+      let reqSingle = [1000, 60000, 3600000],
+        units = ['second', 'minute', 'hour'],
+        req = [2000, 120000, 5400000],
+        unitsPlural = ['seconds', 'minutes', 'hours'];
+
+      // Display a rounded version of the playtime variable and append the correct unit to the string.
+      for (let i = 0; i < req.length; i++) {
+        if (stats.Playtime >= req[i]) {
+          display.Playtime = (Math.floor(stats.Playtime / reqSingle[i])).toLocaleString();
+          timePlayedString.textContent = `You have played for ${display.Playtime} ${unitsPlural[i]}.`;
+        } else if (stats.Playtime >= reqSingle[i] && stats.Playtime < req[i]) {
+          display.Playtime = (Math.floor(stats.Playtime / reqSingle[i])).toLocaleString();
+          timePlayedString.textContent = `You have played for ${display.Playtime} ${units[i]}.`
+        }
+      }
+
+      // Other miscellaneous stats
       if (stats.LifetimeClicks == 1) lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coin.`; else lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coins.`;
       if (stats.LifetimeManualClicks == 1) lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coin from clicking.`; else lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coins from clicking.`;
       if (stats.CoinClickCount == 1) coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} time.`; else coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} times.`;
@@ -439,10 +620,17 @@ function updateScreen() {
       rawCPSString.textContent = `Your raw coins per second is ${textArray[19]}.`;
       rawCVString.textContent = `Your raw click value is ${textArray[18]}.`;
       offlineCPSString.textContent = `Your employees gather ${textArray[26]}% of your coins per second while offline.`;
-      if (achArr[26]) { breakpoint.style.display = 'block'; bpIcon.style.display = 'block'; }
-      if (achArr[27]) { cheater.style.display = 'block'; cheaterIcon.style.display = 'block'; }
+
+      // Display achievements in the menu if unlocked.
+      if (achArr[26]) { cheater.style.display = 'block'; cheaterIcon.style.display = 'block'; }
+      if (achArr[27]) { breakpoint.style.display = 'block'; bpIcon.style.display = 'block'; }
       if (buff == 'bonusClicks') buffStr.textContent = `You got ${textArray[24]} bonus coins!`;
-      if (uShop.CursorOwned && init.DataLoaded) uShop.CursorCost = 'Owned.';
+
+      //***************************************/
+      //      Regular shop unlock checks
+      //***************************************/
+
+      // Super Clicker
       if (shop.ClickersOwned >= 25 && !shop.SuperClickerUnlocked) {
         if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Super Clicker unlocked!';
         superClickerGroup.style.display = 'block';
@@ -455,6 +643,8 @@ function updateScreen() {
         superClickerCostString.textContent = `Cost: ${textArray[11]}`;
         superClickersOwnedString.textContent = `Owned: ${textArray[12]}`;
       }
+
+      //Double Pointer
       if (shop.ClickersOwned >= 50 && shop.SuperClickersOwned >= 10 && !shop.DoublePointerUnlocked) {
         if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Double Pointer unlocked!';
         doublePointerGroup.style.display = 'block';
@@ -467,30 +657,46 @@ function updateScreen() {
         doublePointerCostString.textContent = `Cost: ${textArray[14]}`;
         doublePointersOwnedString.textContent = `Owned: ${textArray[15]}`;
       }
+
+      //***************************************/
+      //      Upgrade shop unlock checks
+      //***************************************/
+
+      // Modify Cursor cost variable to prevent buying it multiple times.
+      if (uShop.CursorOwned && init.DataLoaded) uShop.CursorCost = 'Owned.';
+      // Super Cursor
       if (uShop.CursorOwned && !uShop.SuperCursorUnlocked) {
         if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Super Cursor unlocked!';
         superCursorGroup.style.display = 'block';
         uShop.SuperCursorUnlocked = !uShop.SuperCursorUnlocked; //True
         SHT = 500;
       } else if (uShop.SuperCursorUnlocked) { superCursorGroup.style.display = 'block'; uShop.CursorCost = 'Owned.'; }
+
+      // Employee
       if (uShop.CursorOwned && uShop.SuperCursorOwned && !uShop.EmployeeUnlocked) {
         if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Employee unlocked!';
         employeeGroup.style.display = 'block';
         uShop.EmployeeUnlocked = !uShop.EmployeeUnlocked; //True
         SHT = 500;
       } else if (uShop.EmployeeUnlocked) { employeeGroup.style.display = 'block'; uShop.SuperCursorCost = 'Owned.'; }
+
+      // God Finger
       if (shop.ClickersOwned >= 75 && shop.SuperClickersOwned >= 20 && shop.DoublePointersOwned >= 3 && uShop.EmployeeUnlocked && !uShop.GodFingerUnlocked) {
         if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'God Finger unlocked!';
         godFingerGroup.style.display = 'block';
         uShop.GodFingerUnlocked = !uShop.GodFingerUnlocked; //True
         SHT = 500;
       } else if (uShop.GodFingerUnlocked) godFingerGroup.style.display = 'block';
+
+      // Clicker Fusion
       if (shop.ClickersOwned >= 150 && !uShop.ClickerFusionUnlocked) {
         if (init.DataLoaded) sfx4.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Clicker Fusion unlocked!';
         clickerFusionGroup.style.display = 'block';
         uShop.ClickerFusionUnlocked = !uShop.ClickerFusionUnlocked; //True
         SHT = 500;
       } else if (uShop.ClickerFusionUnlocked) clickerFusionGroup.style.display = 'block';
+
+      // Check for achievement unlocks
       for (let i = 0; i < achReq.length; i++) {
         if (stats.LifetimeClicks >= achReq[i] && !achArr[i]) {
           if ((smallCoin1.style.animationPlayState = 'running' || init.GameStarted) && i == 0) bgm.play();
@@ -501,37 +707,86 @@ function updateScreen() {
           SHT = 500;
         }
       }
+
+      //******************************************************************************/
+      //  Modify the values of variables used to create a slow increase for integers.
+      //******************************************************************************/
+
+      // An array of the differences between true stats and display variables.
       let diffArr = [stats.Clicks - display.Clicks, stats.ClickValue - display.ClickValue, stats.RawClickVal - display.RawClickVal, stats.ClicksPS - display.ClicksPS, stats.RawClicksPS - display.RawClicksPS, stats.LifetimeClicks - display.LifetimeClicks, stats.LifetimeManualClicks - display.LifetimeManualClicks, stats.CoinClickCount - display.CoinClickCount, shop.ClickerCPS - display.ClickerCPS, shop.ClickerCost - display.ClickerCost, shop.SuperClickerCPS - display.SuperClickerCPS, shop.SuperClickerCost - display.SuperClickerCost, shop.DoublePointerCPS - display.DoublePointerCPS, shop.DoublePointerCost - display.DoublePointerCost, uShop.EmployeeCost - display.EmployeeCost];
+
+      // Get absolute values for all differences above.
       for (let i = 0; i < diffArr.length; i++) diffArr[i] = Math.abs(diffArr[i]);
+
+      // Clicks
       if (display.Clicks < stats.Clicks) display.Clicks += Math.ceil(diffArr[0] / 15); else if (display.Clicks > stats.Clicks) display.Clicks -= Math.ceil(diffArr[0] / 15);
+
+      // Click value
       if (display.ClickValue < stats.ClickValue) display.ClickValue += Math.ceil(diffArr[1] / 15); else if (display.ClickValue > stats.ClickValue) display.ClickValue -= Math.ceil(diffArr[1] / 15);
+
+      // Raw click value
       if (display.RawClickVal < stats.RawClickVal) display.RawClickVal += Math.ceil(diffArr[2] / 15); else if (display.RawClickVal > stats.RawClickVal) display.RawClickVal -= Math.ceil(diffArr[2] / 15);
+
+      // Clicks per second
       if (display.ClicksPS < stats.ClicksPS) display.ClicksPS += Math.ceil(diffArr[3] / 15); else if (display.ClicksPS > stats.ClicksPS) display.ClicksPS -= Math.ceil(diffArr[3] / 15);
+
+      // Raw clicks per second
       if (display.RawClicksPS < stats.RawClicksPS) display.RawClicksPS += Math.ceil(diffArr[4] / 15); else if (display.RawClicksPS > stats.RawClicksPS) display.RawClicksPS -= Math.ceil(diffArr[4] / 15);
+
+      // Lifetime clicks
       if (display.LifetimeClicks < stats.LifetimeClicks) display.LifetimeClicks += Math.ceil(diffArr[5] / 15); else if (display.LifetimeClicks > stats.LifetimeClicks) display.LifetimeClicks -= Math.ceil(diffArr[5] / 15);
+
+      // Lifetime manual clicks
       if (display.LifetimeManualClicks < stats.LifetimeManualClicks) display.LifetimeManualClicks += Math.ceil(diffArr[6] / 15); else if (display.LifetimeManualClicks > stats.LifetimeManualClicks) display.LifetimeManualClicks -= Math.ceil(diffArr[6] / 15);
+
+      // Coin click count
       if (display.CoinClickCount < stats.CoinClickCount) display.CoinClickCount += Math.ceil(diffArr[7] / 15); else if (display.CoinClickCount > stats.CoinClickCount) display.CoinClickCount -= Math.ceil(diffArr[7] / 15);
+
+      // Clicker CPS
       if (display.ClickerCPS < shop.ClickerCPS) display.ClickerCPS += Math.ceil(diffArr[8] / 15); else if (display.ClickerCPS > shop.ClickerCPS) display.ClickerCPS -= Math.ceil(diffArr[8] / 15);
+
+      // Clicker cost
       if (display.ClickerCost < shop.ClickerCost) display.ClickerCost += Math.ceil(diffArr[9] / 15); else if (display.ClickerCost > shop.ClickerCost) display.ClickerCost -= Math.ceil(diffArr[9] / 15);
-      if (display.SuperClickerCPS < shop.SuperClickerCPS) display.SuperClickerCPS += Math.ceil(diffArr[10] / 15); else if (display.SuperClickerCPS > shop.SuperClickerCPS) display.SuperClickerCPS -= Math.ceil(diffArr[10] / 15); if (display.SuperClickerCost < shop.SuperClickerCost) display.SuperClickerCost += Math.ceil(diffArr[11] / 15); else if (display.SuperClickerCost > shop.SuperClickerCost) display.SuperClickerCost -= Math.ceil(diffArr[11] / 15);
-      if (display.DoublePointerCPS < shop.DoublePointerCPS) display.DoublePointerCPS += Math.ceil(diffArr[12] / 15); else if (display.DoublePointerCPS > shop.DoublePointerCPS) display.DoublePointerCPS -= Math.ceil(diffArr[12] / 15); if (display.DoublePointerCost < shop.DoublePointerCost) display.DoublePointerCost += Math.ceil(diffArr[13] / 15); else if (display.DoublePointerCost > shop.DoublePointerCost) display.DoublePointerCost -= Math.ceil(diffArr[13] / 15);
+
+      // Super Clicker CPS
+      if (display.SuperClickerCPS < shop.SuperClickerCPS) display.SuperClickerCPS += Math.ceil(diffArr[10] / 15); else if (display.SuperClickerCPS > shop.SuperClickerCPS) display.SuperClickerCPS -= Math.ceil(diffArr[10] / 15);
+
+      // Super Clicker cost
+      if (display.SuperClickerCost < shop.SuperClickerCost) display.SuperClickerCost += Math.ceil(diffArr[11] / 15); else if (display.SuperClickerCost > shop.SuperClickerCost) display.SuperClickerCost -= Math.ceil(diffArr[11] / 15);
+
+      // Double Pointer CPS
+      if (display.DoublePointerCPS < shop.DoublePointerCPS) display.DoublePointerCPS += Math.ceil(diffArr[12] / 15); else if (display.DoublePointerCPS > shop.DoublePointerCPS) display.DoublePointerCPS -= Math.ceil(diffArr[12] / 15);
+
+      // Double Pointer cost
+      if (display.DoublePointerCost < shop.DoublePointerCost) display.DoublePointerCost += Math.ceil(diffArr[13] / 15); else if (display.DoublePointerCost > shop.DoublePointerCost) display.DoublePointerCost -= Math.ceil(diffArr[13] / 15);
+
+      // Employee cost
       if (display.EmployeeCost < uShop.EmployeeCost) display.EmployeeCost += Math.ceil(diffArr[14] / 15); else if (display.EmployeeCost > uShop.EmployeeCost) display.EmployeeCost -= Math.ceil(diffArr[14] / 15);
+
+      // Decrease the volume of the background music and remove all background particles if the document is not the active tab.
     } else { bgm.volume = volume / 3; $('.bg').remove(); }
+
+    // Set the timeout for this function again to cause a loop.
     setTimeout(updateScreen, updInterval);
   } catch (error) { errorHandler(error); }
 }
 
+// Create background elements based on which achievements are unlocked.
 function createBgElem() {
   try {
     if (startBgCreate && achArr[3]) {
       if (graphicsMode == 'Quality') {
+
+        // Millionare particles
         bg = document.createElement('img');
         bg.src = './img/bgdollar.png';
         bg.id = 'bg';
         bg.className = 'bg fixed';
         bg.style.left = `${lib.rng(1, screenWidth)}px`;
         document.body.appendChild(bg);
-        if (achArr[10]) {
+
+        // Trillionare particles (coins)
+        if (achArr[9]) {
           if (graphicsMode == 'Quality') {
             bg = document.createElement('img');
             bg.src = './img/coin.png';
@@ -541,12 +796,15 @@ function createBgElem() {
             document.body.appendChild(bg);
           }
         }
+        // Breaking point particles (stars)
+        // This creates font-awesome icons rather than imgs to allow for dynamic color.
         if (achArr[24]) {
           bgMax = 275;
           if (graphicsMode == 'Quality') {
             bg = document.createElement('i');
             bg.id = 'bg';
             bg.className = 'fa-solid fa-star ach fixed hasanim bg';
+            // Create dynamic red stars instead of green if Cheater is unlocked
             if (!achArr[26]) bg.style.color = `rgb(0, ${green}, 0)`; else bg.style.color = `rgb(${red}, 0, 0)`;
             bg.style.left = `${lib.rng(1, screenWidth)}px`;
             bg.style.fontSize = '1.7vw';
@@ -554,29 +812,49 @@ function createBgElem() {
           }
         }
       }
+      // Create an interval that can be changed dynamically using a setTimeout loop.
     } setTimeout(createBgElem, bgUpdInterval);
   } catch (error) { errorHandler(error) }
 }
 
+// Format numbers to be easy to read for the player.
 function numberFix() {
+  // To do: implement a toggle of some sort for exponent formatting
+  // To do: Force exponent formatting for individual numbers rather than all values when a number is too high
+
+  // Force exponent formatting if a number is a googol or higher
   if (!numberShorten || lib.intTooLarge()) {
     for (let i = 0; i < intArray.length; i++) {
+      // Convert all values to their absolutes to prevent negatives
       intArray[i] = Math.abs(intArray[i]);
+
+      // Prevent values from somehow becoming strings
       if (isNaN(intArray[i])) intArray[i] = 0;
-      if (Number.prototype.toLocaleString() != undefined) if (intArray[i] >= 100000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); else textArray[i] = intArray[i].toLocaleString();
+
+      // Use the toLocaleString() method to convert a number to have easy to read formatting, which should match the user's locale. If a value is over 1 quadrillion, it will be turned into an exponent with 3 decimal places
+      if (Number.prototype.toLocaleString() != undefined) if (intArray[i] >= 1000000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); else textArray[i] = intArray[i].toLocaleString();
+
+      // If the toLocaleString() method is not supported, default to a global method that involves a regex pattern to replace parts of the value with commas. If a value is over 1 quadrillion, it will be turned into an exponent like usual.
       else {
-        if (intArray[i] < 100000000000000) {
+        if (intArray[i] < 1000000000000000) {
           textArray[i] = intArray[i].toString();
           let pattern = /(-?\d+)(\d{3})/;
           while (pattern.test(textArray[i])) textArray[i] = textArray[i].replace(pattern, '$1,$2');
         } else textArray[i] = intArray[i].toExponential(3);
       }
+
     }
+    // Use short number formatting if a value is small enough to do so and if the option is enabled.
   } else {
+    // Values and their corresponding short names
     let req = [1000, 1e+6, 1e+9, 1e+12, 1e+15, 1e+18, 1e+21, 1e+24, 1e+27, 1e+30, 1e+33, 1e+36, 1e+39, 1e+42, 1e+45, 1e+48, 1e+51, 1e+54, 1e+57, 1e+60, 1e+63, 1e+66, 1e+69, 1e+72, 1e+75, 1e+78, 1e+81, 1e+84, 1e+87, 1e+90, 1e+93, 1e+96, 1e+99],
       units = ['thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quattuordecillion', 'quindecillion', 'sexdecillion', 'septemdecillion', 'octodecillion', 'novemdecillion', 'vigintillion', 'unvigintillion', 'duovigintiillion', 'trevigintillion', 'quattuorvigintiillion', 'quinvigintiillion', 'sexvigintiillion', 'septvigintiillion', 'octovigintillion', 'nonvigintillion', 'trigintillion', 'untrigintillion', 'duotrigintillion'];
+
+    // Iterate through two different arrays at once to access the needed indexes.
     for (let i in req) {
       for (let ii in intArray) {
+        // Divide all given integers by their corresponding req value, round it to the thousandths place (while using toFixed to avoid dropping any zeroes at the end of the number), and append a short name to the end of it.
+        // If a value is less than a thousand no formatting is needed.
         if (intArray[ii] >= req[i]) textArray[ii] = (Math.round((intArray[ii] / req[i]) * Math.pow(10, 3)) / Math.pow(10, 3)).toFixed(3) + ' ' + units[i];
         else if (intArray[ii] < 1000) textArray[ii] = intArray[ii];
       }
@@ -584,50 +862,74 @@ function numberFix() {
   }
 }
 
+// Load data when the game first starts.
 function loadGame() {
   try {
+    // Don't attempt to load anything if no save data exists.
     if (localStorage.getItem('saveData', saveData)) {
       let data = localStorage.getItem('saveData', saveData),
         loadData = JSON.parse(data);
+      // Variables that need to be loaded early.
       if (achCheck) {
+        // Load lifetime clicks stat so achievements can unlock themselves.
         stats.LifetimeClicks = loadData[5];
+
+        // Settings
         if (loadData[15]) bgGradCenterInput.value = loadData[15];
         if (loadData[16]) bgGradEdgeInput.value = loadData[16];
         if (loadData[15] && loadData[16]) document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`;
         if (loadData[17]) graphicsMode = loadData[17];
+
+        // Shop data
         if (!loadData[1]) {
           let data2 = localStorage.getItem('shopData', shopData),
             shopDat = JSON.parse(data2);
+          // Cursor and Clicker
           uShop.CursorOwned = shopDat[0];
           shop.ClickerCPS = shopDat[1];
           shop.ClickersOwned = shopDat[2];
           shop.ClickerCost = shopDat[3];
           shop.ClickersOwned = shopDat[4];
+
+          // Super Clicker
           if (shop.ClickersOwned >= 25) {
             shop.SuperClickerCPS = shopDat[5];
             shop.SuperClickerCPSWorth = shopDat[6];
             shop.SuperClickerCost = shopDat[7];
             shop.SuperClickersOwned = shopDat[8];
           }
+
+          // Double Pointer
           if (shop.ClickersOwned >= 50 && shop.SuperClickersOwned >= 3) {
             shop.DoublePointerCPS = shopDat[9];
             shop.DoublePointerCPSWorth = shopDat[10];
             shop.DoublePointerCost = shopDat[11];
             shop.DoublePointersOwned = shopDat[12];
           }
+
+          // Super Cursor
           if (uShop.CursorOwned) { uShop.SuperCursorUnlocked = shopDat[13]; uShop.SuperCursorOwned = shopDat[14]; }
-          if (shop.ClickersOwned >= 125 && shop.SuperClickersOwned >= 10 && shop.DoublePointersOwned >= 3) { uShop.GodFingerUnlocked = shopDat[15]; uShop.GodFingerOwned = shopDat[16]; }
-          if (shopDat[16]) uShop.GodFingerCost = 'Owned.';
+
+          // Employee
           if (uShop.SuperCursorOwned) {
             uShop.EmployeeUnlocked = shopDat[17];
             uShop.EmployeeCost = shopDat[18];
             uShop.EmployeesOwned = shopDat[19];
           }
+
+          // God Finger
+          if (shop.ClickersOwned >= 125 && shop.SuperClickersOwned >= 10 && shop.DoublePointersOwned >= 3) { uShop.GodFingerUnlocked = shopDat[15]; uShop.GodFingerOwned = shopDat[16]; }
+          if (shopDat[16]) uShop.GodFingerCost = 'Owned.';
+
+          // Clicker Fusion
           if (shop.ClickersOwned >= 150) { uShop.ClickerFusionUnlocked = shopDat[20]; uShop.ClickerFusionOwned = shopDat[21]; }
         }
+        // Update graphics mode setting button
         graphicsBtn.textContent = graphicsMode;
+        // Data loaded when the game starts.
       } else if (!achCheck && loadData[0] >= 4.41) {
         if (!loadData[1]) {
+          // Stats
           stats.Clicks = loadData[2];
           stats.ClickValue = loadData[3];
           stats.ClicksPS = loadData[4];
@@ -636,25 +938,58 @@ function loadGame() {
           stats.CoinClickCount = loadData[7];
           stats.TotalClickHelpers = loadData[8];
           stats.Playtime = loadData[9];
+
+          // Settings
           volume = loadData[10];
           shop.DoAutobuy = loadData[11];
+
+          // Debug mode key
           keyEntered = loadData[12];
+
+          // Last saved timestamp string
           if (loadData[13]) lastSavedTime = loadData[13];
+
+          // Used to detect cheating by checking for differences between the clicks stat and the true clicks stat
           if (loadData[14]) stats.TrueClicks = loadData[14];
+
+          // Offline CPS
           if (loadData[19]) stats.OfflineClicksPSPercen = loadData[19]; else stats.OfflineClicksPSPercen = uShop.EmployeesOwned / 10;
+
+          // Calculate offline CPS based on the difference between the save timestamp and the current timestamp
           if (loadData[18] && stats.ClicksPS > 0 && stats.OfflineClicksPSPercen > 0) {
+            // Time of load
             let loadTimestamp = Math.floor((new Date()).getTime() / 1000),
+              // Time of save
               saveTimestamp = loadData[18],
+              // Difference between timestamps
               timestampDifference = loadTimestamp - saveTimestamp,
+              // Offline CPS count
               offlineCpS = Math.ceil((stats.ClicksPS * stats.OfflineClicksPSPercen) * timestampDifference);
+
+            // Add offline CPS to necessary click counts
             stats.Clicks += offlineCpS;
+            stats.LifetimeClicks += offlineCpS;
             stats.TrueClicks += offlineCpS;
+
+            // Format offlineCpS number and display the unlock string.
             if (offlineCpS >= 100000000000000) offlineCpS = ((offlineCpS).toExponential(3)).toLocaleString(); else offlineCpS = offlineCpS.toLocaleString();
             unlockString.style.display = 'block';
+
+            // Set unlock string text content to singular/plural variants based on the value of offlineCpS.
             if (offlineCpS == 1) unlockString.textContent = `Your employees produced ${offlineCpS} coin while you were away.`; else unlockString.textContent = `Your employees produced ${offlineCpS} coins while you were away.`;
+
+            // Start timer to hide label.
             SHT = 500;
           }
+
+          // Command history
           if (loadData[20]) cmdHist = loadData[20];
+
+          //***************************************/
+          //         Shop item animations
+          //***************************************/
+
+          // Clicker
           if (shop.ClickersOwned >= 1 && graphicsMode == 'Quality') {
             clickerImg.style.animation = 'clickermov 2s forwards';
             setTimeout(function () {
@@ -662,6 +997,8 @@ function loadGame() {
               clickerImg.style.animation = 'clickerclick 0.5s 0.5s infinite ease-in alternate';
             }, 3000);
           }
+
+          // Super Clicker
           if (shop.SuperClickersOwned >= 1 && graphicsMode == 'Quality') {
             superClickerImg.style.animation = 'superclickermov 2s forwards';
             setTimeout(function () {
@@ -669,6 +1006,8 @@ function loadGame() {
               superClickerImg.style.animation = 'superclickerclick 0.5s 0.5s infinite ease-in alternate';
             }, 3000);
           }
+
+          // Double Pointer
           if (shop.DoublePointersOwned >= 1 && graphicsMode == 'Quality') {
             doublePointerImg.style.animation = 'doublepointermov 2s forwards';
             setTimeout(function () {
@@ -676,18 +1015,24 @@ function loadGame() {
               doublePointerImg.style.animation = 'doublepointerclick 0.5s 0.5s infinite ease-in alternate';
             }, 3000);
           }
+
+          // Cursor
           if (uShop.CursorOwned && graphicsMode == 'Quality') {
             cursorImg.style.display = 'block';
             cursorImg.parentNode.removeChild(cursorImg);
             statsPanel.appendChild(cursorImg);
             cursorImg.style.animationPlayState = 'running';
           }
+
+          // Super Cursor
           if (uShop.SuperCursorOwned && graphicsMode == 'Quality') {
             superCursorImg.style.display = 'block';
             superCursorImg.parentNode.removeChild(superCursorImg);
             statsPanel.appendChild(superCursorImg);
             superCursorImg.style.animationPlayState = 'running';
           }
+
+          // Employee
           if (uShop.EmployeesOwned >= 1 && graphicsMode == 'Quality') {
             offlineCPSString.style.display = 'block';
             employeeImg.style.display = 'block';
@@ -699,81 +1044,141 @@ function loadGame() {
               employeeImg.style.animation = 'employeerock 2s linear infinite alternate';
             }, 3000);
           }
+
+          // God Finger
           if (uShop.GodFingerOwned && graphicsMode == 'Quality') {
             godFingerImg.style.display = 'block';
             godFingerImg.parentNode.removeChild(godFingerImg);
             statsPanel.appendChild(godFingerImg);
             godFingerImg.style.animationPlayState = 'running';
           }
+
+          // Clicker Fusion
           if (uShop.ClickerFusionOwned && graphicsMode == 'Quality') {
             clickerFusionImg.style.display = 'block';
             clickerFusionImg.parentNode.removeChild(clickerFusionImg);
             statsPanel.appendChild(clickerFusionImg);
             clickerFusionImg.style.animationPlayState = 'running';
           }
+
+          // Check if 'Journey Begins' is unlocked and play bgm if true.
           if (stats.LifetimeClicks > 0) bgm.play();
+
+          // Increment hidden achievement count if 'Cheater' would be unlocked.
           if (stats.Clicks != stats.TrueClicks) stats.HiddenAchievementsUnlocked++;
+
+          // Set load flag
           setTimeout(function () { init.DataLoaded = !0; }, 150);
+
+          // Remove save data if autoplay was enabled on the previous save.
         } else { localStorage.removeItem('saveData', saveData); if (!achCheck) init.DataLoaded = !0; }
+        // Delete save if it was created prior to build 4.41
       } else { localStorage.removeItem('saveData', saveData); if (!achCheck) init.DataLoaded = !0; }
+      // Start game normally if save data was not found.
     } else if (!achCheck) init.DataLoaded = !0;
   } catch (error) { errorHandler(error); }
 }
 
+// Save data when user clicks the save button.
 function saveGame() {
   try {
+    // Only save if ready and if the game has actually started
     if (readyToSave && init.GameStarted) {
+      // THe game cannot be saved when a buff is active due to conflicts with infinitely stacking stats.
       if (buff != 'none') { savingString.textContent = 'You cannot save when a buff is occurring.'; savingString.style.display = 'block'; SHT = 500; } else {
-        let saveTime = Math.floor((new Date()).getTime() / 1000);
+        // Prevent additional saving from occurring
+        readyToSave = !1;
+
+        // Show save string
+        savingString.textContent = 'Saving...';
+        savingString.style.display = 'block';
+
+        // Save timestamp
+        let saveTime = Math.floor((new Date()).getTime() / 1000),
+          // Variables to push to the saveData key
+          varsToPush = [buildInfo.BuildNum, debugAutoplay, stats.Clicks, stats.ClickValue, stats.ClicksPS, stats.LifetimeClicks, stats.LifetimeManualClicks, stats.CoinClickCount, stats.TotalClickHelpers, stats.Playtime, volume, shop.DoAutobuy, keyEntered, lastSavedTime, stats.TrueClicks, bgGradCenterInput.value, bgGradEdgeInput.value, graphicsMode, saveTime, stats.OfflineClicksPSPercen, cmdHist],
+          // Variables to push to the shopData key. Data is appended when needed (see below)
+          shopVars = [uShop.CursorOwned, shop.ClickerCPS, shop.ClickersOwned, shop.ClickerCost, shop.ClickersOwned];
+
+        // Make save timestamp a string corresponding to the player's timezone.
         lastSavedTime = new Date();
         lastSavedTime = lastSavedTime.toString();
         lastSavedTime = new Date(`${lastSavedTime} UTC`);
         lastSavedTime = lastSavedTime.toString();
-        readyToSave = !1;
-        savingString.textContent = 'Saving...';
-        savingString.style.display = 'block';
-        let varsToPush = [buildInfo.BuildNum, debugAutoplay, stats.Clicks, stats.ClickValue, stats.ClicksPS, stats.LifetimeClicks, stats.LifetimeManualClicks, stats.CoinClickCount, stats.TotalClickHelpers, stats.Playtime, volume, shop.DoAutobuy, keyEntered, lastSavedTime, stats.TrueClicks, bgGradCenterInput.value, bgGradEdgeInput.value, graphicsMode, saveTime, stats.OfflineClicksPSPercen, cmdHist];
-        let shopVars = [uShop.CursorOwned, shop.ClickerCPS, shop.ClickersOwned, shop.ClickerCost, shop.ClickersOwned];
+
+        //***************************************/
+        //         Push shop variables
+        //***************************************/
+
+        // Super Clicker
         if (shop.SuperClickerUnlocked) {
           shopVars.push(shop.SuperClickerCPS);
           shopVars.push(shop.SuperClickerCPSWorth);
           shopVars.push(shop.SuperClickerCost);
           shopVars.push(shop.SuperClickersOwned);
+          // Pad the data key with undefined to prevent loading of incorrect integers for shop data
         } else for (let i = 0; i < 4; i++) shopVars.push(undefined);
+
+        // Double Pointer
         if (shop.DoublePointerUnlocked) {
           shopVars.push(shop.DoublePointerCPS);
           shopVars.push(shop.DoublePointerCPSWorth);
           shopVars.push(shop.DoublePointerCost);
           shopVars.push(shop.DoublePointersOwned);
         } else for (let i = 0; i < 4; i++) shopVars.push(undefined);
+
+        // Suoer Cursor
         if (uShop.CursorOwned) { shopVars.push(uShop.SuperCursorUnlocked); shopVars.push(uShop.SuperCursorOwned); } else for (let i = 0; i < 2; i++) shopVars.push(undefined);
+
+        // God Finger
         if (shop.ClickersOwned >= 125 && shop.SuperClickersOwned >= 10 && shop.DoublePointersOwned >= 3) { shopVars.push(uShop.GodFingerUnlocked); shopVars.push(uShop.GodFingerOwned); } else for (let i = 0; i < 2; i++) shopVars.push(undefined);
+
+        // Employee
         if (uShop.SuperCursorOwned) {
           shopVars.push(uShop.EmployeeUnlocked);
           shopVars.push(uShop.EmployeeCost);
           shopVars.push(uShop.EmployeesOwned);
         } else for (let i = 0; i < 3; i++) shopVars.push(undefined);
+
+        // Clicker Fusion
         if (shop.ClickersOwned >= 150) { shopVars.push(uShop.ClickerFusionUnlocked); shopVars.push(uShop.ClickerFusionOwned); } else for (let i = 0; i < 2; i++) shopVars.push(undefined);
+
+        // If value being pushed is Infinity, set it to Number.MAX_VALUE before pushing to the array
         for (let i = 0; i < varsToPush.length; i++) { if (!isFinite(varsToPush[i]) && !isNaN(varsToPush[i])) varsToPush[i] = Number.MAX_VALUE; saveData.push(varsToPush[i]); }
+
+        // Set key in local storage
         localStorage.setItem('saveData', JSON.stringify(saveData));
+
+        // Push all shop variables to the array and set the key in local storage
         for (let i = 0; i < shopVars.length; i++) shopData.push(shopVars[i]);
         localStorage.setItem('shopData', JSON.stringify(shopData));
+
+        // Empty the arrays
         while (saveData.length > 0) saveData.pop();
         while (shopData.length > 0) shopData.pop();
+
+        // Detect whether the game was autosasved or saved manually
         if (manualSave) { savingString.textContent = 'Game saved.'; manualSave = !manualSave; /*False*/ } else savingString.textContent = 'Game autosaved.';
+
+        // Start timeout to hide label.
         SHT = 500;
       }
     }
   } catch (error) { errorHandler(error) }
 }
 
+// Wipes the player's save if the player requests it.
 function wipeSave(gamepadActive) {
   if (readyToSave || debugAutoplay) {
     if (!gamepadActive) {
       let prompt = confirm('This is completely irreversible! Are you sure you wish to continue?');
       if (prompt) {
+        // Elements to hide
         let toHide = [offlineCPSString, superClickerGroup, doublePointerGroup, superCursorGroup, employeeGroup, godFingerGroup, clickerFusionGroup, cheater, cheaterIcon, breakpoint, bpIcon],
+          // Elements to disable the animation of, reverting them to their default state
           toTransform = [clickerImg, superClickerImg, doublePointerImg, cursorImg, superCursorImg, employeeImg, godFingerImg, clickerFusionImg],
+
+          // Fade out the background music
           bgmFade = setInterval(function () {
             if (volume <= 0.0) {
               clearInterval(bgmFade);
@@ -782,25 +1187,37 @@ function wipeSave(gamepadActive) {
               volume = 1;
             } else { volume -= 0.1; volume = volume.toFixed(2); }
           }, 200);
+
         readyToSave = !1;
         localStorage.removeItem('saveData');
         localStorage.removeItem('shopData');
+
+        // Restore base stats
         stats = new baseStats();
         shop = new baseShop();
         uShop = new baseUpgShop();
         graphicsMode = 'Quality';
+
+        // Lock all achievements, and restore the original state of needed elements.
         for (let i in achArr) achArr[i] = !1;
         for (let i in toHide) toHide[i].style.display = 'none';
         for (let i in toTransform) { toTransform[i].style.animation = ''; toTransform[i].style.transform = ''; }
+
+        // Restore the original state of hoverable shop info strings and the time played stat string.
         clickerInfo.textContent = 'You have no clickers.';
         superClickerInfo.textContent = 'You have no super clickers.';
         doublePointerInfo.textContent = 'You have no double pointers.';
         timePlayedString.textContent = 'You have played for 0 seconds.';
+
+        // Restore the original background color.
         bgGradCenterInput.value = '250, 224, 65';
         bgGradEdgeInput.value = '249, 160, 40';
         document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`;
       }
     }
+
+    // Remove data and prompt user that the data was removed, requiring them to refresh the page to reverse it.
+    // This prevents unwanted save removal by letting the user save again if they accidentally pressed the wipe save bind.
   } else if (gamepadActive) {
     localStorage.removeItem('saveData');
     localStorage.removeItem('shopData');
@@ -810,79 +1227,134 @@ function wipeSave(gamepadActive) {
   } else if (!readyToSave) readyToSave = !0;
 }
 
+// Recalculate RNG every second and set active buff if the value is correct.
 function buffRNGCalc() {
   try {
+    // Min and max values for buffRNG
     let max = 301,
       min = 0,
+      // Randomized time for buffs that are time-dependent.
       buffTime;
     buffRNG = 0;
-    if (forceBuff && buff == 'none') buffRNG = 100; else if (!forceBuff && buff == 'none') buffRNG = lib.rng(min, max);
+
+    // Force a specific buff if debug variable forceBuff is active.
+    if (forceBuff && buff == 'none') buffRNG = 100;
+    // Otherwise randomize.
+    else if (!forceBuff && buff == 'none') buffRNG = lib.rng(min, max);
+    // If buff would return cv777%CpS while the document was hidden, rerandomize.
     if ((document.hidden || game.style.display != 'block') && buffRNG == 200) buffRNG = lib.rng(min, max);
+    // Continue randomizing if buffRNG would be the same as the last function call.
     while (buffRNG == lastBuffRNG) buffRNG = lib.rng(min, max);
-    if (buffRNG == 100 && buff == 'none') {
-      if (stats.ClicksPS > 0) {
-        buffTime = lib.rng(15000, 60000);
-        buffStr.textContent = `Your CpS has been doubled for ${Math.round(buffTime / 1000)} seconds!`;
-        buffStr.style.display = 'block';
-        stats.RawClicksPS = stats.ClicksPS;
-        stats.ClicksPS = Math.round(stats.ClicksPS * 2);
-        buff = 'cpsDouble';
-        window.setTimeout(buffRemoval, buffTime);
-      }
-    } else if (buffRNG == 200 && buff == 'none') {
-      if (stats.ClicksPS > 0) {
-        buffTime = lib.rng(5000, 20000);
-        buffStr.textContent = `Your click value has been increased by 777% of your CpS for ${Math.round(buffTime / 1000)} seconds!`;
-        buffStr.style.display = 'block'; stats.RawClickVal = stats.ClickValue; stats.ClickValue += Math.round(stats.ClicksPS * 7.77);
-        buff = 'cv777%CpS';
-        window.setTimeout(buffRemoval, buffTime);
-      }
-    } else if (buffRNG == 300 && buff == 'none') {
-      if (stats.ClicksPS > 0 && stats.Clicks > 0) {
-        clicksAdded = Math.round(0.3 * stats.ClicksPS + 0.1 * stats.Clicks);
-        stats.Clicks += clicksAdded;
-        stats.TrueClicks += clicksAdded;
-        numberFix();
-        buffStr.style.display = 'block';
-        buff =
-          'bonusClicks'; window.setTimeout(buffRemoval, 2000);
+
+    if (buff == 'none') {
+      switch (buffRNG) {
+
+        // CPS Double
+        case 100:
+          if (stats.ClicksPS > 0) {
+            buffTime = lib.rng(15000, 60000);
+            buffStr.textContent = `Your CpS has been doubled for ${Math.round(buffTime / 1000)} seconds!`;
+            buffStr.style.display = 'block';
+            stats.RawClicksPS = stats.ClicksPS;
+            stats.ClicksPS = Math.round(stats.ClicksPS * 2);
+            buff = 'cpsDouble';
+            window.setTimeout(buffRemoval, buffTime);
+          }
+          break;
+
+        // Increase click value by 777% of CpS
+        case 200:
+          if (stats.ClicksPS > 0) {
+            buffTime = lib.rng(5000, 20000);
+            buffStr.textContent = `Your click value has been increased by 777% of your CpS for ${Math.round(buffTime / 1000)} seconds!`;
+            buffStr.style.display = 'block'; stats.RawClickVal = stats.ClickValue; stats.ClickValue += Math.round(stats.ClicksPS * 7.77);
+            buff = 'cv777%CpS';
+            window.setTimeout(buffRemoval, buffTime);
+          }
+          break;
+
+        // Grant the player bonus clicks.
+        case 300:
+          if (stats.ClicksPS > 0 && stats.Clicks > 0) {
+            clicksAdded = Math.round(0.3 * stats.ClicksPS + 0.1 * stats.Clicks);
+            stats.Clicks += clicksAdded;
+            stats.TrueClicks += clicksAdded;
+            // Format numbers before displaying them.
+            numberFix();
+            buffStr.style.display = 'block';
+            buff = 'bonusClicks';
+            window.setTimeout(buffRemoval, 2000);
+          }
+          break;
       }
     }
     lastBuffRNG = buffRNG;
   } catch (error) { errorHandler(error); }
 }
 
-function buffRemoval() { try { buffStr.style.display = 'none'; if (buff == 'cpsDouble') { stats.ClicksPS = stats.RawClicksPS; stats.ClickValue = stats.RawClickVal; } else if (buff == 'cv777%CpS') stats.ClickValue = stats.RawClickVal; else if (buff == 'bonusClicks') clicksAdded = 0; buff = 'none'; } catch (error) { errorHandler(error); } }
+// Remove any active buffs.
+function buffRemoval() {
+  try {
+    // Hide buff string if buff granted bonus clicks.
+    buffStr.style.display = 'none';
 
+    if (buff == 'cpsDouble') {
+      stats.ClicksPS = stats.RawClicksPS;
+      stats.ClickValue = stats.RawClickVal;
+    }
+
+    else if (buff == 'cv777%CpS') stats.ClickValue = stats.RawClickVal;
+    else if (buff == 'bonusClicks') clicksAdded = 0;
+
+    buff = 'none';
+  } catch (error) { errorHandler(error); }
+}
+
+// Click using the players CpS value, called once every tenth of a second.
 function cpsClick() {
   try {
     stats.Clicks += stats.ClicksPS * 0.10;
     stats.TrueClicks += stats.ClicksPS * 0.10;
+    stats.LifetimeClicks += stats.ClicksPS * 0.10;
     stats.Clicks = Math.round(stats.Clicks);
     stats.TrueClicks = Math.round(stats.TrueClicks);
-    stats.LifetimeClicks += stats.ClicksPS * 0.10;
     stats.LifetimeClicks = Math.round(stats.LifetimeClicks);
   } catch (error) { errorHandler(error); }
 }
 
+// Modify red and green variables used to create a color pulsing effect on certain elements.
 function rgChange() {
   try {
+    // Increase or decrease variables depending on their value
     if (increase) { red += 5; green += 5; } else if (!increase) { red -= 5; green -= 5; }
-    if (green == 200) increase = !increase; /*False*/ else if (green == 0) increase = !increase; //True
+    if (green == 200) increase = !increase; else if (green == 0) increase = !increase;
+
+    //******************************************************************************/
+    //                Create a pulsing effect on achievement icons
+    //******************************************************************************/
     forTheWorthy.style.borderInlineColor = `rgb(0, ${green}, 0)`;
     forTheWorthy.style.borderBlockColor = `rgb(0, ${green}, 0)`;
+    ftwIcon.style.color = `rgb(0, ${green}, 0)`;
+
     breakpoint.style.borderInlineColor = `rgb(0, ${green}, 0)`;
     breakpoint.style.borderBlockColor = `rgb(0, ${green}, 0)`;
+    bpIcon.style.color = `rgb(0, ${green}, 0)`;
+
     cheater.style.borderInlineColor = `rgb(${red}, 0, 0)`;
     cheater.style.borderBlockColor = `rgb(${red}, 0, 0)`;
-    ftwIcon.style.color = `rgb(0, ${green}, 0)`;
-    bpIcon.style.color = `rgb(0, ${green}, 0)`;
     cheaterIcon.style.color = `rgb(${red}, 0, 0)`;
+
+    // Update the array of costs
     costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)];
+
+    // Cause the icon of the corresponding item to pulse green if the player has enough clicks to buy it, and set back to black when bought.
     for (let i = 0; i < costArray.length - 1; i++) { if (stats.Clicks >= costArray[i]) costStringArr[i].style.color = `rgb(0, ${green}, 0)`; else costStringArr[i].style.color = 'rgb(0, 0, 0)'; }
   } catch (error) { errorHandler(error); }
 }
 
+//*********************************************************************************************************************/
+//   todo: Remove this function in a later version of the game and allow anyone to access debug mode without a key.
+//*********************************************************************************************************************/
 function createBase64Key() {
   try {
     if (!init.GameStarted || debug) {
@@ -905,25 +1377,74 @@ function createBase64Key() {
   } catch (error) { errorHandler(error); }
 }
 
+// Interpret commands given to the debug console
 function commandInterpret() {
   commandAssemble();
-  if (cmd == 'clear') debugConsole = 'Console cleared.\n';
-  else if (cmd == 'echo') debugConsole += `${arg}\n`;
-  else if (cmd == 'help') debugConsole += man;
-  else if (cmd == 'exec' || cmd == 'eval') { try { eval(arg); debugConsole += 'Command executed.\n'; } catch (error) { debugConsole += `${error}\n`; } }
-  else if (cmd == 'pizza') debugConsole += `You could buy ${(Math.floor(stats.Clicks / 30)).toLocaleString()} $30 pizzas with your current amount of coins.\n`;
-  else if (cmd == 'rmsg') randomMsg(arg);
-  else if (cmd == 'clhis') cmdHist = [];
-  else if (cmd == 'exit') document.dispatchEvent(new KeyboardEvent('keydown', { 'key': 'y', 'altKey': true }));
-  else try { eval(commandInput.value); } catch (error) { debugConsole += `${error}\n`; }
+  switch (cmd) {
+
+    // Clear the debug console.
+    case 'clear':
+      debugConsole = 'Console cleared.\n';
+      break;
+
+    // Output the given argument into the debug console.
+    case 'echo':
+      debugConsole += `${arg}\n`;
+      break;
+
+    // Print the help manual.
+    case 'help':
+      debugConsole += man;
+      break;
+
+    // Attempt to evaluate the given string and execute it, printing any errors received into the debug console.
+    case 'exec':
+    case 'eval':
+      try {
+        eval(arg);
+        debugConsole += 'Command executed.\n';
+      } catch (err) { debugConsole += `${err}\n`; }
+      break;
+
+    default:
+      try { eval(commandInput.value); } catch (err) { debugConsole += `${err}\n`; }
+      break;
+
+    // Calculate the amount of pizzas the player could buy with their current amount of coins.
+    case 'pizza':
+      debugConsole += `You could buy ${(Math.floor(stats.Clicks / 30)).toLocaleString()} $30 pizzas with your current amount of coins.`;
+      break;
+
+    // Call the random message function, passing the given argument as the parameter.
+    case 'rmsg':
+      randomMsg(arg);
+      break;
+
+    // Empty the player's command history
+    case 'clhist':
+      cmdHist = [];
+      break;
+
+    // Mimic keyboard input and send the proper keybind to exit debug mode.
+    case 'exit':
+      document.dispatchEvent(new KeyboardEvent('keydown', { 'key': 'y', 'altKey': true }));
+      break;
+
+  }
+
+  // Update command history and corresponding index after every command.
   if (cmd != 'clhis') { cmdHist.push(commandInput.value); cmdHistInx = cmdHist.length; }
   cmd = [];
   arg = [];
   commandInput.value = '';
 }
 
+// Turn the value of the debug command input into two separate strings
 function commandAssemble() {
+  // Take a 5 letter command and assume the rest is an argument, then split the value into two arrays.
   for (let i = 0; i < commandInput.value.length; i++) { if (i < 5) cmd.push(commandInput.value[i]); else arg.push(commandInput.value[i]); }
+
+  // Turn the arrays into strings and remove commas and spaces.
   cmd = cmd.toString();
   cmd = cmd.replace(/\,/g, '');
   cmd = cmd.replace(/\s/g, '');
@@ -931,25 +1452,39 @@ function commandAssemble() {
   arg = arg.replace(/\,/g, '');
 }
 
-//Event listeners
-startButton.addEventListener('click', function () {
+//***************************************/
+//           Event listeners
+//***************************************/
+
+startButton.addEventListener('click', () => {
   sfx.play();
+  // todo: Remove this line in a future version as debug mode access keys are going to be removed.
   if (generatedKey != 'debug') key.style.display = 'none';
+
+  // Hide the title screen and display necessary panels
   titleScreen.style.display = 'none';
   game.style.display = 'block';
   shopPanel.style.display = 'block';
   statsPanel.style.display = 'block';
-  init.GameStarted = !init.GameStarted; //True
+
+  // Set necessary flags
+  init.GameStarted = !init.GameStarted;
   startBgCreate = !0;
   achCheck = !1;
+
+  // Load the game and log a random message.
   loadGame();
   randomMsg();
+
+  // todo: Remove the source note string
   sourceNote.textContent = `Debug states: ${debug}, ${debugAutoplay}`;
   sourceNote.style.position = 'fixed';
   if (screenWidth == 1920) sourceNote.style.top = '52vw';
   else sourceNote.style.top = '51vw';
   sourceNote.style.animation = 'dbgstringmov 1s ease-out forwards';
   sourceNote.className = 'hasanim';
+
+  // Unlock all shop items right away if debug mode is enabled using the respective keybind.
   if (debug) {
     shop.SuperClickerUnlocked = !shop.SuperClickerUnlocked; //True
     shop.DoublePointerUnlocked = !shop.DoublePointerUnlocked; //True
@@ -957,20 +1492,29 @@ startButton.addEventListener('click', function () {
     uShop.EmployeeUnlocked = !uShop.EmployeeUnlocked; //True
     uShop.GodFingerUnlocked = !uShop.GodFingerUnlocked; //True
     uShop.ClickerFusionUnlocked = !uShop.ClickerFusionUnlocked //True
+    //todo: remove this line
     game.appendChild(sourceNote);
   }
+  //todo: remove this line
   if (debugAutoplay) game.appendChild(sourceNote);
+
+  // Display the borders and get their offsets
   $('.borders').css('display', 'block');
   leftBorderX = document.getElementById('leftborder').getBoundingClientRect().left;
   rightBorderX = document.getElementById('rightborder').getBoundingClientRect().left;
 });
 
-coin.addEventListener('click', function (event) {
+coin.addEventListener('click', (event) => {
   try {
+    // Play and recreate click sfx, to allow for overlapping
     sfx.play();
     sfx = new Audio();
     sfx.src = './snd/click.mp3';
+
+    // Mute the volume if debug autoplay is enabled.
     if (!debugAutoplay) sfx.volume = volume; else sfx.volume = 0;
+
+    // Create a coin particle when clicking the coin and append it to the game panel
     if (!debugAutoplay && graphicsMode == 'Quality' && event.clientX != 0) {
       coinParticle = document.createElement('img');
       coinParticle.src = './img/coin.png';
@@ -982,13 +1526,16 @@ coin.addEventListener('click', function (event) {
       coinParticle.style.animation = 'coinpartmov 0.5s ease-in forwards';
       game.appendChild(coinParticle);
     }
+
+    // Update necessary states or throw an error if negative values are encountered.
     if (Math.sign(stats.Clicks) != -1 && Math.sign(stats.LifetimeClicks) != -1 && Math.sign(stats.ClickValue) != -1 && Math.sign(stats.CoinClickCount) != -1) {
       stats.Clicks += stats.ClickValue;
       stats.TrueClicks += stats.ClickValue
       stats.LifetimeClicks += stats.ClickValue;
       stats.LifetimeManualClicks += stats.ClickValue;
       stats.CoinClickCount++;
-    } else { debugConsole += `${stats.Clicks}, ${stats.LifetimeClicks}, ${stats.ClickValue}, ${stats.CoinClickCount}\n`; throw new Error('Non-absolute values in coinClick. Check debugConsole for more info.'); }
+    } else { debugConsole += `${stats.Clicks}, ${stats.TrueClicks}, ${stats.LifetimeClicks}, ${stats.ClickValue}, ${stats.CoinClickCount}\n`; throw new Error('Non-absolute values in stats class.'); }
+
   } catch (error) { errorHandler(error); }
 });
 
@@ -998,18 +1545,44 @@ clickerBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
+    // Decrease/increase related variables
     stats.Clicks -= shop.ClickerCost;
     stats.TrueClicks -= shop.ClickerCost;
     shop.ClickersOwned++;
     shop.ClickerCPSWorth += shop.ClickerCPS;
+
+    // Check if a buff is ongoing and increase given stats accordingly to prevent unwanted loss of stats.
     if (buff == 'cpsDouble') {
       stats.ClicksPS += (shop.ClickerCPS * 2);
       stats.RawClicksPS += shop.ClickerCPS;
+
+      // Clicker CpS formula: Amount of clickers owned x2 + 3% of raw CpS + random number between 3 and 15.
       shop.ClickerCPS += Math.abs(Math.round(shop.ClickersOwned * 2 + Math.abs(0.03 * stats.RawClicksPS) + lib.rng(3, 15)));
+
+      // Clicker cost formula: Amount of clickers owned + clicker scale x raw CpS + amount of clickers owned x3 + random number between 100 and 200. 
       shop.ClickerCost += Math.round(shop.ClickersOwned + (shop.ClickerScale * stats.RawClicksPS) + shop.ClickersOwned * 3 + lib.rng(100, 200));
-    } else { stats.ClicksPS += shop.ClickerCPS; shop.ClickerCPS += Math.abs(Math.round(shop.ClickersOwned * 2 + Math.abs((0.03 * stats.ClicksPS)) + lib.rng(3, 15))); shop.ClickerCost += Math.round(shop.ClickersOwned + (shop.ClickerScale * stats.ClicksPS) + shop.ClickersOwned * 3 + lib.rng(100, 200)); }
-    if (buff != 'none') stats.RawClickVal += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS); else stats.ClickValue += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS);
-    if (shop.ClickersOwned == 1) { clickerImg.style.animation = 'clickermov 2s forwards'; setTimeout(function () { clickerImg.style.transform = 'translate3d(35.5vw, 7.2vw, 0) rotate(172deg)'; clickerImg.style.animation = 'clickerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
+
+    } else {
+      stats.ClicksPS += shop.ClickerCPS;
+      shop.ClickerCPS += Math.abs(Math.round(shop.ClickersOwned * 2 + Math.abs((0.03 * stats.ClicksPS)) + lib.rng(3, 15)));
+      shop.ClickerCost += Math.round(shop.ClickersOwned + (shop.ClickerScale * stats.ClicksPS) + shop.ClickersOwned * 3 + lib.rng(100, 200));
+    }
+
+    // Clicker click value formula: Half of clickers owned + 10% of CpS
+    if (buff != 'none') stats.RawClickVal += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS);
+    else stats.ClickValue += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS);
+
+    // Enable shop animation if this is the first clicker the player has bought.
+    if (shop.ClickersOwned == 1) {
+      clickerImg.style.animation = 'clickermov 2s forwards';
+      setTimeout(function () {
+        clickerImg.style.transform = 'translate3d(35.5vw, 7.2vw, 0) rotate(172deg)';
+        clickerImg.style.animation = 'clickerclick 0.5s 0.5s infinite ease-in alternate';
+      }, 3000);
+    }
+
+    // Increase total shop items stat and modify clicker scale used in formula
     stats.TotalClickHelpers++;
     shop.ClickerScale++;
   }
@@ -1021,18 +1594,40 @@ superClickerBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
     stats.Clicks -= shop.SuperClickerCost;
     stats.TrueClicks -= shop.SuperClickerCost;
     shop.SuperClickersOwned++;
     shop.SuperClickerCPSWorth += shop.SuperClickerCPS;
+
     if (buff == 'cpsDouble') {
       stats.ClicksPS += (shop.SuperClickerCPS * 2);
       stats.RawClicksPS += shop.SuperClickerCPS;
+
+      // Super clicker CpS formula: Amount of super clickers owned x15 + 20% of CpS
       shop.SuperClickerCPS += Math.abs(Math.round(shop.SuperClickersOwned * 15 + (0.2 * stats.RawClicksPS)));
+
+      // Super clicker cost formula: Super clicker scale x CpS + Amount of super clickers owned x4 + random number between 10000 and 30000
       shop.SuperClickerCost += Math.round((shop.SuperClickerScale * stats.RawClicksPS) + shop.SuperClickersOwned * 4 + lib.rng(10000, 30000));
-    } else { stats.ClicksPS += shop.SuperClickerCPS; shop.SuperClickerCPS += Math.abs(Math.round(shop.SuperClickersOwned * 15 + (0.2 * stats.ClicksPS))); shop.SuperClickerCost += Math.round((shop.SuperClickerScale * stats.ClicksPS) + shop.SuperClickersOwned * 4 + lib.rng(10000, 30000)); }
-    if (buff != 'none') stats.RawClickVal += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS); else stats.ClickValue += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS);
-    if (shop.SuperClickersOwned == 1) { superClickerImg.style.animation = 'superclickermov 2s forwards'; setTimeout(function () { superClickerImg.style.transform = 'translate3d(44vw, 2vw, 0) rotate(175deg)'; superClickerImg.style.animation = 'superclickerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
+
+    } else {
+      stats.ClicksPS += shop.SuperClickerCPS;
+      shop.SuperClickerCPS += Math.abs(Math.round(shop.SuperClickersOwned * 15 + (0.2 * stats.ClicksPS)));
+      shop.SuperClickerCost += Math.round((shop.SuperClickerScale * stats.ClicksPS) + shop.SuperClickersOwned * 4 + lib.rng(10000, 30000));
+    }
+
+    // Super clicker click value formula: Amount of super clickers owned x2 + 1% of CpS
+    if (buff != 'none') stats.RawClickVal += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS);
+    else stats.ClickValue += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS);
+
+    if (shop.SuperClickersOwned == 1) {
+      superClickerImg.style.animation = 'superclickermov 2s forwards';
+      setTimeout(function () {
+        superClickerImg.style.transform = 'translate3d(44vw, 2vw, 0) rotate(175deg)';
+        superClickerImg.style.animation = 'superclickerclick 0.5s 0.5s infinite ease-in alternate';
+      }, 3000);
+    }
+
     stats.TotalClickHelpers++;
     shop.SuperClickerScale += 5;
   }
@@ -1044,18 +1639,40 @@ doublePointerBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
     stats.Clicks -= shop.DoublePointerCost;
     stats.TrueClicks -= shop.DoublePointerCost;
     shop.DoublePointersOwned++;
     shop.DoublePointerCPSWorth += shop.DoublePointerCPS;
+
     if (buff == 'cpsDouble') {
       stats.ClicksPS += (shop.DoublePointerCPS * 2);
       stats.RawClicksPS += shop.DoublePointerCPS;
+
+      // Double pointer CpS formula: Amount of double pointers owned x5 + 40% of CpS + random number between 1000 and 3000
       shop.DoublePointerCPS += Math.abs(Math.round(shop.DoublePointersOwned * 5 + (0.4 * stats.RawClicksPS) + lib.rng(1000, 3000)));
+
+      // Double pointer cost formula: Amount of double pointers owned + double pointer scale x CpS + amount of double pointers owned x5 + random number between 250000 and 500000
       shop.DoublePointerCost += Math.round(shop.DoublePointersOwned + (shop.DoublePointerScale * stats.RawClicksPS) + shop.DoublePointersOwned * 5 + lib.rng(250000, 500000));
-    } else { stats.ClicksPS += shop.DoublePointerCPS; shop.DoublePointerCPS += Math.abs(Math.round(shop.DoublePointersOwned * 5 + (0.4 * stats.ClicksPS) + lib.rng(1000, 3000))); shop.DoublePointerCost += Math.round(shop.DoublePointersOwned + (shop.DoublePointerScale * stats.ClicksPS) + shop.DoublePointersOwned * 5 + lib.rng(500000, 1000000)); }
-    if (buff != 'none') stats.RawClickVal += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS); else stats.ClickValue += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS);
-    if (shop.DoublePointersOwned == 1) { doublePointerImg.style.animation = 'doublepointermov 2s forwards'; setTimeout(function () { doublePointerImg.style.transform = 'translate3d(39.8vw, 6.9vw, 0) rotate(90deg)'; doublePointerImg.style.animation = 'doublepointerclick 0.5s 0.5s infinite ease-in alternate'; }, 3000); }
+
+    } else {
+      stats.ClicksPS += shop.DoublePointerCPS;
+      shop.DoublePointerCPS += Math.abs(Math.round(shop.DoublePointersOwned * 5 + (0.4 * stats.ClicksPS) + lib.rng(1000, 3000)));
+      shop.DoublePointerCost += Math.round(shop.DoublePointersOwned + (shop.DoublePointerScale * stats.ClicksPS) + shop.DoublePointersOwned * 5 + lib.rng(500000, 1000000));
+    }
+
+    // Double pointer click value formula: Amount of double pointers owned x3 + 3% of CpS
+    if (buff != 'none') stats.RawClickVal += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS);
+    else stats.ClickValue += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS);
+
+    if (shop.DoublePointersOwned == 1) {
+      doublePointerImg.style.animation = 'doublepointermov 2s forwards';
+      setTimeout(function () {
+        doublePointerImg.style.transform = 'translate3d(39.8vw, 6.9vw, 0) rotate(90deg)';
+        doublePointerImg.style.animation = 'doublepointerclick 0.5s 0.5s infinite ease-in alternate';
+      }, 3000);
+    }
+
     shop.DoublePointerScale += 10;
     stats.TotalClickHelpers++;
   }
@@ -1066,13 +1683,17 @@ upgradeButton.addEventListener('click', function () {
   sfx5 = new Audio();
   sfx5.src = './snd/shopbuy.mp3';
   shopPanel.style.display = 'none';
-  if (uShop.CursorOwned) cursorImg.style.display = 'block';
   upgradeShopPanel.style.display = 'block';
+
+  // Hide floating regular shop icons if those items are not yet owned.
   if (shop.ClickersOwned == 0) clickerImg.style.display = 'none';
   if (shop.SuperClickersOwned == 0) superClickerImg.style.display = 'none';
   if (shop.DoublePointersOwned == 0) doublePointerImg.style.display = 'none';
-  if (uShop.EmployeeUnlocked) employeeImg.style.display = 'block';
+
+  // Show floating upgrade shop icons in their starting places if the corresponding item is unlocked.
+  if (uShop.CursorOwned) cursorImg.style.display = 'block';
   if (uShop.SuperCursorUnlocked) superCursorImg.style.display = 'block';
+  if (uShop.EmployeeUnlocked) employeeImg.style.display = 'block';
   if (uShop.GodFingerUnlocked) godFingerImg.style.display = 'block';
   if (uShop.ClickerFusionUnlocked) clickerFusionImg.style.display = 'block';
 });
@@ -1082,8 +1703,12 @@ upgradeRTS.addEventListener('click', function () {
   shopPanel.style.display = 'block';
   upgradeShopPanel.style.display = 'none';
   clickerImg.style.display = 'block';
+
+  // Show floating regular shop icons in their starting places if the corresponding item is unlocked
   if (shop.SuperClickerUnlocked) superClickerImg.style.display = 'block';
   if (shop.DoublePointerUnlocked) doublePointerImg.style.display = 'block';
+
+  // Hide floating upgrade shop icons if the corresponding items are not yet owned.
   if (!uShop.CursorOwned) cursorImg.style.display = 'none';
   if (!uShop.SuperCursorOwned) superCursorImg.style.display = 'none';
   if (uShop.EmployeesOwned < 1) employeeImg.style.display = 'none';
@@ -1368,7 +1993,7 @@ document.addEventListener('keydown', function (event) {
       startButton.click();
     } else if ((event.key == 'f' || event.key == 'F') && event.shiftKey && fpsLabel.style.display == 'none') fpsLabel.style.display = 'block';
     else if ((event.key == 'f' || event.key == 'F') && event.shiftKey && fpsLabel.style.display == 'block') fpsLabel.style.display = 'none';
-    else if ((event.key == '-' || event.key == '=') && event.ctrlKey) event.preventDefault();
+    //else if ((event.key == '-' || event.key == '=') && event.ctrlKey) event.preventDefault();
     else if ((event.key == 'a' || event.key == 'A') && game.style.display == 'block') achievementsButton.click(); else if ((event.key == 'a' || event.key == 'A') && achievementsPanel.style.display == 'block') backToGame.click();
     else if ((event.key == 's' || event.key == 'S') && game.style.display == 'block') settingsButton.click();
     else if ((event.key == 's' || event.key == 'S') && settingsPanel.style.display == 'block') backToGame2.click();

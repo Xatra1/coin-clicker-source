@@ -386,7 +386,7 @@ a {
   height: 9.5vw;
   width: 9.5vw;
   top: 40vh;
-  left: 43.6vw;
+  left: 44.8vw;
   animation: coinOpacity 2.5s forwards;
 }
 
@@ -452,8 +452,8 @@ a {
 
 .statstrs {
   position: relative;
-  width: 29vw;
-  left: 69vw;
+  width: 28vw;
+  left: 70vw;
 }
 
 /* Achievements panel */
@@ -534,7 +534,7 @@ a {
 
 #skipintrostring {
   top: -0.1vh;
-  left: 34.1vw;
+  left: 35.3vw;
   animation: coinOpacity 2.5s forwards;
 }
 
@@ -549,35 +549,36 @@ a {
 }
 
 #runningbrowserstring {
-  left: 30vw;
+  left: 31.5vw;
   width: 37vw;
 }
 
 #title {
   font-size: 3.5vw;
   width: 10vw;
-  top: -40vh;
-  left: 41vw;
+  top: -42vh;
+  left: 42.2vw;
 }
 
 #betastring {
   font-size: 2.5vw;
   top: -24.5vh;
-  left: 43vw;
+  left: 44.2vw;
 }
 
 #updatestring {
   font-size: 1.5vw;
   width: 37vw;
+  height: 37vw;
   top: -17vh;
-  left: 30vw;
+  left: 31.2vw;
 }
 
 #startbutton {
   height: 3vw;
   width: 10vw;
   top: 100vh;
-  left: 43.6vw;
+  left: 45vw;
   animation: startmov 1.5s ease-out forwards;
 }
 
@@ -586,8 +587,8 @@ a {
   opacity: 0%;
   height: 4vw;
   width: 4vw;
-  top: -32vh;
-  left: 46.9vw;
+  top: -34vh;
+  left: 48.1vw;
   animation: titlestrsmov 1.5s forwards, tsclickermov 1.5s 1s forwards;
   cursor: default;
 }
@@ -609,7 +610,7 @@ a {
   width: 14vw;
   height: 14vw;
   top: 13vw;
-  left: 42vw;
+  left: 42.5vw;
   transition: all 0.2s;
 }
 
@@ -632,21 +633,21 @@ a {
 #clickstring {
   width: 37vw;
   top: 26.7vw;
-  left: 30.5vw;
+  left: 31vw;
   cursor: default;
 }
 
 #cpsstring {
   width: 37vw;
   top: 28.3vw;
-  left: 30.5vw;
+  left: 31vw;
   cursor: default;
 }
 
 #clickvaluestring {
   width: 37vw;
   top: 30vw;
-  left: 30.5vw;
+  left: 31vw;
   cursor: default;
 }
 
@@ -654,7 +655,7 @@ a {
   height: 3vw;
   width: 10vw;
   top: 0.5vw;
-  left: 44vw;
+  left: 44.5vw;
 }
 
 #savingstring {
