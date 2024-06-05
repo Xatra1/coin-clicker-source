@@ -52,7 +52,7 @@ function sysCheck() {
   // Use user agent data to easily find the client's platform if their browser supports it
   if (userAgentData != undefined) os = userAgentData.platform;
 
-  // Manually set PlayStation as the OS if it's found in the user agent string. (Does not get automatically detected)
+  // Manually set PlayStation as the OS if it's found in the user agent string.
   else if (userAgent.includes('PlayStation')) os = 'PlayStation';
 
   // Perform a similar user agent string snoop to find the OS.
@@ -1722,16 +1722,22 @@ cursorBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
     stats.Clicks -= uShop.CursorCost;
     stats.TrueClicks -= uShop.CursorCost;
     uShop.CursorOwned = !uShop.CursorOwned; //True
+
     shop.ClickerCPSWorth += Math.round(shop.ClickersOwned * uShop.CursorCPS);
     shop.SuperClickerCPSWorth += Math.round(shop.SuperClickerCPSWorth * uShop.CursorCPS);
     shop.DoublePointerCPSWorth += Math.round(shop.DoublePointerCPSWorth * uShop.CursorCPS);
+
     if (buff == 'cpsDouble') { stats.ClicksPS += Math.round(stats.RawClicksPS * (uShop.CursorCPS * 2)); stats.RawClicksPS += Math.round(stats.ClicksPS * uShop.CursorCPS); } else stats.ClicksPS += Math.round(stats.ClicksPS * uShop.CursorCPS);
     if (buff != 'none') stats.RawClickVal += Math.round(0.08 * stats.RawClicksPS); else stats.ClickValue += Math.round(0.08 * stats.RawClicksPS);
+
     uShop.CursorCost = 'Owned.';
     stats.TotalClickHelpers++;
+
+    // Remove the animated cursor from the original parent and append it to the stats panel
     cursorImg.parentNode.removeChild(cursorImg);
     statsPanel.appendChild(cursorImg);
     if (uShop.CursorOwned) cursorImg.style.animationPlayState = 'running';
@@ -1744,16 +1750,21 @@ superCursorBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
     stats.Clicks -= uShop.SuperCursorCost;
     stats.TrueClicks -= uShop.SuperCursorCost;
     uShop.SuperCursorOwned = !uShop.SuperCursorOwned; //True
+
     shop.ClickersOwned += Math.round(shop.ClickersOwned * uShop.SuperCursorCPS);
     shop.SuperClickerCPSWorth += Math.round(shop.SuperClickerCPSWorth * uShop.SuperCursorCPS);
     shop.DoublePointerCPSWorth += Math.round(shop.DoublePointerCPSWorth * uShop.SuperCursorCPS);
+
     if (buff == 'cpsDouble') { stats.ClicksPS += Math.round(stats.RawClicksPS * (uShop.SuperCursorCPS * 2)); stats.RawClicksPS += Math.round(stats.ClicksPS * uShop.SuperCursorCPS); } else stats.ClicksPS += Math.round(stats.ClicksPS * uShop.SuperCursorCPS);
     if (buff != 'none') stats.RawClickVal += Math.round(0.09 * stats.RawClicksPS); else stats.ClickValue += Math.round(0.09 * stats.RawClicksPS);
+
     uShop.SuperCursorCost = 'Owned.';
     stats.TotalClickHelpers++;
+
     superCursorImg.parentNode.removeChild(superCursorImg);
     statsPanel.appendChild(superCursorImg);
     superCursorImg.style.animationPlayState = 'running';
@@ -1766,20 +1777,27 @@ employeeBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
     stats.Clicks -= uShop.EmployeeCost;
     stats.TrueClicks -= uShop.EmployeeCost;
     uShop.EmployeesOwned++;
+
     if (buff == 'cpsDouble') { stats.ClicksPS += Math.round(stats.RawClicksPS * (uShop.EmployeeCPS * 2)); stats.RawClicksPS += Math.round(stats.ClicksPS * uShop.EmployeeCPS); } else stats.ClicksPS += Math.round(stats.ClicksPS * uShop.EmployeeCPS);
+
+    // Employee cost formula: Employees owned x2 x employee cost + CpS x75
     uShop.EmployeeCost += ((uShop.EmployeesOwned * 2) * uShop.EmployeeCost) + 75 * stats.ClicksPS;
     uShop.EmployeeCPS *= 2;
+
     stats.OfflineClicksPSPercen += 0.001;
     stats.TotalClickHelpers++;
+
     if (uShop.EmployeesOwned == 1) {
       employeeImg.parentNode.removeChild(employeeImg);
       game.appendChild(employeeImg);
       employeeImg.style.animationPlayState = 'running';
       setTimeout(function () { employeeImg.style.transform = 'translate3d(39.8vw, -5vw, 0)'; employeeImg.style.animation = 'employeerock 2s linear infinite alternate'; }, 3000);
     }
+
     offlineCPSString.style.display = 'block';
   }
 });
@@ -1790,12 +1808,16 @@ godFingerBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
     stats.Clicks -= uShop.GodFingerCost;
     stats.TrueClicks -= uShop.GodFingerCost;
     uShop.GodFingerOwned = !uShop.GodFingerOwned; //True
+
     if (buff != 'none') stats.RawClickVal += Math.round(uShop.GodFingerCV * stats.RawClickVal); else stats.ClickValue += Math.round(uShop.GodFingerCV * stats.ClickValue);
+
     uShop.GodFingerCost = 'Owned.';
     stats.TotalClickHelpers++;
+
     godFingerImg.parentNode.removeChild(godFingerImg);
     statsPanel.appendChild(godFingerImg);
     godFingerImg.style.animationPlayState = 'running';
@@ -1808,17 +1830,22 @@ clickerFusionBuy.addEventListener('click', function () {
     sfx5.play();
     sfx5 = new Audio();
     sfx5.src = './snd/shopbuy.mp3';
+
     uShop.ClickerFusionOwned = !uShop.ClickerFusionOwned; //True
     shop.ClickerCPSWorth += Math.round(shop.ClickersOwned * 1.5);
+
     if (buff == 'cpsDouble') { stats.ClicksPS += Math.round((shop.ClickersOwned * 1.5) * 2); stats.RawCPS += Math.round(shop.ClickersOwned * 1.5); } else stats.ClicksPS += Math.round(shop.ClickersOwned * 1.5);
+
     uShop.ClickerFusionCost = 'Owned';
     stats.TotalClickHelpers++;
+
     clickerFusionImg.parentNode.removeChild(clickerFusionImg);
     statsPanel.appendChild(clickerFusionImg);
     clickerFusionImg.style.animationPlayState = 'running';
   }
 });
 
+// todo: Remove this event listener as it will become useless once debug keys are irrelevant
 debugKeySubmit.addEventListener('click', function (event) {
   event.preventDefault();
   let dmkInput;
@@ -1834,10 +1861,13 @@ debugKeySubmit.addEventListener('click', function (event) {
   }
 });
 
-saveButton.addEventListener('click', function () { sfx.play(); manualSave = !0; saveGame(); });
-saveButton.addEventListener('mouseover', function () { savingString.style.top = '4vw'; });
-saveButton.addEventListener('mouseleave', function () { savingString.style.top = '2.6vw'; });
-wipeSaveButton.addEventListener('click', function () { sfx.play(); wipeSave(); });
+// Save button event listeners
+saveButton.addEventListener('click', function () { sfx.play(); manualSave = !0; saveGame(); }); // Click
+saveButton.addEventListener('mouseover', function () { savingString.style.top = '4vw'; }); // Hover
+saveButton.addEventListener('mouseleave', function () { savingString.style.top = '2.6vw'; }); // Hover leave
+wipeSaveButton.addEventListener('click', function () { sfx.play(); wipeSave(); }); // Wipe save
+
+// Achievements
 achievementsButton.addEventListener('click', function () { game.style.display = 'none'; achievementsPanel.style.display = 'block'; let index = 0; lib.achLabelSwitch(index); });
 backToGame.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; achievementsPanel.style.display = 'none'; });
 journeyBegins.addEventListener('click', function () { let index = 0; lib.achLabelSwitch(index); });
@@ -1867,7 +1897,11 @@ twentyFingers.addEventListener('click', function () { let index = 23; lib.achLab
 forTheWorthy.addEventListener('click', function () { let index = 24; lib.achLabelSwitch(index); });
 breakpoint.addEventListener('click', function () { let index = 25; lib.achLabelSwitch(index); });
 cheater.addEventListener('click', function () { let index = 26; lib.achLabelSwitch(index); });
+
+// Debug command line
 cmdForm.addEventListener("submit", function (event) { event.preventDefault(); commandInterpret(); });
+
+// Settings pannel
 settingsButton.addEventListener('click', function () { sfx.play(); settingsPanel.style.display = 'block'; game.style.display = 'none'; });
 backToGame2.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; settingsPanel.style.display = 'none'; });
 volumeInput.addEventListener('change', function () { try { let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1]; if (volumeInput.value >= 0 && volumeInput.value <= 100 && readyToSave) { volume = volumeInput.value / 100; for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume; } else volumeInput.value = volume * 100; } catch (error) { errorHandler(error); } });
@@ -1878,6 +1912,8 @@ graphicsBtn.addEventListener('click', function () { sfx.play(); if (graphicsMode
 resetBgButton.addEventListener('click', function () { let prompt = confirm('This is completely irreversible! Are you sure you wish to continue? (You will need to save again for these changes to stay.)'); if (prompt) { bgGradCenterInput.value = '250, 224, 65'; bgGradEdgeInput.value = '249, 160, 40'; document.body.style.backgroundImage = 'radial-gradient(rgb(250, 224, 65), rgb(249, 160, 40))'; } });
 bgm.addEventListener('ended', function () { setTimeout(function () { bgm = new Audio(); bgm.src = './snd/bgm.mp3'; bgm.play(); }, 1000) });
 
+// Remove background particles that could slow down the reload process, and save the game
+// If the game cannot be saved, prompt
 window.addEventListener('beforeunload', function (event) {
   event.stopImmediatePropagation();
   $('.bg').remove();
@@ -1885,6 +1921,7 @@ window.addEventListener('beforeunload', function (event) {
   if (buff == 'none' && (doAutosave || debug)) saveGame(); else event.preventDefault();
 });
 
+// Vibrate the connected gamepad twice and set it up for input polling
 window.addEventListener('gamepadconnected', function (event) {
   event.gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 100, weakMagnitude: 1.0, strongMagnitude: 1.0 });
   setTimeout(function () { event.gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 100, weakMagnitude: 1.0, strongMagnitude: 1.0 }); }, 500);
@@ -1894,15 +1931,22 @@ window.addEventListener('gamepadconnected', function (event) {
   SHT = 500;
 });
 
+// Add intro animations over time to the title screen to prevent the title screen from behaving strangely if a prompt is displayed
 document.addEventListener('loadevt', function () {
   try {
+    //Hide loading screen
     loadingScreen.style.display = 'none';
     hiddenWhileLoading.style.display = 'block';
+
+    // Pause all animations, and start the coin and intro string animation
     $('.hasanim').css('-webkit-animation-play-state', 'paused');
     $('.coins').css('-webkit-animation-play-state', 'running');
     $('#skipintrostring').css('-webkit-animation-play-state', 'running');
+
     setTimeout(function () {
       if (!init.GameStarted) sfx6.play();
+
+      // Coin animations
       smallCoin3.style.animation = 'smallCoinMove3 1.5s 0.5s forwards';
       smallCoin4.style.animation = 'smallCoinMove4 1.5s 0.5s forwards';
       sfx6 = new Audio();
@@ -1910,33 +1954,46 @@ document.addEventListener('loadevt', function () {
       setTimeout(function () { if (!init.GameStarted) sfx6.play(); }, 500);
       smallCoin1.style.animation = 'smallCoinMove1 1.5s 0.8s forwards';
       smallCoin2.style.animation = 'smallCoinMove2 1.5s 0.8s forwards';
+
       setTimeout(function () {
         setTimeout(function () {
           if (!init.GameStarted) sfx7.play();
+
+          // Title string and cosmetic clicker icon
           if (!prompting) {
             $('#title').css('-webkit-animation-play-state', 'running');
             $('#tsclicker').css('-webkit-animation-play-state', 'running');
           }
+          // Hide the skip intro string
           skipIntroString.style.animation = 'btmstringmov 1s ease-in forwards';
+
           setTimeout(function () {
             if (!init.GameStarted) sfx7point1.play();
+            // Beta text string
             if (!prompting) $('#betastring').css('-webkit-animation-play-state', 'running');
+
             setTimeout(function () {
               if (!init.GameStarted) sfx7.play();
+              // Update name string
               if (!prompting) $('#updatestring').css('-webkit-animation-play-state', 'running');
+
               setTimeout(function () {
+                // Spinning coins
                 smallCoin3.style.rotate = '270deg';
                 smallCoin4.style.rotate = '270deg';
                 smallCoin1.style.animation = 'smallCoinSpin1 10s linear infinite';
                 smallCoin2.style.animation = 'smallCoinSpin2 10s linear infinite';
                 smallCoin3.style.animation = 'smallCoinSpin3 10s linear infinite';
                 smallCoin4.style.animation = 'smallCoinSpin4 10s linear infinite';
+
                 setTimeout(function () {
+                  // Start button
                   if (!prompting) $('#startbutton').css('-webkit-animation-play-state', 'running');
+
                   setTimeout(function () {
                     if (!prompting) {
+                      // Bottom information strings (build info, browser and client strings, etc)
                       $('.btmstr').css('-webkit-animation-play-state', 'running');
-                      $('#bmbarnote').css('-webkit-animation-play-state', 'running');
                     }
                   }, 1600); //8.4s
                 }, 1800); //6.8s
@@ -1951,38 +2008,58 @@ document.addEventListener('loadevt', function () {
 
 document.addEventListener('keydown', function (event) {
   try {
+    // todo: remove this line
     titleScreen.appendChild(key);
+    // Ctrl-S to save
     if ((event.key == 's' || event.key == 'S') && event.ctrlKey && debugScreenState == 'closed' && !debugAutoplay) {
       event.preventDefault();
       manualSave = !0;
       saveGame();
+
+      // todo: remove the key generator keybind
     } else if ((event.key == 'y' || event.key == 'Y') && event.ctrlKey) {
       event.preventDefault();
       createBase64Key();
+
+      // Alt-Y to toggle the debug screen
     } else if ((event.key == 'y' || event.key == 'Y') && event.altKey) {
-      event.preventDefault(); if (init.GameStarted && debugScreenState == 'closed' && game.style.display == 'block') {
+      event.preventDefault();
+
+      // Open the debug input screen, or skip it if a key was already entered
+      if (init.GameStarted && debugScreenState == 'closed' && game.style.display == 'block') {
         debugScreenState = 'open';
         game.style.display = 'none';
+        // todo: remove this
         if (!keyEntered) debugKeyInputScreen.style.display = 'block'; else if (keyEntered) debugScreen.style.display = 'block';
+
+        // Close the debug/debug input screen
       } else if (init.GameStarted && debugScreenState == 'open' && game.style.display == 'none') {
         debugScreenState = 'closed';
         debugKeyInputScreen.style.display = 'none';
         debugScreen.style.display = 'none';
         game.style.display = 'block';
       }
+      // Allow the starting animation to be skipped with the space bar
     } else if (event.key == ' ' && titleScreen.style.display == 'block') startButton.click();
+
+    // Ctrl-Alt-F to enable debug mode
     else if ((event.key == 'f' || event.key == 'F') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
       debug = !debug; //True
       doAutosave = !doAutosave; //False
       startButton.click();
+
+      // Ctrl-Alt-A to enable debug autoplay
     } else if ((event.key == 'a' || event.key == 'A') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
       prompting = !prompting; //True
       let prompt = confirm('Debug autoplay is purely for testing and your save will be wiped upon the next page load if you use it. Are you sure? (Pressing cancel will not affect your save.)');
       if (prompt) {
-        debugAutoplay = !debugAutoplay; /*True*/ startButton.click();
+        debugAutoplay = !debugAutoplay; /*True*/
+        startButton.click();
       } else prompting = !prompting //False
+
+      // Ctrl-Alt-C to enable both debug mode and debug autoplay
     } else if ((event.key == 'c' || event.key == 'C') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
       debug = !debug; //True
@@ -1991,57 +2068,91 @@ document.addEventListener('keydown', function (event) {
       let prompt = confirm('Debug autoplay is purely for testing and your save will be wiped upon the next page load if you use it. Are you sure? (Pressing cancel will just enable debug mode, not debug autoplay.)');
       if (prompt) debugAutoplay = !debugAutoplay; /*True*/ else prompting = !prompting; /*False*/
       startButton.click();
+
+      // Shift-F to toggle the FPS counter
     } else if ((event.key == 'f' || event.key == 'F') && event.shiftKey && fpsLabel.style.display == 'none') fpsLabel.style.display = 'block';
     else if ((event.key == 'f' || event.key == 'F') && event.shiftKey && fpsLabel.style.display == 'block') fpsLabel.style.display = 'none';
-    //else if ((event.key == '-' || event.key == '=') && event.ctrlKey) event.preventDefault();
-    else if ((event.key == 'a' || event.key == 'A') && game.style.display == 'block') achievementsButton.click(); else if ((event.key == 'a' || event.key == 'A') && achievementsPanel.style.display == 'block') backToGame.click();
+    // A to toggle the achievements screen
+    else if ((event.key == 'a' || event.key == 'A') && game.style.display == 'block') achievementsButton.click();
+    else if ((event.key == 'a' || event.key == 'A') && achievementsPanel.style.display == 'block') backToGame.click();
+    // S to toggle the settings screen
     else if ((event.key == 's' || event.key == 'S') && game.style.display == 'block') settingsButton.click();
     else if ((event.key == 's' || event.key == 'S') && settingsPanel.style.display == 'block') backToGame2.click();
+    // U to toggle the upgrade shop
     else if ((event.key == 'u' || event.key == 'U') && shopPanel.style.display == 'block' && debugKeyInputScreen.style.display != 'block' && debugScreen.style.display != 'block') upgradeButton.click();
     else if ((event.key == 'u' || event.key == 'U') && shopPanel.style.display == 'none' && debugKeyInputScreen.style.display != 'block' && debugScreen.style.display != 'block') upgradeRTS.click();
+    // B to toggle autobuy
     else if ((event.key == 'b' || event.key == 'B') && init.GameStarted && event.target != debugKeyInput && event.target != commandInput) autoBuyBtn.click();
+
+    // Arrow keys to shift through the debug command history
     else if (event.key == 'ArrowUp') {
       if (cmdHist[cmdHistInx - 1] != undefined) cmdHistInx--;
       commandInput.value = cmdHist[cmdHistInx];
       if (cmdHist[cmdHistInx] == undefined) commandInput.value = '';
+
     } else if (event.key == 'ArrowDown') {
       if (cmdHist[cmdHistInx + 1] != undefined) cmdHistInx++;
       commandInput.value = cmdHist[cmdHistInx];
       if (cmdHist[cmdHistInx] == undefined) commandInput.value = '';
     }
+
   } catch (error) { errorHandler(error); }
 });
 
+// Space to click the coin
 document.addEventListener('keyup', function (event) { if (event.key == ' ' && game.style.display == 'block') coin.click(); });
 
+// Shift the position of info labels so they follow the cursor
 document.addEventListener('mousemove', function (event) {
   let left = event.clientX,
     top = event.clientY;
+
+  // Clicker
   clickerInfo.style.left = `${leftBorderX}px`;
   clickerInfo.style.top = `${top - 35}px`;
+
+  // Super clicker
   superClickerInfo.style.top = `${top - 35}px`;
   superClickerInfo.style.left = `${leftBorderX}px`;
+
+  // Double pointer
   doublePointerInfo.style.left = `${leftBorderX}px`;
   doublePointerInfo.style.top = `${top - 35}px`;
+
+  // Achievements button label
   achievementsLabel.style.left = `${left - achievementsLabel.getBoundingClientRect().width / 2}px`;
   achievementsLabel.style.top = `${top}px`;
+
+  // Settings button label
   settingsLabel.style.left = `${left - settingsLabel.getBoundingClientRect().width / 2}px`;
   settingsLabel.style.top = `${top}px`;
 });
 
 betaString.addEventListener('animationend', function () { startBgCreate = !startBgCreate /*True*/ });
 
-//Function intervals
+//***************************************/
+//          Function intervals
+//***************************************/
+
 setTimeout(createBgElem, bgUpdInterval); //These are intervals, but are set up differently
 setTimeout(updateScreen, updInterval); //to allow for live updating of the interval times.
 setInterval(autoplay, 150);
 setInterval(cpsClick, 100);
 setInterval(rgChange, 25);
+
+// If a buff is inactive, autosave
+// Otherwise, keep the autosave pending until the buff finishes
 setInterval(function () { if (doAutosave && buff == 'none' && init.GameStarted && achArr[0]) { manualSave = !1; saveGame(); } else if (buff != 'none') autosavePending = !autosavePending /*True*/ }, 60000);
+
+// Update the save information string 
 setInterval(function () { if (textSwitch && !debugAutoplay) { saveInfoString.textContent = `Last saved: ${lastSavedTime}`; textSwitch = !1; } else if (!textSwitch && !debugAutoplay) { if (doAutosave) saveInfoString.textContent = 'Game autosaves every minute; You can also press Ctrl+S to save.'; else saveInfoString.textContent = 'Autosave is disabled. You will need to save manually.'; textSwitch = !0; } }, 3000);
 var buttonPressed = !1;
+
+// Increment the playtime if 'Journey Begins' is unlocked.
 setInterval(function () { if (achArr[0]) stats.Playtime += 1000; buffRNGCalc(); }, 1000);
+
 setInterval(function () {
+  // Timeout to hide certain labels
   SHT--;
   if (SHT == 0) {
     savingString.textContent = '';
@@ -2050,27 +2161,55 @@ setInterval(function () {
     if (!debugAutoplay) readyToSave = !0;
     SHT = 500;
   }
+
+  // Autobuy
   if (shop.DoAutobuy) {
+    // Show the autobuy string and toggle button text
     autoBuyStr.style.display = 'block';
     autoBuyBtn.textContent = 'ON';
+
+    // Update the array of costs
     costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)];
+    
+    // Set up variables to sort through the array of item costs
     let smallest = Number.MAX_VALUE,
       costArraySorted = [],
       buttonArraySorted = [];
+
+    // Update the 'smallest' variable to contain the smallest cost
     for (let i = 0; i < costArray.length; i++) if (costArray[i] < smallest) smallest = costArray[i];
+
+    // Append the item with the smallest cost and its corresponding button to the sorted arrays
     for (let i = 0; i < costArray.length; i++) if (smallest >= costArray[i]) { costArraySorted.push(costArray[i]); buttonArraySorted.push(buttonArray[i]); }
+
+    // Buy the item with the smallest cost if the player has enough clicks to do so
     for (let i = 0; i < costArraySorted.length; i++) if (stats.Clicks >= costArraySorted[i]) { buttonArraySorted[i].click(); }
+
   } else { autoBuyStr.style.display = 'none'; autoBuyBtn.textContent = 'OFF'; }
+
+  // Let the player know that autosave has been postponed due to the active buff
   if (autosavePending && !debugAutoplay && doAutosave) savingString.textContent = 'A buff is active. Autosave postponed.';
+
+  // If an autosave was pending due to an active buff, save the game once that buff has ended.
   if (buff == 'none' && autosavePending && doAutosave) { autosavePending = !1; manualSave = !1; saveGame(); }
+
+  // Remove particles that surpass the max particle threshold.
   if (graphicsMode == 'Quality') {
     const particleClass = document.querySelectorAll('.coinparticle'),
       bgParticleClass = document.querySelectorAll('.bg');
+
+    // Coin particles
     if (particleClass.length > 25) for (let i = 20; i > 0; i--) particleClass[i].parentNode.removeChild(particleClass[i]);
+
+    // Background particles
     if (bgParticleClass.length > bgMax) for (let i = 35; i > 0; i--) bgParticleClass[i].parentNode.removeChild(bgParticleClass[i]);
+
+    // Remove out of sight particles to free performance
     if (game.style.display == 'none') $('.coinparticle').remove();
     if (document.hidden) $('.bg').remove();
   } else { $('.bg').remove() }
+
+  // Check if the user has potentially cheated by incrementing their click count using the debug or browser consoles
   if (stats.Clicks != stats.TrueClicks && !achArr[26]) {
     achStr = `Achievement Unlocked: ${achNames[26]}`;
     if (init.DataLoaded) { sfx4.play(); unlockString.textContent = achStr; unlockString.style.display = 'block'; }
@@ -2079,9 +2218,14 @@ setInterval(function () {
     stats.HiddenAchievementsUnlocked++;
     SHT = 500;
   }
+
+  // Modify variables tied to background effects if the player has unlocked specific achievements
   if (achArr[6]) { bgUpdInterval = 100; bgMax = 105; }
   if (achArr[9]) { bgUpdInterval = 50; createCoinBg = !0; bgMax = 210; }
+
+  // Poll for gamepad input if a gamepad is connected.
   if (gamepad) {
+    // Button inputs
     cross = gamepad.buttons[0].pressed;
     circle = gamepad.buttons[1].pressed;
     square = gamepad.buttons[2].pressed;
@@ -2098,55 +2242,86 @@ setInterval(function () {
     dpadDown = gamepad.buttons[13].pressed;
     dpadLeft = gamepad.buttons[14].pressed;
     dpadRight = gamepad.buttons[15].pressed;
+
+    // If no buttons are pressed, set flag to false
+    // This flag is required to prevent the game from repeating inputs if a button is held
     if (!cross && !circle && !square && !triangle && !l1 && !r1 && !l2 && !r2 && !share && !options && !l3 && !r3 && !dpadUp && !dpadDown && !dpadLeft && !dpadRight) buttonPressed = !1;
+
+    // Cross (without game started) - Click the start button
     if (cross && !init.GameStarted) startButton.click();
+
+    // Circle or Cross (with game started) - Click the coin
     if ((circle || cross) && init.GameStarted && !buttonPressed) { buttonPressed = !0; coin.click(); }
+
+    // Square - Vibrate the controller and toggle the upgrade shop
     if (square && init.GameStarted && !buttonPressed) {
       buttonPressed = !0;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (shopPanel.style.display == 'block') upgradeButton.click();
       else if (upgradeShopPanel.style.display == 'block') upgradeRTS.click();
     }
+
+    // Triangle - Vibrate the controller and save the game
     if (triangle && init.GameStarted && !buttonPressed) {
       buttonPressed = !0;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       manualSave = !0;
       saveGame();
     }
+
+    // Share - Vibrate the controller and toggle the achievements panel
     if (share && init.GameStarted && !buttonPressed) {
       buttonPressed = !0;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (game.style.display == 'block') achievementsButton.click();
       else if (achievementsPanel.style.display == 'block') backToGame.click();
     }
+
+    // Options - Vibrate the controller and toggle the settings panel
     if (options && init.GameStarted && !buttonPressed) {
       buttonPressed = !0;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (game.style.display == 'block') settingsButton.click();
       else if (settingsPanel.style.display == 'block') backToGame2.click();
     }
+
+    // L1 - Vibrate the controller and buy a clicker, or buy a cursor if the upgrade shop is open
     if (l1 && init.GameStarted && !buttonPressed) {
       buttonPressed = !0;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (upgradeShopPanel.style.display == 'none') clickerBuy.click();
       else cursorBuy.click();
     }
+
+    // R1 - Vibrate the controller and buy a super clicker, or buy a super cursor if the upgrade shop is open
     if (r1 && init.GameStarted && !buttonPressed && (shop.SuperClickerUnlocked || uShop.SuperCursorUnlocked)) {
       buttonPressed = !0;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (upgradeShopPanel.style.display == 'none') superClickerBuy.click();
       else superCursorBuy.click();
     }
+
+    // L2 - Vibrate the controller and buy a double pointer, or buy an employee if the upgrade shop is open.
     if (l2 && init.GameStarted && !buttonPressed && (shop.DoublePointerUnlocked || uShop.EmployeeUnlocked)) {
       buttonPressed = !0;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (upgradeShopPanel.style.display == 'none') doublePointerBuy.click();
       else employeeBuy.click();
     }
-    if (l3 && init.GameStarted && !buttonPressed) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); autoBuyBtn.click(); }
-    if (r3) location.reload();
-    if (dpadUp) { let gamepadActive = true; wipeSave(gamepadActive); }
+
+    // R2 - Vibrate the controller and buy the god finger if the upgrade shop is open.
     if (r2 && init.GameStarted && !buttonPressed && uShop.GodFingerUnlocked) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); if (upgradeShopPanel.style.display == 'block') godFingerBuy.click(); }
+
+    // L3 - Vibrate the controller and toggle autobuy
+    if (l3 && init.GameStarted && !buttonPressed) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); autoBuyBtn.click(); }
+    
+    // R3 - Refresh the page.
+    if (r3) location.reload();
+
+    // DPad Up - Gamepad-specific call to wipe save
+    if (dpadUp) { let gamepadActive = true; wipeSave(gamepadActive); }
+    
+    // DPad Left - Scroll to the left through the achievements list, or buy the clicker fusion if the upgrade shop is open
     if (dpadLeft && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') {
       buttonPressed = !0;
       if (gpAchIndex > 0) gpAchIndex--;
@@ -2156,9 +2331,12 @@ setInterval(function () {
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       clickerFusionBuy.click();
     }
+
+    // DPad Right - Scroll to the right through the achievements list
     if (dpadRight && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') { buttonPressed = !0; if (gpAchIndex < 24) gpAchIndex++; lib.achLabelSwitch(gpAchIndex); }
   }
 }, 1);
 
+// Dispatch flag that specifies the game's code has finished loading
 const loadEvt = new Event('loadevt');
 document.dispatchEvent(loadEvt);
