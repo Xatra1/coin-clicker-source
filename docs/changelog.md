@@ -118,3 +118,4 @@ If your gamepad is detected, it's name should appear near the bottom of the scre
 - The coin particles now appear when the 'Trillionare' achievement is unlocked, rather than 'Planet of Coins'
 - Slightly modified achievement descriptions.
 - Added an 'exit' command to the debug console that will hide it from view. It can still be accessed after exiting by pressing Alt+Y.
+- Fixed a bug that caused the "Item unlocked!" label to be shown upon loading the game, even when unlocking the item prior.

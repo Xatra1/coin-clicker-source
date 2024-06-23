@@ -15,15 +15,28 @@
 
 const loadingScreen = document.getElementById('loadingscreen'),
   hiddenWhileLoading = document.getElementById('hideloading'),
-  error = document.createElement('p');
+  error = document.createElement('p'),
+  errorStack = document.createElement('p');
 
 function errorHandler(err) {
-  error.textContent = `Script error: ${err.stack}`;
+  error.textContent = `Script error: ${err}`;
+  errorStack.textContent = `Stack trace: ${err.stack}`;
   error.style.position = 'fixed';
   error.style.top = '-0.3vh';
   error.style.fontSize = '0.7vw';
   error.style.display = 'block';
+  error.style.color = 'white';
+  error.style.backgroundColor = 'black';
+  error.style.fontFamily = 'Liberation Mono, monospace, monospace'
+  errorStack.style.position = 'fixed';
+  errorStack.style.top = '2vh';
+  errorStack.style.fontSize = '0.7vw';
+  errorStack.style.display = 'block';
+  errorStack.style.color = 'white';
+  errorStack.style.backgroundColor = 'black';
+  errorStack.style.fontFamily = 'Liberation Mono, monospace, monospace';
   document.body.appendChild(error);
+  document.body.appendChild(errorStack);
 }
 
 // Create initial variables and call system check function
@@ -66,7 +79,8 @@ function sysCheck() {
   if (browserStr == 'Edg') browserStr = 'Edge'; else if (browserStr == 'OPR') browserStr = 'Opera';
 
   // Attempt to detect and shorten proper URL
-  if (url == 'https://coin-clicker.surge.sh/') url = 'Surge'; else if (window.location.pathname.includes('index.html')) url = 'Local File';
+  if (url == 'https://coin-clicker.surge.sh/') url = 'Surge';
+  else if (window.location.pathname.includes('index.html')) url = 'Local File';
 
   // Assemble a title screen string and display the title screen.
   runningBrowserString.textContent = `${browserStr} on ${os} saying hello from ${url}`;
@@ -272,38 +286,57 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
   //              Namespaces
   //***************************************/
 
-  // Flags that control many different behaviors of the game
-  init = { GameStarted: !1, DataLoaded: !1 },
+  /**
+   * Flags that control many different behaviors of the game.
+   */
+  init = { GameStarted: false, DataLoaded: false },
 
-  // Build information
+  /**
+   * Build informationf
+   */
   buildInfo = { BuildStr: '5.2anb', BuildNum: 5.2, UpdName: 'animation', UpdNum: 7 },
 
-  // Values in this namespace get incremented until they're equal to their respective true values.
+  /**
+   * Values in this namespace get slowly incremented until they are equal to their corresponding values.
+   */
   display = { Clicks: 0, ClickValue: 1, RawClickVal: 1, ClicksPS: 0, RawClicksPS: 0, LifetimeClicks: 0, LifetimeManualClicks: 0, CoinClickCount: 0, ClickerCPS: 0, ClickerCost: 0, SuperClickerCPS: 0, SuperClickerCost: 0, DoublePointerCPS: 0, DoublePointerCost: 0, EmployeeCost: 0, Playtime: 0 },
 
-  // Basic, smaller functions that provide general functionality
+  /**
+   * Basic, smaller functions that provide general functionality to various parts of the game
+   */
   lib = {
-    // Return a random number between min and max
+    /**
+     * @param {number} min Minimum value for the range
+     * @param {number} max Maximum value for the range
+     * @returns Random value between min and max
+     */
     rng: (min, max) => {
       return Math.floor((Math.random() * (max - min) + min))
     },
 
-    // Change the achievement name, description, and unlock string to be equal to the index of the button clicked.
+    /**
+     * Change the achievement name, description, and unlock string elements of the achievements panel to be equal to the index of the button clicked.
+     * @param {number} index1 The index where the corresponding achievements data is kept.
+     */
     achLabelSwitch: (index) => {
       sfx.play();
-      achNameStr.textContent = achNames[index];
-      achDescStr.textContent = achDescs[index];
-      if (achArr[index]) achUnlockStr.textContent = 'Unlocked.';
-      else achUnlockStr.textContent = 'Not unlocked.';
+      achNameStr.textContent = ach[index][0];
+      achDescStr.textContent = ach[index][1];
+      ach[index][3] ? achUnlockStr.textContent = 'Unlocked.' : achUnlockStr.textContent = 'Not unlocked.';
     },
 
-    // Used by the number formatter to determine if a number is too large to use a generic name
+    /**
+     * Function used by the number formatter numberFix() to determine if an integer is too large to shorten using a generic name.
+     * @returns True if no values are >= a googol. False if otherwise.
+     */
     // todo: Allow this function to determine the exact value that is too large to format, and ignore that value specifically instead of all integers.
     intTooLarge: () => {
       for (var i in intArray) if (intArray[i] >= 9.99e+101) return true; else return false;
     },
 
-    // Looping function that displays the framerate of the game
+    /**
+     * Looping function that constantly updates the game's framerate
+     */
     getFps: () => {
       window.requestAnimationFrame(() => {
         let now = performance.now();
@@ -320,108 +353,160 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
 //                Classes
 //***************************************/
 
-// Base stats
+/**
+ * Base stats. Gets reconstructed by wipeSave() to restore the player's original stats.
+ */
 class baseStats { constructor() { this.Clicks = 0; this.TrueClicks = 0; this.ClickValue = 1; this.RawClickVal = 1; this.ClicksPS = 0; this.RawClicksPS = 0; this.Playtime = 0; this.LifetimeClicks = 0; this.LifetimeManualClicks = 0; this.CoinClickCount = 0; this.TotalClickHelpers = 0; this.AchievementsUnlocked = 0; this.HiddenAchievementsUnlocked = 0; this.OfflineClicksPSPercen = 0; } };
 
-// Base shop values
-class baseShop { constructor() { this.ClickerCPS = 5; this.ClickerCost = 25; this.ClickerScale = 5; this.ClickersOwned = 0; this.ClickerCPSWorth = 0; this.SuperClickerUnlocked = !1; this.SuperClickerCPS = 7500; this.SuperClickerCost = 3000000; this.SuperClickerScale = 25; this.SuperClickersOwned = 0; this.SuperClickerCPSWorth = 0; this.DoublePointerUnlocked = !1; this.DoublePointerCPS = 50000000; this.DoublePointerScale = 75; this.DoublePointerCost = 5000000000; this.DoublePointersOwned = 0; this.DoublePointerCPSWorth = 0; this.DoAutobuy = !1; } };
+/**
+ * Base shop values (CPS, costs, scale, amount owned, etc). Gets reconstructed by wipeSave() to restore the original state of shop items
+ */
+class baseShop { constructor() { this.ClickerCPS = 5; this.ClickerCost = 25; this.ClickerScale = 5; this.ClickersOwned = 0; this.ClickerCPSWorth = 0; this.SuperClickerUnlocked = false; this.SuperClickerCPS = 7500; this.SuperClickerCost = 3000000; this.SuperClickerScale = 25; this.SuperClickersOwned = 0; this.SuperClickerCPSWorth = 0; this.DoublePointerUnlocked = false; this.DoublePointerCPS = 50000000; this.DoublePointerScale = 75; this.DoublePointerCost = 5000000000; this.DoublePointersOwned = 0; this.DoublePointerCPSWorth = 0; this.DoAutobuy = false; } };
 
-// Base upgrade shop values
-class baseUpgShop { constructor() { this.CursorCPS = 1.00; this.CursorCost = 1000000000; this.CursorOwned = !1; this.SuperCursorUnlocked = !1; this.SuperCursorCPS = 1.50; this.SuperCursorCost = 150000000000; this.SuperCursorOwned = !1; this.EmployeeUnlocked = !1; this.EmployeeCPS = 0.05; this.EmployeeCost = 250000000000; this.EmployeesOwned = 0; this.GodFingerUnlocked = !1; this.GodFingerCV = 0.35; this.GodFingerCost = 5000000000000; this.GodFingerOwned = !1; this.ClickerFusionCost = ''; this.ClickerFusionUnlocked = !1; this.ClickerFusionOwned = !1; } };
+/**
+ * Base upgrade shop values (CPS, costs, owned/amount owned, etc). Gets reconstructed by wipeSave() to restore the original state of upgrade shop items.
+ */
+class baseUpgShop { constructor() { this.CursorCPS = 1.00; this.CursorCost = 1000000000; this.CursorOwned = false; this.SuperCursorUnlocked = false; this.SuperCursorCPS = 1.50; this.SuperCursorCost = 150000000000; this.SuperCursorOwned = false; this.EmployeeUnlocked = false; this.EmployeeCPS = 0.05; this.EmployeeCost = 250000000000; this.EmployeesOwned = 0; this.GodFingerUnlocked = false; this.GodFingerCV = 0.35; this.GodFingerCost = 5000000000000; this.GodFingerOwned = false; this.ClickerFusionCost = ''; this.ClickerFusionUnlocked = false; this.ClickerFusionOwned = false; } };
 
-//Class initializations
-//This makes the classes above work similarly to the old namespace implementation, but allows them to be recreated to restore original values.
+// Class initializations
+// This makes the classes above work similarly to the old namespace implementation, but allows them to be recreated to restore original values.
 var stats = new baseStats(),
   shop = new baseShop(),
   uShop = new baseUpgShop(),
 
-  //Background elements
+  // Background elements
   bg = document.createElement('img'),
   coinParticle = document.createElement('img'),
 
-  //Save and load variables
-  autosavePending = !1,
+  // Save and load variables
+  autosavePending = false,
   lastSavedTime = 'Never',
-  textSwitch = !1,
-  manualSave = !1,
-  readyToSave = !0,
-  doAutosave = !1,
-  achCheck = !0,
+  textSwitch = false,
+  manualSave = false,
+  readyToSave = true,
+  doAutosave = false, //! This variable should be 'true' in public builds.
+  achCheck = true,
   SHT,
 
-  //Buff variables
+  // Buff variables
   buffRNG = 0,
   lastBuffRNG = 0,
   buff = 'none',
   clicksAdded,
 
-  //Achievement screen variables
+  // Achievement screen variables
   achStr = 'none',
   gpAchIndex = 0,
 
-  //Audio variables
+  // Audio variables
   volume = 1.0,
 
-  //Color variables
-  increase = !0,
+  // Color variables
+  increase = true,
   red = 0,
   green = 0,
 
-  //Optimization variables
+  // Optimization variables
   graphicsMode = 'Quality',
   updInterval,
   bgUpdInterval = 250,
   bgMax = 100,
   fps,
 
-  //Animation variables
-  startBgCreate = !1,
-  createCoinBg = !1,
-  prompting = !1,
+  // Animation variables
+  startBgCreate = false,
+  createCoinBg = false,
+  prompting = false,
 
-  //Debug mode variables
+  // Debug mode variables
   generatedKey = 'debug',
-  keyEntered = !1,
+  keyEntered = false,
   debugScreenState = 'closed',
-  debug = !1,
-  debugAutoplay = !1,
-  forceBuff = !1,
+  debug = false,
+  debugAutoplay = false,
+  forceBuff = false,
 
-  //Debug console variables
+  // Debug console variables
   cmd = [],
   arg = [],
   cmdHist = [],
   cmdHistInx = 1,
 
-  //Screen size variables
+  // Screen size variables
   screenHeight = window.innerHeight,
   screenWidth = window.innerWidth,
-  leftBorderX = 0, //Has to be given an inital numerical value to keep the CSS parser happy, see startButton event listener for value.
+  leftBorderX = 0, // Has to be given an inital numerical value to keep the CSS parser happy, see startButton event listener for value.
   rightBorderX = 0,
 
-  //Miscellaneous variables
-  numberShorten = !0,
+  // Miscellaneous variables
+  numberShorten = true,
   gamepad,
 
   //***************************************/
   //                Arrays
   //***************************************/
 
-  // Integers that need to be formatted.
+  /**
+   * An array of integers that gets updated by updateScreen() and fed to the number formatter.
+   */
   intArray = [],
 
-  // Strings formed by formatting the numbers in intArray.
+  /**
+   * An array of strings that gets updated by numberFix() containing the formatted strings made from the values in intArray
+   */
   textArray = [],
 
-  // Booleans that determine achievements unlocked
+  // todo: phase out achArr in favor of the multidimensional array below
+  /**
+   * An array of booleans that determine which achievements are unlocked and which aren't.
+   */
   achArr = [],
 
-  // Item cost strings
+  /**
+   * An array of cost strings.
+   */
   costStringArr = [clickerCostString, superClickerCostString, doublePointerCostString, cursorCostString, superCursorCostString, employeeCostString, godFingerCostString],
 
-  // Item costs
-  costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)];
+  /**
+   * An array of the absolute values of item costs
+   */
+  costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)],
 
+  /**
+   * An array of arrays containing achievement names, descriptions, lifetime coin requirements, and unlock statues.  
+   * Currently unused.
+   */
+  ach = [
+    ['Journey Begins', 'Obtain 1 lifetime coin.', 1, false],
+    ['A Good Start', 'Obtain 10 thousand lifetime coins.', 10000, false],
+    ['Getting There', 'Obtain 100 thousand lifetime coins.', 100000, false],
+    ['Millionare', 'Obtain 1 million lifetime coins', 1e+6, false],
+    ['Coin Pool', 'Obtain 10 million lifetime coins.', 1e+7, false],
+    ['Abundance', 'Obtain 100 million lifetime coins', 1e+8, false],
+    ['Billionare', 'Obtain 1 billion lifetime coins.', 1e+9, false],
+    ['Excess', 'Obtain 10 billion lifetime coins.', 1e+10, false],
+    ['Planet of Coins', 'Obtain 100 billion lifetime coins', 1e+11, false],
+    ['Trillionare', 'Obtain 1 trillion lifetime coins.', 1e+12, false],
+    ['Pocket Dimension', 'Obtain 10 trillion lifetime coins.', 1e+13, false],
+    ['Far Too Many', 'Obtain 100 trillion lifetime coins.', 1e+14, false],
+    ['Quadrillionare', 'Obtain 1 quadrillion lifetime coins.', 1e+15, false],
+    ['Coin Vortex', 'Obtain 10 quadrillion lifetime coins.', 1e+16, false],
+    ['Coin-Shaped Black Hole', 'Obtain 100 quadrillion lifetime coins.', 1e+17, false],
+    ['Quintillionare', 'Obtain 1 quintillion lifetime coins.', 1e+18, false],
+    ['Click Beyond', 'Obtain 10 quintillion lifetime coins.', 1e+19, false],
+    ['Distant Beginning', 'Obtain 100 quintillion lifetime coins.', 1e+20, false],
+    ['Sextillionare', 'Obtain 1 sextillion lifetime coins.', 1e+21, false],
+    ['Number Overflow', 'Obtain 10 sextillion lifetime coins.', 1e+22, false],
+    ['Coin Universe', 'Obtain 100 sextillion lifetime coins.', 1e+23, false],
+    ['Septillionare', 'Obtain 1 septillion lifetime coins.', 1e+24, false],
+    ['Why are you still here?', 'Obtain 10 septillion lifetime coins.', 1e+25, false],
+    ['20 Fingers', 'Obtain 100 septillion lifetime coins.', 1e+26, false],
+    ['For The Worthy', 'Obtain 1 octillion lifetime coins.', 1e+27, false],
+    ['Breaking Point', 'Obtain far more lifetime coins than you should have.', Number.MAX_VALUE, false],
+    ['Cheater', 'Hack in some money using the debug console.', null, false]
+  ];
+
+// todo: phase out the achNames, achDescs, and achReq arrays in favor of the multidimensional array above
 // Achievement names
 const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare', 'Coin Pool', 'Abundance', 'Billionare', 'Excess', 'Planet of Coins', 'Trillionare', 'Pocket Dimension', 'Far Too Many', 'Quadrillionare', 'Coin Vortex', 'Coin-Shaped Black Hole', 'Quintillionare', 'Click Beyond', 'Distant Beginning', 'Sextillionare', 'Number Overflow', 'Coin Universe', 'Septillionare', 'Why?', '20 Fingers', 'For the Worthy', 'Breaking Point', 'Cheater'],
 
@@ -431,14 +516,33 @@ const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare
   // Lifetime click requirements for unlocking achievements. The last two values are placeholders for the hidden achievements.
   achReq = [1, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 10000000000, 100000000000, 1000000000000, 10000000000000, 100000000000000, 100000000000000, 1000000000000000, 10000000000000000n, 100000000000000000n, 1000000000000000000n, 10000000000000000000n, 100000000000000000000n, 1000000000000000000000n, 10000000000000000000000n, 100000000000000000000000n, 1000000000000000000000000n, 10000000000000000000000000n, 100000000000000000000000000n, Number.MAX_VALUE, Number.MAX_VALUE * Number.MAX_VALUE],
 
-  // Shop buttons for autoplay to click on.
+  /**
+   * An array of buttons clicked on by the game's automation features.
+   */
   buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
 
-  // Messages to be randomly logged to the console or when 'rmsg' is used in the debug console.
+  /**
+   * Messages to be randomly logged to the console when randomMsg() is called at the start of the game and when 'rmsg' is used in the debug console.
+   */
   logChoices = ['Stay a while, and listen.', 'Boo!', 'I think you may have hit the wrong button.', 'Looking for bugs?', 'You\'re not supposed to be here.', '<insert random variable here>', 'Quit hacking in money!', 'Didn\'t expect to see you here.', 'Is this thing on?', 'I\'ve always wondered what it would look like if I wrote a really long message into the debug console so I\'m just gonna keep typing until I feel like I\'ve typed enough which is actually a lot harder than it seems considering I need to figure out what to type anyways how are you enjoying the game? I\'ve worked very hard on it and it honestly kinda sucks but who cares at least you might be having fun! This game was honestly heavily inspired by cookie clicker and that game is really really good (way better than this one) so you should go play that instead unless you want to be so rich there won\'t even be enough money on the planet to match what you have.', 'Introducing Coin Clicker: Now with less fall damage!', 'Maybe you could buy a cookie with all the coins you have.', 'Why not try tha \'pizza\' command?', 'Legend says a hidden achievement will appear if you somehow obtain infinite coins... But who listens to stuff like that anyway?', 'Hey you should try running \'wipeSave();\' in the input box, it won\'t hurt anything I promise', `Man this whole '${buildInfo.UpdName}' update isn't that great huh?`, 'Oops, all coins!', 'This whole random quote feature isn\'t a complete waste of time, I swear.', 'Magic!', 'What? I like equal signs.', `Imagine having only 0 coins`, 'Finally! I\'ve been stuck on this island for years!', 'NOTICE: Due to people trying to steal our coins from the local Coin Clicker Bank, players will now only be receiving 0.01% of their current coins per second. We apologize for the inconvenience.', 'Could you open a new window? It\'s hot in here!', 'Get out of my room!', 'Thank you for playing Coin Clicker.'],
 
-  // Help manual for the debug console.
-  man = 'Coin Clicker Debug Console\n\nclear - Clears the console.\necho - Outputs the given arguments.\nhelp - Displays this manual.\nexec - Executes JavaScript code.\neval - An alias for exec, has the same function.\npizza - Tells you how many $30 pizzas you could buy with your current amount of coins.\nrmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass "all" to log all of them.\nclhis - Clears the command history.\nexit - Hides the debug console. You can press Alt+Y to show the console again after running this command.\n\nTyping any command into the console that isn\'t recognized will have the same effect as using the \'exec\' or \'eval\' commands.\n',
+  /**
+   * A raw string containg the debug console's help manual, which can be called using the 'help' command in the debug console
+   */
+  man = String.raw`Coin Clicker Debug Console
+  
+  clear - Clears the console.
+  echo - Outputs the given arguments.
+  help - Displays this manual.
+  exec - Executes JavaScript code.
+  eval - An alias for exec, has the same function.
+  pizza - Tells you how many $30 pizzas you could buy with your current amount of coins.
+  rmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass 'all' to log all of them.
+  clhis - Clears the command history.
+  exit - Hides the debug console. You can press Alt+Y to show the console again after running this command.
+  
+  Typing any command into the console that isn't recognized will have the same effect as using the 'exec' or 'eval' commands.
+  `,
 
   // Save and shop data
   saveData = [],
@@ -446,7 +550,6 @@ const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare
 
   // Used for obtaining FPS
   times = [];
-
 //***************************************/
 //    Initial run updates and calls
 //***************************************/
@@ -483,9 +586,6 @@ buildString.textContent = `build ${buildInfo.BuildStr}`;
 debugConsole += 'Type \'help\' for a list of commands. You can press Alt+Y to get back to the game screen.\n';
 for (let i = 0; i < debugLogs.length; i++) console.debug(`%c [Debug] %c${debugLogs[i]}`, yellow, def);
 
-// Fill the achievement unlock array 
-for (let i = 0; i < 30; i++) achArr.push(!1);
-
 // Load game and modify updInterval if a graphics mode change was detected.
 loadGame();
 if (graphicsMode == 'Quality') updInterval = 1; else updInterval = 50;
@@ -497,21 +597,26 @@ lib.getFps();
 //              Functions
 //***************************************/
 
-// Automate the game if the autoplay keybind was pressed on the title screen.
+/**
+ * Automate the game if autoplay was enabled by the player. This will disable the player's ability to save, force autobuy to be always enabled, and click the coin automatically.
+ */
 function autoplay() {
   if (debugAutoplay && readyToSave) {
-    manualSave = !0;
+    manualSave = true;
     saveGame();
-    readyToSave = !1;
+    readyToSave = false;
   } else if (debugAutoplay && init.GameStarted) {
-    shop.DoAutobuy = !0;
+    shop.DoAutobuy = true;
     autoBuyStr.textContent = 'Autobuy is enabled. (Forced)';
     saveInfoString.textContent = 'Saving is disabled.';
     coin.click();
   }
 }
 
-// Log a message depending on the value of arg.
+/**
+ * Log a random message. This function can be called from the debug console using the 'rmsg' command.
+ * @param {*} arg If the value of 'arg' is an integer, log the message at logChoices[arg]. If arg is 'all', log every message. Otherwise, select a message randomly.
+ */
 function randomMsg(arg) {
   // CSS style variables and selected message
   let selectedMsg,
@@ -540,13 +645,22 @@ function randomMsg(arg) {
   }
 }
 
-// Update various elements of the game that require it and check for unlocked items.
+/**
+ * Update various stat/shop strings and check for newly unlocked items and achievements.
+ */
 function updateScreen() {
   try {
     // Update title to display clicks count or 'A buff is active!' if a buff occurs.
-    if (buff == 'none' && init.GameStarted) { stats.RawClicksPS = stats.ClicksPS; stats.RawClickVal = stats.ClickValue; document.title = `${textArray[0]} coins | Coin Clicker Beta v${buildInfo.UpdNum}`; } else if (init.GameStarted) document.title = `A buff is active! | Coin Clicker Beta v${buildInfo.UpdNum}`; else document.title = `Coin Clicker Beta v${buildInfo.UpdNum}`;
+    if (buff == 'none' && init.GameStarted) {
+      stats.RawClicksPS = stats.ClicksPS;
+      stats.RawClickVal = stats.ClickValue;
+      document.title = `${textArray[0]} coins | Coin Clicker Beta v${buildInfo.UpdNum}`;
+    }
+    else if (init.GameStarted) document.title = `A buff is active! | Coin Clicker Beta v${buildInfo.UpdNum}`;
+    else document.title = `Coin Clicker Beta v${buildInfo.UpdNum}`;
+
     if (!document.hidden) {
-      // Reverse the background music volume decrease caused by hiding the tab.
+      // Revert the background music volume decrease caused by hiding the tab.
       bgm.volume = volume;
 
       // Update the integer array
@@ -612,18 +726,22 @@ function updateScreen() {
       }
 
       // Other miscellaneous stats
-      if (stats.LifetimeClicks == 1) lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coin.`; else lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coins.`;
-      if (stats.LifetimeManualClicks == 1) lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coin from clicking.`; else lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coins from clicking.`;
-      if (stats.CoinClickCount == 1) coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} time.`; else coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} times.`;
-      if (stats.TotalClickHelpers == 1) totalClickHelpersString.textContent = `You have bought ${textArray[6]} item.`; else totalClickHelpersString.textContent = `You have bought ${textArray[6]} items.`;
+      stats.LifetimeClicks == 1 ?  lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coin.` : lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coins.`;
+
+      stats.LifetimeManualClicks == 1 ?lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coin from clicking.` : lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coins from clicking.`;
+
+      stats.CoinClickCount == 1 ? coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} time.` : coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} times.`;
+
+      stats.TotalClickHelpers == 1 ? totalClickHelpersString.textContent = `You have bought ${textArray[6]} item.` : totalClickHelpersString.textContent = `You have bought ${textArray[6]} items.`;
+
       achievementsUnlockedString.textContent = `You have unlocked ${textArray[23]} (${Math.round(intArray[23] / 25 * 100)}%) out of 25 achievements.`;
       rawCPSString.textContent = `Your raw coins per second is ${textArray[19]}.`;
       rawCVString.textContent = `Your raw click value is ${textArray[18]}.`;
       offlineCPSString.textContent = `Your employees gather ${textArray[26]}% of your coins per second while offline.`;
 
       // Display achievements in the menu if unlocked.
-      if (achArr[26]) { cheater.style.display = 'block'; cheaterIcon.style.display = 'block'; }
-      if (achArr[27]) { breakpoint.style.display = 'block'; bpIcon.style.display = 'block'; }
+      if (ach[26][3]) { cheater.style.display = 'block'; cheaterIcon.style.display = 'block'; }
+      if (ach[25][3]) { breakpoint.style.display = 'block'; bpIcon.style.display = 'block'; }
       if (buff == 'bonusClicks') buffStr.textContent = `You got ${textArray[24]} bonus coins!`;
 
       //***************************************/
@@ -632,7 +750,7 @@ function updateScreen() {
 
       // Super Clicker
       if (shop.ClickersOwned >= 25 && !shop.SuperClickerUnlocked) {
-        if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Super Clicker unlocked!';
+        if (init.DataLoaded) { sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Super Clicker unlocked!'; }
         superClickerGroup.style.display = 'block';
         superClickerImg.style.display = 'block';
         shop.SuperClickerUnlocked = !shop.SuperClickerUnlocked; //True
@@ -646,7 +764,7 @@ function updateScreen() {
 
       //Double Pointer
       if (shop.ClickersOwned >= 50 && shop.SuperClickersOwned >= 10 && !shop.DoublePointerUnlocked) {
-        if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Double Pointer unlocked!';
+        if (init.DataLoaded) { sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Double Pointer unlocked!'; }
         doublePointerGroup.style.display = 'block';
         doublePointerImg.style.display = 'block';
         shop.DoublePointerUnlocked = !shop.DoublePointerUnlocked; //True
@@ -666,7 +784,7 @@ function updateScreen() {
       if (uShop.CursorOwned && init.DataLoaded) uShop.CursorCost = 'Owned.';
       // Super Cursor
       if (uShop.CursorOwned && !uShop.SuperCursorUnlocked) {
-        if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Super Cursor unlocked!';
+        if (init.DataLoaded) { sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Super Cursor unlocked!'; }
         superCursorGroup.style.display = 'block';
         uShop.SuperCursorUnlocked = !uShop.SuperCursorUnlocked; //True
         SHT = 500;
@@ -674,7 +792,7 @@ function updateScreen() {
 
       // Employee
       if (uShop.CursorOwned && uShop.SuperCursorOwned && !uShop.EmployeeUnlocked) {
-        if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Employee unlocked!';
+        if (init.DataLoaded) { sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Employee unlocked!'; }
         employeeGroup.style.display = 'block';
         uShop.EmployeeUnlocked = !uShop.EmployeeUnlocked; //True
         SHT = 500;
@@ -682,7 +800,7 @@ function updateScreen() {
 
       // God Finger
       if (shop.ClickersOwned >= 75 && shop.SuperClickersOwned >= 20 && shop.DoublePointersOwned >= 3 && uShop.EmployeeUnlocked && !uShop.GodFingerUnlocked) {
-        if (init.DataLoaded) sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'God Finger unlocked!';
+        if (init.DataLoaded) { sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'God Finger unlocked!'; }
         godFingerGroup.style.display = 'block';
         uShop.GodFingerUnlocked = !uShop.GodFingerUnlocked; //True
         SHT = 500;
@@ -690,20 +808,21 @@ function updateScreen() {
 
       // Clicker Fusion
       if (shop.ClickersOwned >= 150 && !uShop.ClickerFusionUnlocked) {
-        if (init.DataLoaded) sfx4.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Clicker Fusion unlocked!';
+        if (init.DataLoaded) { sfx4.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Clicker Fusion unlocked!'; }
         clickerFusionGroup.style.display = 'block';
         uShop.ClickerFusionUnlocked = !uShop.ClickerFusionUnlocked; //True
         SHT = 500;
       } else if (uShop.ClickerFusionUnlocked) clickerFusionGroup.style.display = 'block';
 
-      // Check for achievement unlocks
-      for (let i = 0; i < achReq.length; i++) {
-        if (stats.LifetimeClicks >= achReq[i] && !achArr[i]) {
+      // Achievement unlock check
+      for (let i = 0; i < ach.length; i++) {
+        if (stats.LifetimeClicks >= ach[i][2] && ach[i][2] != null && !ach[i][3]) {
           if ((smallCoin1.style.animationPlayState = 'running' || init.GameStarted) && i == 0) bgm.play();
           if (init.DataLoaded && i > 1 && i < 24) sfx3.play();
-          achArr[i] = !0;
+          ach[i][3] = true;
           stats.AchievementsUnlocked++;
-          if (init.DataLoaded) unlockString.textContent = `Achievement Unlocked: ${achNames[i]}`; setTimeout(function () { unlockString.style.display = 'block'; }, 1);
+          if (init.DataLoaded) unlockString.textContent = `Achievement Unlocked: ${achNames[i]}`;
+          setTimeout(function () { unlockString.style.display = 'block'; }, 1);
           SHT = 500;
         }
       }
@@ -771,10 +890,12 @@ function updateScreen() {
   } catch (error) { errorHandler(error); }
 }
 
-// Create background elements based on which achievements are unlocked.
+/**
+ * Create the game's background elements. Different background particles will appear depending on which achievements the player has unlocked.
+ */
 function createBgElem() {
   try {
-    if (startBgCreate && achArr[3]) {
+    if (startBgCreate && ach[3][3]) {
       if (graphicsMode == 'Quality') {
 
         // Millionare particles
@@ -786,7 +907,7 @@ function createBgElem() {
         document.body.appendChild(bg);
 
         // Trillionare particles (coins)
-        if (achArr[9]) {
+        if (ach[9][3]) {
           if (graphicsMode == 'Quality') {
             bg = document.createElement('img');
             bg.src = './img/coin.png';
@@ -798,14 +919,14 @@ function createBgElem() {
         }
         // Breaking point particles (stars)
         // This creates font-awesome icons rather than imgs to allow for dynamic color.
-        if (achArr[24]) {
+        if (ach[24][9]) {
           bgMax = 275;
           if (graphicsMode == 'Quality') {
             bg = document.createElement('i');
             bg.id = 'bg';
             bg.className = 'fa-solid fa-star ach fixed hasanim bg';
             // Create dynamic red stars instead of green if Cheater is unlocked
-            if (!achArr[26]) bg.style.color = `rgb(0, ${green}, 0)`; else bg.style.color = `rgb(${red}, 0, 0)`;
+            !ach[26][3] ? bg.style.color = `rgb(0, ${green}, 0)` : bg.style.color = `rgb(${red}, 0, 0)`;
             bg.style.left = `${lib.rng(1, screenWidth)}px`;
             bg.style.fontSize = '1.7vw';
             document.body.appendChild(bg);
@@ -817,12 +938,18 @@ function createBgElem() {
   } catch (error) { errorHandler(error) }
 }
 
-// Format numbers to be easy to read for the player.
+/**
+ * Format numbers to be easy to read for the player. This function can format numbers in two different ways:  
+ *   
+ * toLocaleString (or a regex pattern if unsupported) to add commas to numbers. Integers with values over 1 quadrillion will become exponents  
+ *   
+ * A simpler variant that uses a combination of two arrays to display a small number with its corresponding name (thousand, million, etc)
+ */
 function numberFix() {
-  // To do: implement a toggle of some sort for exponent formatting
-  // To do: Force exponent formatting for individual numbers rather than all values when a number is too high
+  // todo: implement a toggle of some sort for exponent formatting
+  // todo: Force exponent formatting for individual numbers rather than all values when a number is too high
 
-  // Force exponent formatting if a number is a googol or higher
+  // Force exponent formatting if a number is greater than a googol
   if (!numberShorten || lib.intTooLarge()) {
     for (let i = 0; i < intArray.length; i++) {
       // Convert all values to their absolutes to prevent negatives
@@ -831,8 +958,8 @@ function numberFix() {
       // Prevent values from somehow becoming strings
       if (isNaN(intArray[i])) intArray[i] = 0;
 
-      // Use the toLocaleString() method to convert a number to have easy to read formatting, which should match the user's locale. If a value is over 1 quadrillion, it will be turned into an exponent with 3 decimal places
-      if (Number.prototype.toLocaleString() != undefined) if (intArray[i] >= 1000000000000000) textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString(); else textArray[i] = intArray[i].toLocaleString();
+      // Use the toLocaleString() method to modify a number to have easy to read formatting, which should match the user's locale. If a value is over 1 quadrillion, it will be turned into an exponent with 3 decimal places
+      if (Number.prototype.toLocaleString() != undefined) intArray[i] >= 1000000000000000 ? textArray[i] = ((intArray[i]).toExponential(3)).toLocaleString() : textArray[i] = intArray[i].toLocaleString();
 
       // If the toLocaleString() method is not supported, default to a global method that involves a regex pattern to replace parts of the value with commas. If a value is over 1 quadrillion, it will be turned into an exponent like usual.
       else {
@@ -844,7 +971,7 @@ function numberFix() {
       }
 
     }
-    // Use short number formatting if a value is small enough to do so and if the option is enabled.
+    // Use short number formatting if a value is small enough to do so ////and if the option is enabled.
   } else {
     // Values and their corresponding short names
     let req = [1000, 1e+6, 1e+9, 1e+12, 1e+15, 1e+18, 1e+21, 1e+24, 1e+27, 1e+30, 1e+33, 1e+36, 1e+39, 1e+42, 1e+45, 1e+48, 1e+51, 1e+54, 1e+57, 1e+60, 1e+63, 1e+66, 1e+69, 1e+72, 1e+75, 1e+78, 1e+81, 1e+84, 1e+87, 1e+90, 1e+93, 1e+96, 1e+99],
@@ -853,8 +980,8 @@ function numberFix() {
     // Iterate through two different arrays at once to access the needed indexes.
     for (let i in req) {
       for (let ii in intArray) {
-        // Divide all given integers by their corresponding req value, round it to the thousandths place (while using toFixed to avoid dropping any zeroes at the end of the number), and append a short name to the end of it.
-        // If a value is less than a thousand no formatting is needed.
+        // Divide all given integers by their corresponding req value, round it to the thousandths place (while avoiding dropping any zeroes at the end of the number), and append a short name to the end of it.
+        // If an integer's value is less than a thousand, no formatting is needed.
         if (intArray[ii] >= req[i]) textArray[ii] = (Math.round((intArray[ii] / req[i]) * Math.pow(10, 3)) / Math.pow(10, 3)).toFixed(3) + ' ' + units[i];
         else if (intArray[ii] < 1000) textArray[ii] = intArray[ii];
       }
@@ -862,7 +989,9 @@ function numberFix() {
   }
 }
 
-// Load data when the game first starts.
+/**
+ * Load data saved in the player's local storage.
+ */
 function loadGame() {
   try {
     // Don't attempt to load anything if no save data exists.
@@ -1068,18 +1197,20 @@ function loadGame() {
           if (stats.Clicks != stats.TrueClicks) stats.HiddenAchievementsUnlocked++;
 
           // Set load flag
-          setTimeout(function () { init.DataLoaded = !0; }, 150);
+          setTimeout(function () { init.DataLoaded = true; }, 150);
 
           // Remove save data if autoplay was enabled on the previous save.
-        } else { localStorage.removeItem('saveData', saveData); if (!achCheck) init.DataLoaded = !0; }
+        } else { localStorage.removeItem('saveData', saveData); if (!achCheck) init.DataLoaded = true; }
         // Delete save if it was created prior to build 4.41
-      } else { localStorage.removeItem('saveData', saveData); if (!achCheck) init.DataLoaded = !0; }
+      } else { localStorage.removeItem('saveData', saveData); if (!achCheck) init.DataLoaded = true; }
       // Start game normally if save data was not found.
-    } else if (!achCheck) init.DataLoaded = !0;
+    } else if (!achCheck) init.DataLoaded = true;
   } catch (error) { errorHandler(error); }
 }
 
-// Save data when user clicks the save button.
+/**
+ * Save data into local storage when the player requests it or if saving automatically.
+ */
 function saveGame() {
   try {
     // Only save if ready and if the game has actually started
@@ -1087,7 +1218,7 @@ function saveGame() {
       // THe game cannot be saved when a buff is active due to conflicts with infinitely stacking stats.
       if (buff != 'none') { savingString.textContent = 'You cannot save when a buff is occurring.'; savingString.style.display = 'block'; SHT = 500; } else {
         // Prevent additional saving from occurring
-        readyToSave = !1;
+        readyToSave = false;
 
         // Show save string
         savingString.textContent = 'Saving...';
@@ -1167,7 +1298,10 @@ function saveGame() {
   } catch (error) { errorHandler(error) }
 }
 
-// Wipes the player's save if the player requests it.
+/**
+ * Wipe the player's save if the corresponding button is clicked.
+ * @param {boolean} gamepadActive If true, the game will not automatically modify variables and will instead prompt the player to refresh the page.
+ */
 function wipeSave(gamepadActive) {
   if (readyToSave || debugAutoplay) {
     if (!gamepadActive) {
@@ -1188,7 +1322,7 @@ function wipeSave(gamepadActive) {
             } else { volume -= 0.1; volume = volume.toFixed(2); }
           }, 200);
 
-        readyToSave = !1;
+        readyToSave = false;
         localStorage.removeItem('saveData');
         localStorage.removeItem('shopData');
 
@@ -1199,7 +1333,7 @@ function wipeSave(gamepadActive) {
         graphicsMode = 'Quality';
 
         // Lock all achievements, and restore the original state of needed elements.
-        for (let i in achArr) achArr[i] = !1;
+        for (let i in ach) ach[i][3] = false;
         for (let i in toHide) toHide[i].style.display = 'none';
         for (let i in toTransform) { toTransform[i].style.animation = ''; toTransform[i].style.transform = ''; }
 
@@ -1224,10 +1358,12 @@ function wipeSave(gamepadActive) {
     readyToSave = !readyToSave;
     unlockString.textContent = 'Save removed. Press R3 to confirm. (You can save again to reverse this if this was a mistake.)';
     SHT = 500;
-  } else if (!readyToSave) readyToSave = !0;
+  } else if (!readyToSave) readyToSave = true;
 }
 
-// Recalculate RNG every second and set active buff if the value is correct.
+/**
+ * Recalculate the RNG variable used to determine buffs. Automatically called every second.
+ */
 function buffRNGCalc() {
   try {
     // Min and max values for buffRNG
@@ -1292,7 +1428,9 @@ function buffRNGCalc() {
   } catch (error) { errorHandler(error); }
 }
 
-// Remove any active buffs.
+/**
+ * Revert any active buffs.
+ */
 function buffRemoval() {
   try {
     // Hide buff string if buff granted bonus clicks.
@@ -1305,12 +1443,15 @@ function buffRemoval() {
 
     else if (buff == 'cv777%CpS') stats.ClickValue = stats.RawClickVal;
     else if (buff == 'bonusClicks') clicksAdded = 0;
+    else
 
-    buff = 'none';
+      buff = 'none';
   } catch (error) { errorHandler(error); }
 }
 
-// Click using the players CpS value, called once every tenth of a second.
+/**
+ * Multiply the player's stat values by a tenth of their coins per second and round stats.
+ */
 function cpsClick() {
   try {
     stats.Clicks += stats.ClicksPS * 0.10;
@@ -1322,12 +1463,16 @@ function cpsClick() {
   } catch (error) { errorHandler(error); }
 }
 
-// Modify red and green variables used to create a color pulsing effect on certain elements.
+/**
+ * Modify the red and green color variables used to create a 'pulsing' effect on shop items and achievements
+ */
 function rgChange() {
   try {
     // Increase or decrease variables depending on their value
-    if (increase) { red += 5; green += 5; } else if (!increase) { red -= 5; green -= 5; }
-    if (green == 200) increase = !increase; else if (green == 0) increase = !increase;
+    if (increase) { red += 5; green += 5; } else { red -= 5; green -= 5; }
+
+    if (green == 200) increase = !increase;
+    else if (green == 0) increase = !increase;
 
     //******************************************************************************/
     //                Create a pulsing effect on achievement icons
@@ -1348,7 +1493,7 @@ function rgChange() {
     costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)];
 
     // Cause the icon of the corresponding item to pulse green if the player has enough clicks to buy it, and set back to black when bought.
-    for (let i = 0; i < costArray.length - 1; i++) { if (stats.Clicks >= costArray[i]) costStringArr[i].style.color = `rgb(0, ${green}, 0)`; else costStringArr[i].style.color = 'rgb(0, 0, 0)'; }
+    for (let i = 0; i < costArray.length - 1; i++) stats.Clicks >= costArray[i] ? costStringArr[i].style.color = `rgb(0, ${green}, 0)` : costStringArr[i].style.color = 'rgb(0, 0, 0)';
   } catch (error) { errorHandler(error); }
 }
 
@@ -1377,7 +1522,9 @@ function createBase64Key() {
   } catch (error) { errorHandler(error); }
 }
 
-// Interpret commands given to the debug console
+/**
+ * Interpret commands passed to the debug console by the player.
+ */
 function commandInterpret() {
   commandAssemble();
   switch (cmd) {
@@ -1439,7 +1586,9 @@ function commandInterpret() {
   commandInput.value = '';
 }
 
-// Turn the value of the debug command input into two separate strings
+/**
+ * Split the value of the debug console's command input box into two strings
+ */
 function commandAssemble() {
   // Take a 5 letter command and assume the rest is an argument, then split the value into two arrays.
   for (let i = 0; i < commandInput.value.length; i++) { if (i < 5) cmd.push(commandInput.value[i]); else arg.push(commandInput.value[i]); }
@@ -1469,8 +1618,8 @@ startButton.addEventListener('click', () => {
 
   // Set necessary flags
   init.GameStarted = !init.GameStarted;
-  startBgCreate = !0;
-  achCheck = !1;
+  startBgCreate = true;
+  achCheck = false;
 
   // Load the game and log a random message.
   loadGame();
@@ -1570,8 +1719,7 @@ clickerBuy.addEventListener('click', function () {
     }
 
     // Clicker click value formula: Half of clickers owned + 10% of CpS
-    if (buff != 'none') stats.RawClickVal += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS);
-    else stats.ClickValue += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS);
+    buff != 'none' ? stats.RawClickVal += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS) : stats.ClickValue += Math.round(shop.ClickersOwned * 0.5 + 0.10 * stats.RawClicksPS);
 
     // Enable shop animation if this is the first clicker the player has bought.
     if (shop.ClickersOwned == 1) {
@@ -1617,8 +1765,7 @@ superClickerBuy.addEventListener('click', function () {
     }
 
     // Super clicker click value formula: Amount of super clickers owned x2 + 1% of CpS
-    if (buff != 'none') stats.RawClickVal += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS);
-    else stats.ClickValue += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS);
+    buff != 'none' ? stats.RawClickVal += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS) : stats.ClickValue += Math.round(shop.SuperClickersOwned * 2 + 0.01 * stats.RawClicksPS);
 
     if (shop.SuperClickersOwned == 1) {
       superClickerImg.style.animation = 'superclickermov 2s forwards';
@@ -1662,8 +1809,7 @@ doublePointerBuy.addEventListener('click', function () {
     }
 
     // Double pointer click value formula: Amount of double pointers owned x3 + 3% of CpS
-    if (buff != 'none') stats.RawClickVal += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS);
-    else stats.ClickValue += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS);
+    buff != 'none' ? stats.RawClickVal += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS) : stats.ClickValue += Math.round(shop.DoublePointersOwned * 3 + 0.03 * stats.RawClicksPS);
 
     if (shop.DoublePointersOwned == 1) {
       doublePointerImg.style.animation = 'doublepointermov 2s forwards';
@@ -1850,7 +1996,8 @@ debugKeySubmit.addEventListener('click', function (event) {
   event.preventDefault();
   let dmkInput;
   try { dmkInput = atob(debugKeyInput.value); }
-  catch (error) { dmkInput = debugKeyInput.value; } if (dmkInput == generatedKey) {
+  catch (error) { dmkInput = debugKeyInput.value; }
+  if (dmkInput == generatedKey) {
     debugKeyInputScreen.style.display = 'none';
     debugScreen.style.display = 'block';
     keyEntered = !keyEntered; //True
@@ -1862,7 +2009,7 @@ debugKeySubmit.addEventListener('click', function (event) {
 });
 
 // Save button event listeners
-saveButton.addEventListener('click', function () { sfx.play(); manualSave = !0; saveGame(); }); // Click
+saveButton.addEventListener('click', function () { sfx.play(); manualSave = true; saveGame(); }); // Click
 saveButton.addEventListener('mouseover', function () { savingString.style.top = '4vw'; }); // Hover
 saveButton.addEventListener('mouseleave', function () { savingString.style.top = '2.6vw'; }); // Hover leave
 wipeSaveButton.addEventListener('click', function () { sfx.play(); wipeSave(); }); // Wipe save
@@ -1870,46 +2017,68 @@ wipeSaveButton.addEventListener('click', function () { sfx.play(); wipeSave(); }
 // Achievements
 achievementsButton.addEventListener('click', function () { game.style.display = 'none'; achievementsPanel.style.display = 'block'; let index = 0; lib.achLabelSwitch(index); });
 backToGame.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; achievementsPanel.style.display = 'none'; });
-journeyBegins.addEventListener('click', function () { let index = 0; lib.achLabelSwitch(index); });
-aGoodStart.addEventListener('click', function () { let index = 1; lib.achLabelSwitch(index); });
-gettingThere.addEventListener('click', function () { let index = 2; lib.achLabelSwitch(index); });
-millionare.addEventListener('click', function () { let index = 3; lib.achLabelSwitch(index); });
-coinPool.addEventListener('click', function () { let index = 4; lib.achLabelSwitch(index); });
-abundance.addEventListener('click', function () { let index = 5; lib.achLabelSwitch(index); });
-billionare.addEventListener('click', function () { let index = 6; lib.achLabelSwitch(index); });
-excess.addEventListener('click', function () { let index = 7; lib.achLabelSwitch(index); });
-planetOfClicks.addEventListener('click', function () { let index = 8; lib.achLabelSwitch(index); });
-trillionare.addEventListener('click', function () { let index = 9; lib.achLabelSwitch(index); });
-pocketDimension.addEventListener('click', function () { let index = 10; lib.achLabelSwitch(index); });
-farTooMany.addEventListener('click', function () { let index = 11; lib.achLabelSwitch(index); });
-quadrillionare.addEventListener('click', function () { let index = 12; lib.achLabelSwitch(index); });
-coinVortex.addEventListener('click', function () { let index = 13; lib.achLabelSwitch(index); });
-coinShapedBlackHole.addEventListener('click', function () { let index = 14; lib.achLabelSwitch(index); });
-quintillionare.addEventListener('click', function () { let index = 15; lib.achLabelSwitch(index); });
-clickBeyond.addEventListener('click', function () { let index = 16; lib.achLabelSwitch(index); });
-distantBeginning.addEventListener('click', function () { let index = 17; lib.achLabelSwitch(index); });
-sextillionare.addEventListener('click', function () { let index = 18; lib.achLabelSwitch(index); });
-numberOverflow.addEventListener('click', function () { let index = 19; lib.achLabelSwitch(index); });
-coinUniverse.addEventListener('click', function () { let index = 20; lib.achLabelSwitch(index); });
-septillionare.addEventListener('click', function () { let index = 21; lib.achLabelSwitch(index); });
-why.addEventListener('click', function () { let index = 22; lib.achLabelSwitch(index); });
-twentyFingers.addEventListener('click', function () { let index = 23; lib.achLabelSwitch(index); });
-forTheWorthy.addEventListener('click', function () { let index = 24; lib.achLabelSwitch(index); });
-breakpoint.addEventListener('click', function () { let index = 25; lib.achLabelSwitch(index); });
-cheater.addEventListener('click', function () { let index = 26; lib.achLabelSwitch(index); });
+journeyBegins.addEventListener('click', function () { lib.achLabelSwitch(0); });
+aGoodStart.addEventListener('click', function () { lib.achLabelSwitch(1); });
+gettingThere.addEventListener('click', function () { lib.achLabelSwitch(2); });
+millionare.addEventListener('click', function () { lib.achLabelSwitch(3); });
+coinPool.addEventListener('click', function () { lib.achLabelSwitch(4); });
+abundance.addEventListener('click', function () { lib.achLabelSwitch(5); });
+billionare.addEventListener('click', function () { lib.achLabelSwitch(6); });
+excess.addEventListener('click', function () { lib.achLabelSwitch(7); });
+planetOfClicks.addEventListener('click', function () { lib.achLabelSwitch(8); });
+trillionare.addEventListener('click', function () { lib.achLabelSwitch(9); });
+pocketDimension.addEventListener('click', function () { lib.achLabelSwitch(10); });
+farTooMany.addEventListener('click', function () { lib.achLabelSwitch(11); });
+quadrillionare.addEventListener('click', function () { lib.achLabelSwitch(12); });
+coinVortex.addEventListener('click', function () { lib.achLabelSwitch(13); });
+coinShapedBlackHole.addEventListener('click', function () { lib.achLabelSwitch(14); });
+quintillionare.addEventListener('click', function () { lib.achLabelSwitch(15); });
+clickBeyond.addEventListener('click', function () { lib.achLabelSwitch(16); });
+distantBeginning.addEventListener('click', function () { lib.achLabelSwitch(17); });
+sextillionare.addEventListener('click', function () { lib.achLabelSwitch(18); });
+numberOverflow.addEventListener('click', function () { lib.achLabelSwitch(19); });
+coinUniverse.addEventListener('click', function () { lib.achLabelSwitch(20); });
+septillionare.addEventListener('click', function () { lib.achLabelSwitch(21); });
+why.addEventListener('click', function () { lib.achLabelSwitch(22); });
+twentyFingers.addEventListener('click', function () { lib.achLabelSwitch(23); });
+forTheWorthy.addEventListener('click', function () { lib.achLabelSwitch(24); });
+breakpoint.addEventListener('click', function () { lib.achLabelSwitch(25); });
+cheater.addEventListener('click', function () { lib.achLabelSwitch(26); });
 
 // Debug command line
 cmdForm.addEventListener("submit", function (event) { event.preventDefault(); commandInterpret(); });
 
-// Settings pannel
+// Settings panel
 settingsButton.addEventListener('click', function () { sfx.play(); settingsPanel.style.display = 'block'; game.style.display = 'none'; });
 backToGame2.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; settingsPanel.style.display = 'none'; });
-volumeInput.addEventListener('change', function () { try { let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1]; if (volumeInput.value >= 0 && volumeInput.value <= 100 && readyToSave) { volume = volumeInput.value / 100; for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume; } else volumeInput.value = volume * 100; } catch (error) { errorHandler(error); } });
-autoBuyBtn.addEventListener('click', function () { if (shop.DoAutobuy) { autoBuyBtn.textContent = 'OFF'; shop.DoAutobuy = !1; } else { autoBuyBtn.textContent = 'ON'; shop.DoAutobuy = !0; } });
+
+volumeInput.addEventListener('change', function () {
+  try {
+    let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1];
+    if (volumeInput.value >= 0 && volumeInput.value <= 100 && readyToSave) {
+      volume = volumeInput.value / 100;
+      for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume;
+    } else volumeInput.value = volume * 100;
+  } catch (error) { errorHandler(error); }
+});
+
+autoBuyBtn.addEventListener('click', function () { if (shop.DoAutobuy) { autoBuyBtn.textContent = 'OFF'; shop.DoAutobuy = false; } else { autoBuyBtn.textContent = 'ON'; shop.DoAutobuy = true; } });
+
 bgGradCenterInput.addEventListener('change', function () { document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`; });
+
 bgGradEdgeInput.addEventListener('change', function () { document.body.style.backgroundImage = `radial-gradient(rgb(${bgGradCenterInput.value}), rgb(${bgGradEdgeInput.value})`; });
+
 graphicsBtn.addEventListener('click', function () { sfx.play(); if (graphicsMode == 'Quality') graphicsMode = 'Performance'; else graphicsMode = 'Quality'; graphicsBtn.textContent = graphicsMode; });
-resetBgButton.addEventListener('click', function () { let prompt = confirm('This is completely irreversible! Are you sure you wish to continue? (You will need to save again for these changes to stay.)'); if (prompt) { bgGradCenterInput.value = '250, 224, 65'; bgGradEdgeInput.value = '249, 160, 40'; document.body.style.backgroundImage = 'radial-gradient(rgb(250, 224, 65), rgb(249, 160, 40))'; } });
+
+resetBgButton.addEventListener('click', function () {
+  let prompt = confirm('This is completely irreversible! Are you sure you wish to continue? (You will need to save again for these changes to stay.)');
+  if (prompt) {
+    bgGradCenterInput.value = '250, 224, 65';
+    bgGradEdgeInput.value = '249, 160, 40';
+    document.body.style.backgroundImage = 'radial-gradient(rgb(250, 224, 65), rgb(249, 160, 40))';
+  }
+});
+
 bgm.addEventListener('ended', function () { setTimeout(function () { bgm = new Audio(); bgm.src = './snd/bgm.mp3'; bgm.play(); }, 1000) });
 
 // Remove background particles that could slow down the reload process, and save the game
@@ -1918,7 +2087,7 @@ window.addEventListener('beforeunload', function (event) {
   event.stopImmediatePropagation();
   $('.bg').remove();
   $('.coinparticle').remove();
-  if (buff == 'none' && (doAutosave || debug)) saveGame(); else event.preventDefault();
+  buff == 'none' && (doAutosave || debug) ? saveGame() : event.preventDefault();
 });
 
 // Vibrate the connected gamepad twice and set it up for input polling
@@ -2013,7 +2182,7 @@ document.addEventListener('keydown', function (event) {
     // Ctrl-S to save
     if ((event.key == 's' || event.key == 'S') && event.ctrlKey && debugScreenState == 'closed' && !debugAutoplay) {
       event.preventDefault();
-      manualSave = !0;
+      manualSave = true;
       saveGame();
 
       // todo: remove the key generator keybind
@@ -2142,14 +2311,22 @@ setInterval(rgChange, 25);
 
 // If a buff is inactive, autosave
 // Otherwise, keep the autosave pending until the buff finishes
-setInterval(function () { if (doAutosave && buff == 'none' && init.GameStarted && achArr[0]) { manualSave = !1; saveGame(); } else if (buff != 'none') autosavePending = !autosavePending /*True*/ }, 60000);
+setInterval(function () { if (doAutosave && buff == 'none' && init.GameStarted && ach[0][3]) { manualSave = false; saveGame(); } else if (buff != 'none') autosavePending = !autosavePending /*True*/ }, 60000);
 
 // Update the save information string 
-setInterval(function () { if (textSwitch && !debugAutoplay) { saveInfoString.textContent = `Last saved: ${lastSavedTime}`; textSwitch = !1; } else if (!textSwitch && !debugAutoplay) { if (doAutosave) saveInfoString.textContent = 'Game autosaves every minute; You can also press Ctrl+S to save.'; else saveInfoString.textContent = 'Autosave is disabled. You will need to save manually.'; textSwitch = !0; } }, 3000);
-var buttonPressed = !1;
+setInterval(function () {
+  if (textSwitch && !debugAutoplay) {
+    saveInfoString.textContent = `Last saved: ${lastSavedTime}`;
+    textSwitch = false;
+  }
+  else if (!textSwitch && !debugAutoplay) {
+    if (doAutosave) saveInfoString.textContent = 'Game autosaves every minute; You can also press Ctrl+S to save.'; else saveInfoString.textContent = 'Autosave is disabled. You will need to save manually.'; textSwitch = true;
+  }
+}, 3000);
+var buttonPressed = false;
 
 // Increment the playtime if 'Journey Begins' is unlocked.
-setInterval(function () { if (achArr[0]) stats.Playtime += 1000; buffRNGCalc(); }, 1000);
+setInterval(function () { if (ach[0][3]) stats.Playtime += 1000; buffRNGCalc(); }, 1000);
 
 setInterval(function () {
   // Timeout to hide certain labels
@@ -2158,7 +2335,7 @@ setInterval(function () {
     savingString.textContent = '';
     unlockString.textContent = '';
     incorrectKeyLabel.textContent = '';
-    if (!debugAutoplay) readyToSave = !0;
+    if (!debugAutoplay) readyToSave = true;
     SHT = 500;
   }
 
@@ -2170,7 +2347,7 @@ setInterval(function () {
 
     // Update the array of costs
     costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)];
-    
+
     // Set up variables to sort through the array of item costs
     let smallest = Number.MAX_VALUE,
       costArraySorted = [],
@@ -2191,7 +2368,7 @@ setInterval(function () {
   if (autosavePending && !debugAutoplay && doAutosave) savingString.textContent = 'A buff is active. Autosave postponed.';
 
   // If an autosave was pending due to an active buff, save the game once that buff has ended.
-  if (buff == 'none' && autosavePending && doAutosave) { autosavePending = !1; manualSave = !1; saveGame(); }
+  if (buff == 'none' && autosavePending && doAutosave) { autosavePending = false; manualSave = false; saveGame(); }
 
   // Remove particles that surpass the max particle threshold.
   if (graphicsMode == 'Quality') {
@@ -2210,18 +2387,18 @@ setInterval(function () {
   } else { $('.bg').remove() }
 
   // Check if the user has potentially cheated by incrementing their click count using the debug or browser consoles
-  if (stats.Clicks != stats.TrueClicks && !achArr[26]) {
+  if (stats.Clicks != stats.TrueClicks && !ach[26][3]) {
     achStr = `Achievement Unlocked: ${achNames[26]}`;
     if (init.DataLoaded) { sfx4.play(); unlockString.textContent = achStr; unlockString.style.display = 'block'; }
-    achArr[26] = !0;
+    ach[26][3] = true;
     stats.AchievementsUnlocked++;
     stats.HiddenAchievementsUnlocked++;
     SHT = 500;
   }
 
   // Modify variables tied to background effects if the player has unlocked specific achievements
-  if (achArr[6]) { bgUpdInterval = 100; bgMax = 105; }
-  if (achArr[9]) { bgUpdInterval = 50; createCoinBg = !0; bgMax = 210; }
+  if (ach[6][3]) { bgUpdInterval = 100; bgMax = 105; }
+  if (ach[9][3]) { bgUpdInterval = 50; createCoinBg = true; bgMax = 210; }
 
   // Poll for gamepad input if a gamepad is connected.
   if (gamepad) {
@@ -2245,17 +2422,17 @@ setInterval(function () {
 
     // If no buttons are pressed, set flag to false
     // This flag is required to prevent the game from repeating inputs if a button is held
-    if (!cross && !circle && !square && !triangle && !l1 && !r1 && !l2 && !r2 && !share && !options && !l3 && !r3 && !dpadUp && !dpadDown && !dpadLeft && !dpadRight) buttonPressed = !1;
+    if (!cross && !circle && !square && !triangle && !l1 && !r1 && !l2 && !r2 && !share && !options && !l3 && !r3 && !dpadUp && !dpadDown && !dpadLeft && !dpadRight) buttonPressed = false;
 
     // Cross (without game started) - Click the start button
     if (cross && !init.GameStarted) startButton.click();
 
     // Circle or Cross (with game started) - Click the coin
-    if ((circle || cross) && init.GameStarted && !buttonPressed) { buttonPressed = !0; coin.click(); }
+    if ((circle || cross) && init.GameStarted && !buttonPressed) { buttonPressed = true; coin.click(); }
 
     // Square - Vibrate the controller and toggle the upgrade shop
     if (square && init.GameStarted && !buttonPressed) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (shopPanel.style.display == 'block') upgradeButton.click();
       else if (upgradeShopPanel.style.display == 'block') upgradeRTS.click();
@@ -2263,15 +2440,15 @@ setInterval(function () {
 
     // Triangle - Vibrate the controller and save the game
     if (triangle && init.GameStarted && !buttonPressed) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
-      manualSave = !0;
+      manualSave = true;
       saveGame();
     }
 
     // Share - Vibrate the controller and toggle the achievements panel
     if (share && init.GameStarted && !buttonPressed) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (game.style.display == 'block') achievementsButton.click();
       else if (achievementsPanel.style.display == 'block') backToGame.click();
@@ -2279,7 +2456,7 @@ setInterval(function () {
 
     // Options - Vibrate the controller and toggle the settings panel
     if (options && init.GameStarted && !buttonPressed) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (game.style.display == 'block') settingsButton.click();
       else if (settingsPanel.style.display == 'block') backToGame2.click();
@@ -2287,7 +2464,7 @@ setInterval(function () {
 
     // L1 - Vibrate the controller and buy a clicker, or buy a cursor if the upgrade shop is open
     if (l1 && init.GameStarted && !buttonPressed) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (upgradeShopPanel.style.display == 'none') clickerBuy.click();
       else cursorBuy.click();
@@ -2295,7 +2472,7 @@ setInterval(function () {
 
     // R1 - Vibrate the controller and buy a super clicker, or buy a super cursor if the upgrade shop is open
     if (r1 && init.GameStarted && !buttonPressed && (shop.SuperClickerUnlocked || uShop.SuperCursorUnlocked)) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (upgradeShopPanel.style.display == 'none') superClickerBuy.click();
       else superCursorBuy.click();
@@ -2303,37 +2480,37 @@ setInterval(function () {
 
     // L2 - Vibrate the controller and buy a double pointer, or buy an employee if the upgrade shop is open.
     if (l2 && init.GameStarted && !buttonPressed && (shop.DoublePointerUnlocked || uShop.EmployeeUnlocked)) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       if (upgradeShopPanel.style.display == 'none') doublePointerBuy.click();
       else employeeBuy.click();
     }
 
     // R2 - Vibrate the controller and buy the god finger if the upgrade shop is open.
-    if (r2 && init.GameStarted && !buttonPressed && uShop.GodFingerUnlocked) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); if (upgradeShopPanel.style.display == 'block') godFingerBuy.click(); }
+    if (r2 && init.GameStarted && !buttonPressed && uShop.GodFingerUnlocked) { buttonPressed = true; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); if (upgradeShopPanel.style.display == 'block') godFingerBuy.click(); }
 
     // L3 - Vibrate the controller and toggle autobuy
-    if (l3 && init.GameStarted && !buttonPressed) { buttonPressed = !0; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); autoBuyBtn.click(); }
-    
+    if (l3 && init.GameStarted && !buttonPressed) { buttonPressed = true; gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 }); autoBuyBtn.click(); }
+
     // R3 - Refresh the page.
     if (r3) location.reload();
 
     // DPad Up - Gamepad-specific call to wipe save
     if (dpadUp) { let gamepadActive = true; wipeSave(gamepadActive); }
-    
+
     // DPad Left - Scroll to the left through the achievements list, or buy the clicker fusion if the upgrade shop is open
     if (dpadLeft && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') {
-      buttonPressed = !0;
+      buttonPressed = true;
       if (gpAchIndex > 0) gpAchIndex--;
       lib.achLabelSwitch(gpAchIndex);
     } else if (dpadLeft && init.GameStarted && !buttonPressed && upgradeShopPanel.style.display == 'block' && uShop.ClickerFusionUnlocked) {
-      buttonPressed = !0;
+      buttonPressed = true;
       gamepad.vibrationActuator.playEffect('dual-rumble', { startDelay: 0, duration: 50, weakMagnitude: 1.0, strongMagnitude: 1.0 });
       clickerFusionBuy.click();
     }
 
     // DPad Right - Scroll to the right through the achievements list
-    if (dpadRight && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') { buttonPressed = !0; if (gpAchIndex < 24) gpAchIndex++; lib.achLabelSwitch(gpAchIndex); }
+    if (dpadRight && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') { buttonPressed = true; if (gpAchIndex < 24) gpAchIndex++; lib.achLabelSwitch(gpAchIndex); }
   }
 }, 1);
 
