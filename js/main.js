@@ -322,16 +322,7 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
       sfx.play();
       achNameStr.textContent = ach[index][0];
       achDescStr.textContent = ach[index][1];
-      ach[index][3] ? achUnlockStr.textContent = 'Unlocked.' : achUnlockStr.textContent = 'Not unlocked.';
-    },
-
-    /**
-     * Function used by the number formatter numberFix() to determine if an integer is too large to shorten using a generic name.
-     * @returns True if no values are >= a googol. False if otherwise.
-     */
-    // todo: Allow this function to determine the exact value that is too large to format, and ignore that value specifically instead of all integers.
-    intTooLarge: () => {
-      for (var i in intArray) if (intArray[i] >= 9.99e+101) return true; else return false;
+      achUnlockStr.textContent = ach[index][3] ? 'Unlocked.' : 'Not unlocked.';
     },
 
     /**
@@ -392,7 +383,7 @@ var stats = new baseStats(),
   buffRNG = 0,
   lastBuffRNG = 0,
   buff = 'none',
-  clicksAdded,
+  clicksAdded = 0,
 
   // Achievement screen variables
   achStr = 'none',
@@ -472,10 +463,10 @@ var stats = new baseStats(),
    */
   ach = [['Journey Begins', 'Obtain 1 lifetime coin.', 1, false], ['A Good Start', 'Obtain 10 thousand lifetime coins.', 10000, false], ['Getting There', 'Obtain 100 thousand lifetime coins.', 100000, false], ['Millionare', 'Obtain 1 million lifetime coins', 1e+6, false], ['Coin Pool', 'Obtain 10 million lifetime coins.', 1e+7, false], ['Abundance', 'Obtain 100 million lifetime coins', 1e+8, false], ['Billionare', 'Obtain 1 billion lifetime coins.', 1e+9, false], ['Excess', 'Obtain 10 billion lifetime coins.', 1e+10, false], ['Planet of Coins', 'Obtain 100 billion lifetime coins', 1e+11, false], ['Trillionare', 'Obtain 1 trillion lifetime coins.', 1e+12, false], ['Pocket Dimension', 'Obtain 10 trillion lifetime coins.', 1e+13, false], ['Far Too Many', 'Obtain 100 trillion lifetime coins.', 1e+14, false], ['Quadrillionare', 'Obtain 1 quadrillion lifetime coins.', 1e+15, false], ['Coin Vortex', 'Obtain 10 quadrillion lifetime coins.', 1e+16, false], ['Coin-Shaped Black Hole', 'Obtain 100 quadrillion lifetime coins.', 1e+17, false], ['Quintillionare', 'Obtain 1 quintillion lifetime coins.', 1e+18, false], ['Click Beyond', 'Obtain 10 quintillion lifetime coins.', 1e+19, false], ['Distant Beginning', 'Obtain 100 quintillion lifetime coins.', 1e+20, false], ['Sextillionare', 'Obtain 1 sextillion lifetime coins.', 1e+21, false], ['Number Overflow', 'Obtain 10 sextillion lifetime coins.', 1e+22, false], ['Coin Universe', 'Obtain 100 sextillion lifetime coins.', 1e+23, false], ['Septillionare', 'Obtain 1 septillion lifetime coins.', 1e+24, false], ['Why are you still here?', 'Obtain 10 septillion lifetime coins.', 1e+25, false], ['20 Fingers', 'Obtain 100 septillion lifetime coins.', 1e+26, false], ['For The Worthy', 'Obtain 1 octillion lifetime coins.', 1e+27, false], ['Breaking Point', 'Obtain far more lifetime coins than you should have.', Number.MAX_VALUE, false], ['Cheater', 'Hack in some money using the debug console.', null, false]];
 
-  /**
-   * An array of buttons clicked on by the game's automation features.
-   */
-  buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
+/**
+ * An array of buttons clicked on by the game's automation features.
+ */
+buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
 
   /**
    * Messages to be randomly logged to the console when randomMsg() is called at the start of the game and when 'rmsg' is used in the debug console.
@@ -620,7 +611,7 @@ function updateScreen() {
       bgm.volume = volume;
 
       // Update the integer array
-      intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, shop.ClickersOwned, display.SuperClickerCPS, display.SuperClickerCost, shop.SuperClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, shop.DoublePointersOwned, display.EmployeeCost, uShop.EmployeesOwned, display.RawClickVal, display.RawClicksPS, shop.ClickersOwned, shop.SuperClickerCPSWorth, shop.DoublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, (stats.OfflineClicksPSPercen * 100).toFixed(1), uShop.CursorCost, uShop.SuperCursorCost, uShop.GodFingerCost];
+      intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, shop.ClickersOwned, display.SuperClickerCPS, display.SuperClickerCost, shop.SuperClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, shop.DoublePointersOwned, display.EmployeeCost, uShop.EmployeesOwned, display.RawClickVal, display.RawClicksPS, shop.ClickersOwned, shop.SuperClickerCPSWorth, shop.DoublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, stats.OfflineClicksPSPercen * 100, uShop.CursorCost, uShop.SuperCursorCost, uShop.GodFingerCost];
 
       // Call number formatting function
       numberFix();
@@ -682,9 +673,9 @@ function updateScreen() {
       }
 
       // Other miscellaneous stats
-      stats.LifetimeClicks == 1 ?  lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coin.` : lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coins.`;
+      stats.LifetimeClicks == 1 ? lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coin.` : lifetimeClicksString.textContent = `You have obtained a total of ${textArray[3]} coins.`;
 
-      stats.LifetimeManualClicks == 1 ?lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coin from clicking.` : lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coins from clicking.`;
+      stats.LifetimeManualClicks == 1 ? lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coin from clicking.` : lifetimeManualClicksString.textContent = `You have gotten ${textArray[4]} coins from clicking.`;
 
       stats.CoinClickCount == 1 ? coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} time.` : coinClickCountString.textContent = `You have clicked the coin ${textArray[5]} times.`;
 
@@ -903,10 +894,9 @@ function createBgElem() {
  */
 function numberFix() {
   // todo: implement a toggle of some sort for exponent formatting
-  // todo: Force exponent formatting for individual numbers rather than all values when a number is too high
 
   // Force exponent formatting if a number is greater than a googol
-  if (!numberShorten || lib.intTooLarge()) {
+  if (!numberShorten) {
     for (let i = 0; i < intArray.length; i++) {
       // Convert all values to their absolutes to prevent negatives
       intArray[i] = Math.abs(intArray[i]);
@@ -940,6 +930,15 @@ function numberFix() {
         // If an integer's value is less than a thousand, no formatting is needed.
         if (intArray[ii] >= req[i]) textArray[ii] = (Math.round((intArray[ii] / req[i]) * Math.pow(10, 3)) / Math.pow(10, 3)).toFixed(3) + ' ' + units[i];
         else if (intArray[ii] < 1000) textArray[ii] = intArray[ii];
+      }
+    }
+
+    // Use exponents for numbers that are too large to use generic names.
+    for (let i = 0; i < intArray.length; i++) {
+      if (intArray[i] >= 9.99999e+101) var ii = i;
+      if (ii != undefined) {
+        if (Number.prototype.toLocaleString() != undefined) textArray[ii] = ((intArray[ii]).toExponential(3)).toLocaleString()
+        else textArray[ii] = intArray[ii].toExponential(3);
       }
     }
   }
@@ -1244,7 +1243,7 @@ function saveGame() {
         while (saveData.length > 0) saveData.pop();
         while (shopData.length > 0) shopData.pop();
 
-        // Detect whether the game was autosasved or saved manually
+        // Detect whether the game was autosaved or saved manually
         if (manualSave) { savingString.textContent = 'Game saved.'; manualSave = !manualSave; /*False*/ } else savingString.textContent = 'Game autosaved.';
 
         // Start timeout to hide label.
@@ -1264,7 +1263,7 @@ function wipeSave(gamepadActive) {
       let prompt = confirm('This is completely irreversible! Are you sure you wish to continue?');
       if (prompt) {
         // Elements to hide
-        let toHide = [offlineCPSString, superClickerGroup, doublePointerGroup, superCursorGroup, employeeGroup, godFingerGroup, clickerFusionGroup, cheater, cheaterIcon, breakpoint, bpIcon],
+        let toHide = [offlineCPSString, superClickerGroup, doublePointerGroup, superCursorGroup, employeeGroup, godFingerGroup, clickerFusionGroup, cheater, cheaterIcon, breakpoint, bpIcon, superClickerImg, doublePointerImg, cursorImg, superCursorImg, employeeImg, godFingerImg, clickerFusionImg],
           // Elements to disable the animation of, reverting them to their default state
           toTransform = [clickerImg, superClickerImg, doublePointerImg, cursorImg, superCursorImg, employeeImg, godFingerImg, clickerFusionImg],
 
@@ -2344,7 +2343,7 @@ setInterval(function () {
 
   // Check if the user has potentially cheated by incrementing their click count using the debug or browser consoles
   if (stats.Clicks != stats.TrueClicks && !ach[26][3]) {
-    achStr = `Achievement Unlocked: ${achNames[26]}`;
+    achStr = `Achievement Unlocked: ${ach[26][0]}`;
     if (init.DataLoaded) { sfx4.play(); unlockString.textContent = achStr; unlockString.style.display = 'block'; }
     ach[26][3] = true;
     stats.AchievementsUnlocked++;

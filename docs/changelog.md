@@ -119,3 +119,6 @@ If your gamepad is detected, it's name should appear near the bottom of the scre
 - Slightly modified achievement descriptions.
 - Added an 'exit' command to the debug console that will hide it from view. It can still be accessed after exiting by pressing Alt+Y.
 - Fixed a bug that caused the "Item unlocked!" label to be shown upon loading the game, even when unlocking the item prior.
+- Changed the color of errors so they are easier to see.
+- The stack trace of errors was moved to the debug console to just below the original error message.
+- The number formatter can now detect which number is too large to truncate using an exponent, and only truncate the offending number instead of all values.
