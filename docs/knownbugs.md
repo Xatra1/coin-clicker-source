@@ -8,3 +8,4 @@ Bugs that are crossed out have already been fixed.
 - ~~! The debug console no longer accepts Base64 keys.~~
 - ~~! Unlocking the 'Cheater' achievement shows the Breaking Point achievement in the menu.~~
 - ! The game's BGM cannot loop more than once before it fails to play again.
+- The animation of some shop items will still play when wiping a save.

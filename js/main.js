@@ -292,7 +292,7 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
   init = { GameStarted: false, DataLoaded: false },
 
   /**
-   * Build informationf
+   * Build information
    */
   buildInfo = { BuildStr: '5.2anb', BuildNum: 5.2, UpdName: 'animation', UpdNum: 7 },
 
@@ -456,12 +456,6 @@ var stats = new baseStats(),
    */
   textArray = [],
 
-  // todo: phase out achArr in favor of the multidimensional array below
-  /**
-   * An array of booleans that determine which achievements are unlocked and which aren't.
-   */
-  achArr = [],
-
   /**
    * An array of cost strings.
    */
@@ -476,45 +470,7 @@ var stats = new baseStats(),
    * An array of arrays containing achievement names, descriptions, lifetime coin requirements, and unlock statues.  
    * Currently unused.
    */
-  ach = [
-    ['Journey Begins', 'Obtain 1 lifetime coin.', 1, false],
-    ['A Good Start', 'Obtain 10 thousand lifetime coins.', 10000, false],
-    ['Getting There', 'Obtain 100 thousand lifetime coins.', 100000, false],
-    ['Millionare', 'Obtain 1 million lifetime coins', 1e+6, false],
-    ['Coin Pool', 'Obtain 10 million lifetime coins.', 1e+7, false],
-    ['Abundance', 'Obtain 100 million lifetime coins', 1e+8, false],
-    ['Billionare', 'Obtain 1 billion lifetime coins.', 1e+9, false],
-    ['Excess', 'Obtain 10 billion lifetime coins.', 1e+10, false],
-    ['Planet of Coins', 'Obtain 100 billion lifetime coins', 1e+11, false],
-    ['Trillionare', 'Obtain 1 trillion lifetime coins.', 1e+12, false],
-    ['Pocket Dimension', 'Obtain 10 trillion lifetime coins.', 1e+13, false],
-    ['Far Too Many', 'Obtain 100 trillion lifetime coins.', 1e+14, false],
-    ['Quadrillionare', 'Obtain 1 quadrillion lifetime coins.', 1e+15, false],
-    ['Coin Vortex', 'Obtain 10 quadrillion lifetime coins.', 1e+16, false],
-    ['Coin-Shaped Black Hole', 'Obtain 100 quadrillion lifetime coins.', 1e+17, false],
-    ['Quintillionare', 'Obtain 1 quintillion lifetime coins.', 1e+18, false],
-    ['Click Beyond', 'Obtain 10 quintillion lifetime coins.', 1e+19, false],
-    ['Distant Beginning', 'Obtain 100 quintillion lifetime coins.', 1e+20, false],
-    ['Sextillionare', 'Obtain 1 sextillion lifetime coins.', 1e+21, false],
-    ['Number Overflow', 'Obtain 10 sextillion lifetime coins.', 1e+22, false],
-    ['Coin Universe', 'Obtain 100 sextillion lifetime coins.', 1e+23, false],
-    ['Septillionare', 'Obtain 1 septillion lifetime coins.', 1e+24, false],
-    ['Why are you still here?', 'Obtain 10 septillion lifetime coins.', 1e+25, false],
-    ['20 Fingers', 'Obtain 100 septillion lifetime coins.', 1e+26, false],
-    ['For The Worthy', 'Obtain 1 octillion lifetime coins.', 1e+27, false],
-    ['Breaking Point', 'Obtain far more lifetime coins than you should have.', Number.MAX_VALUE, false],
-    ['Cheater', 'Hack in some money using the debug console.', null, false]
-  ];
-
-// todo: phase out the achNames, achDescs, and achReq arrays in favor of the multidimensional array above
-// Achievement names
-const achNames = ['Journey Begins', 'A Good Start', 'Getting There', 'Millionare', 'Coin Pool', 'Abundance', 'Billionare', 'Excess', 'Planet of Coins', 'Trillionare', 'Pocket Dimension', 'Far Too Many', 'Quadrillionare', 'Coin Vortex', 'Coin-Shaped Black Hole', 'Quintillionare', 'Click Beyond', 'Distant Beginning', 'Sextillionare', 'Number Overflow', 'Coin Universe', 'Septillionare', 'Why?', '20 Fingers', 'For the Worthy', 'Breaking Point', 'Cheater'],
-
-  // Achievement descriptions
-  achDescs = ['Obtain 1 lifetime coin.', 'Obtain 10 thousand lifetime coins.', 'Obtain 100 thousand lifetime coins.', 'Obtain 1 million lifetime coins.', 'Obtain 10 million lifetime coins.', 'Obtain 100 million lifetime coins.', 'Obtain 1 billion lifetime coins.', 'Obtain 10 billion lifetime coins.', 'Obtain 100 billion lifetime coins.', 'Obtain 1 trillion lifetime coins.', 'Obtain 10 trillion lifeitme coins.', 'Obtain 100 trillion lifetime coins.', 'Obtain 1 quadrillion lifetime coins.', 'Obtain 10 quadrillion lifetime coins.', 'Obtain 100 quadrillion lifetime coins.', 'Obtain 1 quintillion lifetime coins.', 'Obtain 10 quadrillion lifetime coins.', 'Obtain 100 quintillion lifetime coins.', 'Obtain 1 sextillion lifetime coins.', 'Obtain 10 sextillion lifetime coins.', 'Obtain 100 sextillion lifetime coins.', 'Obtain 1 septillion lifetime coins.', 'Obtain 10 septillion lifetime coins.', 'Obtain 100 septillion lifetime coins.', 'Obtain 1 octillion lifetime coins.', 'Obtain far more lifetime coins than you should have.', 'Hack in some money using the debug console.'],
-
-  // Lifetime click requirements for unlocking achievements. The last two values are placeholders for the hidden achievements.
-  achReq = [1, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 10000000000, 100000000000, 1000000000000, 10000000000000, 100000000000000, 100000000000000, 1000000000000000, 10000000000000000n, 100000000000000000n, 1000000000000000000n, 10000000000000000000n, 100000000000000000000n, 1000000000000000000000n, 10000000000000000000000n, 100000000000000000000000n, 1000000000000000000000000n, 10000000000000000000000000n, 100000000000000000000000000n, Number.MAX_VALUE, Number.MAX_VALUE * Number.MAX_VALUE],
+  ach = [['Journey Begins', 'Obtain 1 lifetime coin.', 1, false], ['A Good Start', 'Obtain 10 thousand lifetime coins.', 10000, false], ['Getting There', 'Obtain 100 thousand lifetime coins.', 100000, false], ['Millionare', 'Obtain 1 million lifetime coins', 1e+6, false], ['Coin Pool', 'Obtain 10 million lifetime coins.', 1e+7, false], ['Abundance', 'Obtain 100 million lifetime coins', 1e+8, false], ['Billionare', 'Obtain 1 billion lifetime coins.', 1e+9, false], ['Excess', 'Obtain 10 billion lifetime coins.', 1e+10, false], ['Planet of Coins', 'Obtain 100 billion lifetime coins', 1e+11, false], ['Trillionare', 'Obtain 1 trillion lifetime coins.', 1e+12, false], ['Pocket Dimension', 'Obtain 10 trillion lifetime coins.', 1e+13, false], ['Far Too Many', 'Obtain 100 trillion lifetime coins.', 1e+14, false], ['Quadrillionare', 'Obtain 1 quadrillion lifetime coins.', 1e+15, false], ['Coin Vortex', 'Obtain 10 quadrillion lifetime coins.', 1e+16, false], ['Coin-Shaped Black Hole', 'Obtain 100 quadrillion lifetime coins.', 1e+17, false], ['Quintillionare', 'Obtain 1 quintillion lifetime coins.', 1e+18, false], ['Click Beyond', 'Obtain 10 quintillion lifetime coins.', 1e+19, false], ['Distant Beginning', 'Obtain 100 quintillion lifetime coins.', 1e+20, false], ['Sextillionare', 'Obtain 1 sextillion lifetime coins.', 1e+21, false], ['Number Overflow', 'Obtain 10 sextillion lifetime coins.', 1e+22, false], ['Coin Universe', 'Obtain 100 sextillion lifetime coins.', 1e+23, false], ['Septillionare', 'Obtain 1 septillion lifetime coins.', 1e+24, false], ['Why are you still here?', 'Obtain 10 septillion lifetime coins.', 1e+25, false], ['20 Fingers', 'Obtain 100 septillion lifetime coins.', 1e+26, false], ['For The Worthy', 'Obtain 1 octillion lifetime coins.', 1e+27, false], ['Breaking Point', 'Obtain far more lifetime coins than you should have.', Number.MAX_VALUE, false], ['Cheater', 'Hack in some money using the debug console.', null, false]];
 
   /**
    * An array of buttons clicked on by the game's automation features.
@@ -821,7 +777,7 @@ function updateScreen() {
           if (init.DataLoaded && i > 1 && i < 24) sfx3.play();
           ach[i][3] = true;
           stats.AchievementsUnlocked++;
-          if (init.DataLoaded) unlockString.textContent = `Achievement Unlocked: ${achNames[i]}`;
+          if (init.DataLoaded) unlockString.textContent = `Achievement Unlocked: ${ach[i][0]}`;
           setTimeout(function () { unlockString.style.display = 'block'; }, 1);
           SHT = 500;
         }
