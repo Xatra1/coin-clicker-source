@@ -375,7 +375,7 @@ var stats = new baseStats(),
   textSwitch = false,
   manualSave = false,
   readyToSave = true,
-  doAutosave = false, //! This variable should be 'true' in public builds.
+  doAutosave = true, //! This variable should be 'true' in public builds.
   achCheck = true,
   SHT,
 
@@ -461,12 +461,12 @@ var stats = new baseStats(),
    * An array of arrays containing achievement names, descriptions, lifetime coin requirements, and unlock statues.  
    * Currently unused.
    */
-  ach = [['Journey Begins', 'Obtain 1 lifetime coin.', 1, false], ['A Good Start', 'Obtain 10 thousand lifetime coins.', 10000, false], ['Getting There', 'Obtain 100 thousand lifetime coins.', 100000, false], ['Millionare', 'Obtain 1 million lifetime coins', 1e+6, false], ['Coin Pool', 'Obtain 10 million lifetime coins.', 1e+7, false], ['Abundance', 'Obtain 100 million lifetime coins', 1e+8, false], ['Billionare', 'Obtain 1 billion lifetime coins.', 1e+9, false], ['Excess', 'Obtain 10 billion lifetime coins.', 1e+10, false], ['Planet of Coins', 'Obtain 100 billion lifetime coins', 1e+11, false], ['Trillionare', 'Obtain 1 trillion lifetime coins.', 1e+12, false], ['Pocket Dimension', 'Obtain 10 trillion lifetime coins.', 1e+13, false], ['Far Too Many', 'Obtain 100 trillion lifetime coins.', 1e+14, false], ['Quadrillionare', 'Obtain 1 quadrillion lifetime coins.', 1e+15, false], ['Coin Vortex', 'Obtain 10 quadrillion lifetime coins.', 1e+16, false], ['Coin-Shaped Black Hole', 'Obtain 100 quadrillion lifetime coins.', 1e+17, false], ['Quintillionare', 'Obtain 1 quintillion lifetime coins.', 1e+18, false], ['Click Beyond', 'Obtain 10 quintillion lifetime coins.', 1e+19, false], ['Distant Beginning', 'Obtain 100 quintillion lifetime coins.', 1e+20, false], ['Sextillionare', 'Obtain 1 sextillion lifetime coins.', 1e+21, false], ['Number Overflow', 'Obtain 10 sextillion lifetime coins.', 1e+22, false], ['Coin Universe', 'Obtain 100 sextillion lifetime coins.', 1e+23, false], ['Septillionare', 'Obtain 1 septillion lifetime coins.', 1e+24, false], ['Why are you still here?', 'Obtain 10 septillion lifetime coins.', 1e+25, false], ['20 Fingers', 'Obtain 100 septillion lifetime coins.', 1e+26, false], ['For The Worthy', 'Obtain 1 octillion lifetime coins.', 1e+27, false], ['Breaking Point', 'Obtain far more lifetime coins than you should have.', Number.MAX_VALUE, false], ['Cheater', 'Hack in some money using the debug console.', null, false]];
+  ach = [['Journey Begins', 'Obtain 1 lifetime coin.', 1, false], ['A Good Start', 'Obtain 10 thousand lifetime coins.', 10000, false], ['Getting There', 'Obtain 100 thousand lifetime coins.', 100000, false], ['Millionare', 'Obtain 1 million lifetime coins', 1e+6, false], ['Coin Pool', 'Obtain 10 million lifetime coins.', 1e+7, false], ['Abundance', 'Obtain 100 million lifetime coins', 1e+8, false], ['Billionare', 'Obtain 1 billion lifetime coins.', 1e+9, false], ['Excess', 'Obtain 10 billion lifetime coins.', 1e+10, false], ['Planet of Coins', 'Obtain 100 billion lifetime coins', 1e+11, false], ['Trillionare', 'Obtain 1 trillion lifetime coins.', 1e+12, false], ['Pocket Dimension', 'Obtain 10 trillion lifetime coins.', 1e+13, false], ['Far Too Many', 'Obtain 100 trillion lifetime coins.', 1e+14, false], ['Quadrillionare', 'Obtain 1 quadrillion lifetime coins.', 1e+15, false], ['Coin Vortex', 'Obtain 10 quadrillion lifetime coins.', 1e+16, false], ['Coin-Shaped Black Hole', 'Obtain 100 quadrillion lifetime coins.', 1e+17, false], ['Quintillionare', 'Obtain 1 quintillion lifetime coins.', 1e+18, false], ['Click Beyond', 'Obtain 10 quintillion lifetime coins.', 1e+19, false], ['Distant Beginning', 'Obtain 100 quintillion lifetime coins.', 1e+20, false], ['Sextillionare', 'Obtain 1 sextillion lifetime coins.', 1e+21, false], ['Number Overflow', 'Obtain 10 sextillion lifetime coins.', 1e+22, false], ['Coin Universe', 'Obtain 100 sextillion lifetime coins.', 1e+23, false], ['Septillionare', 'Obtain 1 septillion lifetime coins.', 1e+24, false], ['Why are you still here?', 'Obtain 10 septillion lifetime coins.', 1e+25, false], ['20 Fingers', 'Obtain 100 septillion lifetime coins.', 1e+26, false], ['For The Worthy', 'Obtain 1 octillion lifetime coins.', 1e+27, false], ['Breaking Point', 'Obtain far more lifetime coins than you should have.', Number.MAX_VALUE, false], ['Cheater', 'Hack in some money using the debug console.', null, false]],
 
-/**
- * An array of buttons clicked on by the game's automation features.
- */
-buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
+  /**
+   * An array of buttons clicked on by the game's automation features.
+   */
+  buttonArray = [clickerBuy, superClickerBuy, doublePointerBuy, cursorBuy, superCursorBuy, employeeBuy, godFingerBuy, clickerFusionBuy],
 
   /**
    * Messages to be randomly logged to the console when randomMsg() is called at the start of the game and when 'rmsg' is used in the debug console.
@@ -611,7 +611,7 @@ function updateScreen() {
       bgm.volume = volume;
 
       // Update the integer array
-      intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, shop.ClickersOwned, display.SuperClickerCPS, display.SuperClickerCost, shop.SuperClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, shop.DoublePointersOwned, display.EmployeeCost, uShop.EmployeesOwned, display.RawClickVal, display.RawClicksPS, shop.ClickersOwned, shop.SuperClickerCPSWorth, shop.DoublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, stats.OfflineClicksPSPercen * 100, uShop.CursorCost, uShop.SuperCursorCost, uShop.GodFingerCost];
+      intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, shop.ClickersOwned, display.SuperClickerCPS, display.SuperClickerCost, shop.SuperClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, shop.DoublePointersOwned, display.EmployeeCost, uShop.EmployeesOwned, display.RawClickVal, display.RawClicksPS, shop.ClickerCPSWorth, shop.SuperClickerCPSWorth, shop.DoublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, stats.OfflineClicksPSPercen * 100, uShop.CursorCost, uShop.SuperCursorCost, uShop.GodFingerCost];
 
       // Call number formatting function
       numberFix();
@@ -1166,12 +1166,12 @@ function loadGame() {
 /**
  * Save data into local storage when the player requests it or if saving automatically.
  */
-function saveGame() {
+function saveGame(force) {
   try {
     // Only save if ready and if the game has actually started
     if (readyToSave && init.GameStarted) {
       // THe game cannot be saved when a buff is active due to conflicts with infinitely stacking stats.
-      if (buff != 'none') { savingString.textContent = 'You cannot save when a buff is occurring.'; savingString.style.display = 'block'; SHT = 500; } else {
+      if (buff != 'none' && !force) { savingString.textContent = 'You cannot save when a buff is occurring.'; savingString.style.display = 'block'; SHT = 500; } else {
         // Prevent additional saving from occurring
         readyToSave = false;
 
@@ -1398,9 +1398,7 @@ function buffRemoval() {
 
     else if (buff == 'cv777%CpS') stats.ClickValue = stats.RawClickVal;
     else if (buff == 'bonusClicks') clicksAdded = 0;
-    else
-
-      buff = 'none';
+    buff = 'none';
   } catch (error) { errorHandler(error); }
 }
 
@@ -1509,7 +1507,10 @@ function commandInterpret() {
       break;
 
     default:
-      try { eval(commandInput.value); } catch (err) { debugConsole += `${err}\n`; }
+      try {
+        eval(commandInput.value);
+        debugConsole += 'Command executed.\n';
+      } catch (err) { debugConsole += `${err}\n`; }
       break;
 
     // Calculate the amount of pizzas the player could buy with their current amount of coins.
