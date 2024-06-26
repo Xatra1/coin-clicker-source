@@ -1,5 +1,6 @@
 /*
  Todo: make elements properly centered
+ Todo: seperate keyframes from the main stylesheet into a new 'keyframes.css'
 */
 
 /* Font Awesome lib */
@@ -382,6 +383,14 @@ a {
 
 .bgelement {
   z-index: -1;
+}
+
+.err {
+  position: fixed;
+  font-size: "0.7vw";
+  color: white;
+  background-color: black;
+  font-family: 'Liberation Mono', 'Monospace', monospace;
 }
 
 /* Title screen */

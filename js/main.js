@@ -19,22 +19,12 @@ const loadingScreen = document.getElementById('loadingscreen'),
   errorStack = document.createElement('p');
 
 function errorHandler(err) {
-  error.textContent = `Script error: ${err}`;
-  errorStack.textContent = `Stack trace: ${err.stack}`;
-  error.style.position = 'fixed';
+  error.className = 'err';
+  errorStack.className = 'err';
+  error.textContent = `${err}`;
+  errorStack.textContent = `${err.stack}`;
   error.style.top = '-0.3vh';
-  error.style.fontSize = '0.7vw';
-  error.style.display = 'block';
-  error.style.color = 'white';
-  error.style.backgroundColor = 'black';
-  error.style.fontFamily = 'Liberation Mono, monospace, monospace'
-  errorStack.style.position = 'fixed';
-  errorStack.style.top = '2vh';
-  errorStack.style.fontSize = '0.7vw';
-  errorStack.style.display = 'block';
-  errorStack.style.color = 'white';
-  errorStack.style.backgroundColor = 'black';
-  errorStack.style.fontFamily = 'Liberation Mono, monospace, monospace';
+  errorStack.style.top = '3vh';
   document.body.appendChild(error);
   document.body.appendChild(errorStack);
 }
@@ -272,8 +262,7 @@ const sourceNote = document.getElementById('sourcenote'),
 //              Audio files
 //****************************************/
 
-var bgm = document.getElementById('bgm'), //C418 - Click
-  sfx = document.getElementById('sfx'), //Click
+var sfx = document.getElementById('sfx'), //Click
   sfx5 = document.getElementById('sfx5'), //Shop Buy
   sfx6 = document.getElementById('sfx6'); //Coin Whoosh
 const sfx2 = document.getElementById('sfx2'), //Shop Unlock
@@ -607,8 +596,6 @@ function updateScreen() {
     else document.title = `Coin Clicker Beta v${buildInfo.UpdNum}`;
 
     if (!document.hidden) {
-      // Revert the background music volume decrease caused by hiding the tab.
-      bgm.volume = volume;
 
       // Update the integer array
       intArray = [display.Clicks, display.ClickValue, display.ClicksPS, display.LifetimeClicks, display.LifetimeManualClicks, display.CoinClickCount, stats.TotalClickHelpers, display.ClickerCPS, display.ClickerCost, shop.ClickersOwned, display.SuperClickerCPS, display.SuperClickerCost, shop.SuperClickersOwned, display.DoublePointerCPS, display.DoublePointerCost, shop.DoublePointersOwned, display.EmployeeCost, uShop.EmployeesOwned, display.RawClickVal, display.RawClicksPS, shop.ClickerCPSWorth, shop.SuperClickerCPSWorth, shop.DoublePointerCPSWorth, stats.AchievementsUnlocked, clicksAdded, stats.TrueClicks, stats.OfflineClicksPSPercen * 100, uShop.CursorCost, uShop.SuperCursorCost, uShop.GodFingerCost];
@@ -764,7 +751,6 @@ function updateScreen() {
       // Achievement unlock check
       for (let i = 0; i < ach.length; i++) {
         if (stats.LifetimeClicks >= ach[i][2] && ach[i][2] != null && !ach[i][3]) {
-          if ((smallCoin1.style.animationPlayState = 'running' || init.GameStarted) && i == 0) bgm.play();
           if (init.DataLoaded && i > 1 && i < 24) sfx3.play();
           ach[i][3] = true;
           stats.AchievementsUnlocked++;
@@ -829,8 +815,8 @@ function updateScreen() {
       // Employee cost
       if (display.EmployeeCost < uShop.EmployeeCost) display.EmployeeCost += Math.ceil(diffArr[14] / 15); else if (display.EmployeeCost > uShop.EmployeeCost) display.EmployeeCost -= Math.ceil(diffArr[14] / 15);
 
-      // Decrease the volume of the background music and remove all background particles if the document is not the active tab.
-    } else { bgm.volume = volume / 3; $('.bg').remove(); }
+      // Remove all background particles if the document is not the active tab.
+    } else $('.bg').remove();
 
     // Set the timeout for this function again to cause a loop.
     setTimeout(updateScreen, updInterval);
@@ -1145,9 +1131,6 @@ function loadGame() {
             clickerFusionImg.style.animationPlayState = 'running';
           }
 
-          // Check if 'Journey Begins' is unlocked and play bgm if true.
-          if (stats.LifetimeClicks > 0) bgm.play();
-
           // Increment hidden achievement count if 'Cheater' would be unlocked.
           if (stats.Clicks != stats.TrueClicks) stats.HiddenAchievementsUnlocked++;
 
@@ -1266,16 +1249,6 @@ function wipeSave(gamepadActive) {
         let toHide = [offlineCPSString, superClickerGroup, doublePointerGroup, superCursorGroup, employeeGroup, godFingerGroup, clickerFusionGroup, cheater, cheaterIcon, breakpoint, bpIcon, superClickerImg, doublePointerImg, cursorImg, superCursorImg, employeeImg, godFingerImg, clickerFusionImg],
           // Elements to disable the animation of, reverting them to their default state
           toTransform = [clickerImg, superClickerImg, doublePointerImg, cursorImg, superCursorImg, employeeImg, godFingerImg, clickerFusionImg],
-
-          // Fade out the background music
-          bgmFade = setInterval(function () {
-            if (volume <= 0.0) {
-              clearInterval(bgmFade);
-              bgm.pause();
-              bgm.currentTime = 0;
-              volume = 1;
-            } else { volume -= 0.1; volume = volume.toFixed(2); }
-          }, 200);
 
         readyToSave = false;
         localStorage.removeItem('saveData');
@@ -2010,7 +1983,7 @@ backToGame2.addEventListener('click', function () { sfx.play(); game.style.displ
 
 volumeInput.addEventListener('change', function () {
   try {
-    let sndArr = [bgm, sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1];
+    let sndArr = [sfx, sfx2, sfx3, sfx4, sfx5, sfx6, sfx7, sfx7point1];
     if (volumeInput.value >= 0 && volumeInput.value <= 100 && readyToSave) {
       volume = volumeInput.value / 100;
       for (let i = 0; i < sndArr.length; i++) sndArr[i].volume = volume;
@@ -2034,8 +2007,6 @@ resetBgButton.addEventListener('click', function () {
     document.body.style.backgroundImage = 'radial-gradient(rgb(250, 224, 65), rgb(249, 160, 40))';
   }
 });
-
-bgm.addEventListener('ended', function () { setTimeout(function () { bgm = new Audio(); bgm.src = './snd/bgm.mp3'; bgm.play(); }, 1000) });
 
 // Remove background particles that could slow down the reload process, and save the game
 // If the game cannot be saved, prompt

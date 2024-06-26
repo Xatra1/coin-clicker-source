@@ -122,3 +122,5 @@ If your gamepad is detected, it's name should appear near the bottom of the scre
 - Changed the color of errors so they are easier to see.
 - The stack trace of errors was moved to the debug console to just below the original error message.
 - The number formatter can now detect which number is too large to truncate using an exponent, and only truncate the offending number instead of all values.
+- Removed the background music.
+- There is now an Electron version of the app alongside the website.

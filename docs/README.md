@@ -18,6 +18,5 @@ If you want to get a **legacy** release of the game (a build that came out prior
 # Credits
 Icons made by Font Awesome, with the exception of "septillionachievements.png", which is made by IconsMind.  
 Sound effects obtained from Pixabay.  
-Background music is from Cookie Clicker.    
   
 All development was done by me. Some parts of the code were taken from answers over on [Stack Overflow.](https://stackoverflow.com)
