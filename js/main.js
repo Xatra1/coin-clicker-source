@@ -73,7 +73,13 @@ function sysCheck() {
   else if (window.location.pathname.includes('index.html')) url = 'Local File';
 
   // Assemble a title screen string and display the title screen.
-  runningBrowserString.textContent = `${browserStr} on ${os} saying hello from ${url}`;
+  // This will also hide any outside hrefs if the Electron build is being played.
+  if (userAgent.indexOf('Electron') < 0) runningBrowserString.textContent = `${browserStr} on ${os} saying hello from ${url}`;
+  else {
+    runningBrowserString.textContent = `Running Electron build on ${os}`;
+    document.getElementById('surgelink').style.display = 'none';
+    document.getElementById('basedonbuildstring').style.display = 'none';
+  }
   titleScreen.style.display = 'block';
 }
 
@@ -326,9 +332,24 @@ const sfx2 = document.getElementById('sfx2'), //Shop Unlock
         fpsLabel.textContent = `FPS: ${fps}`;
         lib.getFps();
       });
+    },
+
+    /**
+     * Check if a page element collides with another. Passed through the error handler.
+     * @param {HTMLElement} element1 First element to check.
+     * @param {HTMLElement} element2 Second element to check.
+     */
+    collides: (element1, element2) => {
+      try {
+        rect1 = element1.getBoundingClientRect();
+        rect2 = element2.getBoundingClientRect();
+        if (rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x && rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y) return true;
+        else return false;
+      } catch (err) {
+        errorHandler(err);
+      }
     }
   };
-
 //***************************************/
 //                Classes
 //***************************************/
@@ -447,8 +468,7 @@ var stats = new baseStats(),
   costArray = [Math.abs(shop.ClickerCost), Math.abs(shop.SuperClickerCost), Math.abs(shop.DoublePointerCost), Math.abs(uShop.CursorCost), Math.abs(uShop.SuperCursorCost), Math.abs(uShop.EmployeeCost), Math.abs(uShop.GodFingerCost)],
 
   /**
-   * An array of arrays containing achievement names, descriptions, lifetime coin requirements, and unlock statues.  
-   * Currently unused.
+   * A multidimensional array containing achievement names, descriptions, lifetime coin requirements, and unlock statues.
    */
   ach = [['Journey Begins', 'Obtain 1 lifetime coin.', 1, false], ['A Good Start', 'Obtain 10 thousand lifetime coins.', 10000, false], ['Getting There', 'Obtain 100 thousand lifetime coins.', 100000, false], ['Millionare', 'Obtain 1 million lifetime coins', 1e+6, false], ['Coin Pool', 'Obtain 10 million lifetime coins.', 1e+7, false], ['Abundance', 'Obtain 100 million lifetime coins', 1e+8, false], ['Billionare', 'Obtain 1 billion lifetime coins.', 1e+9, false], ['Excess', 'Obtain 10 billion lifetime coins.', 1e+10, false], ['Planet of Coins', 'Obtain 100 billion lifetime coins', 1e+11, false], ['Trillionare', 'Obtain 1 trillion lifetime coins.', 1e+12, false], ['Pocket Dimension', 'Obtain 10 trillion lifetime coins.', 1e+13, false], ['Far Too Many', 'Obtain 100 trillion lifetime coins.', 1e+14, false], ['Quadrillionare', 'Obtain 1 quadrillion lifetime coins.', 1e+15, false], ['Coin Vortex', 'Obtain 10 quadrillion lifetime coins.', 1e+16, false], ['Coin-Shaped Black Hole', 'Obtain 100 quadrillion lifetime coins.', 1e+17, false], ['Quintillionare', 'Obtain 1 quintillion lifetime coins.', 1e+18, false], ['Click Beyond', 'Obtain 10 quintillion lifetime coins.', 1e+19, false], ['Distant Beginning', 'Obtain 100 quintillion lifetime coins.', 1e+20, false], ['Sextillionare', 'Obtain 1 sextillion lifetime coins.', 1e+21, false], ['Number Overflow', 'Obtain 10 sextillion lifetime coins.', 1e+22, false], ['Coin Universe', 'Obtain 100 sextillion lifetime coins.', 1e+23, false], ['Septillionare', 'Obtain 1 septillion lifetime coins.', 1e+24, false], ['Why are you still here?', 'Obtain 10 septillion lifetime coins.', 1e+25, false], ['20 Fingers', 'Obtain 100 septillion lifetime coins.', 1e+26, false], ['For The Worthy', 'Obtain 1 octillion lifetime coins.', 1e+27, false], ['Breaking Point', 'Obtain far more lifetime coins than you should have.', Number.MAX_VALUE, false], ['Cheater', 'Hack in some money using the debug console.', null, false]],
 
@@ -551,7 +571,7 @@ function autoplay() {
 
 /**
  * Log a random message. This function can be called from the debug console using the 'rmsg' command.
- * @param {*} arg If the value of 'arg' is an integer, log the message at logChoices[arg]. If arg is 'all', log every message. Otherwise, select a message randomly.
+ * @param {integer | 'all' | undefined} arg If the value of 'arg' is an integer, log the message at logChoices[arg]. If arg is 'all', log every message. Otherwise, select a message randomly.
  */
 function randomMsg(arg) {
   // CSS style variables and selected message
@@ -582,7 +602,7 @@ function randomMsg(arg) {
 }
 
 /**
- * Update various stat/shop strings and check for newly unlocked items and achievements.
+ * Update various stat/shop strings and check for newly unlocked items and achievements. Passed through the error handler.
  */
 function updateScreen() {
   try {
@@ -671,7 +691,7 @@ function updateScreen() {
       achievementsUnlockedString.textContent = `You have unlocked ${textArray[23]} (${Math.round(intArray[23] / 25 * 100)}%) out of 25 achievements.`;
       rawCPSString.textContent = `Your raw coins per second is ${textArray[19]}.`;
       rawCVString.textContent = `Your raw click value is ${textArray[18]}.`;
-      offlineCPSString.textContent = `Your employees gather ${textArray[26]}% of your coins per second while offline.`;
+      offlineCPSString.textContent = `Your employees gather ${textArray[26].toFixed(1)}% of your coins per second while offline.`;
 
       // Display achievements in the menu if unlocked.
       if (ach[26][3]) { cheater.style.display = 'block'; cheaterIcon.style.display = 'block'; }
@@ -824,7 +844,7 @@ function updateScreen() {
 }
 
 /**
- * Create the game's background elements. Different background particles will appear depending on which achievements the player has unlocked.
+ * Create the game's background elements. Different background particles will appear depending on which achievements the player has unlocked. Passed through the error handler.
  */
 function createBgElem() {
   try {
@@ -852,7 +872,7 @@ function createBgElem() {
         }
         // Breaking point particles (stars)
         // This creates font-awesome icons rather than imgs to allow for dynamic color.
-        if (ach[24][9]) {
+        if (ach[24][3]) {
           bgMax = 275;
           if (graphicsMode == 'Quality') {
             bg = document.createElement('i');
@@ -923,7 +943,7 @@ function numberFix() {
     for (let i = 0; i < intArray.length; i++) {
       if (intArray[i] >= 9.99999e+101) var ii = i;
       if (ii != undefined) {
-        if (Number.prototype.toLocaleString() != undefined) textArray[ii] = ((intArray[ii]).toExponential(3)).toLocaleString()
+        if (Number.prototype.toLocaleString() != undefined) textArray[ii] = ((intArray[ii]).toExponential(3)).toLocaleString();
         else textArray[ii] = intArray[ii].toExponential(3);
       }
     }
@@ -931,7 +951,7 @@ function numberFix() {
 }
 
 /**
- * Load data saved in the player's local storage.
+ * Load data saved in the player's local storage. Passed through the error handler.
  */
 function loadGame() {
   try {
@@ -1072,7 +1092,7 @@ function loadGame() {
           if (shop.SuperClickersOwned >= 1 && graphicsMode == 'Quality') {
             superClickerImg.style.animation = 'superclickermov 2s forwards';
             setTimeout(function () {
-              superClickerImg.style.transform = 'translate3d(44vw, 2vw, 0) rotate(175deg)';
+              superClickerImg.style.transform = 'translate3d(44.5vw, 2vw, 0) rotate(175deg)';
               superClickerImg.style.animation = 'superclickerclick 0.5s 0.5s infinite ease-in alternate';
             }, 3000);
           }
@@ -1081,7 +1101,7 @@ function loadGame() {
           if (shop.DoublePointersOwned >= 1 && graphicsMode == 'Quality') {
             doublePointerImg.style.animation = 'doublepointermov 2s forwards';
             setTimeout(function () {
-              doublePointerImg.style.transform = 'translate3d(39.8vw, 6.9vw, 0) rotate(90deg)';
+              doublePointerImg.style.transform = 'translate3d(40.2vw, 6.9vw, 0) rotate(90deg)';
               doublePointerImg.style.animation = 'doublepointerclick 0.5s 0.5s infinite ease-in alternate';
             }, 3000);
           }
@@ -1147,7 +1167,7 @@ function loadGame() {
 }
 
 /**
- * Save data into local storage when the player requests it or if saving automatically.
+ * Save data into local storage when the player requests it or if saving automatically. Passed through the error handler.
  */
 function saveGame(force) {
   try {
@@ -1250,7 +1270,7 @@ function wipeSave(gamepadActive) {
           // Elements to disable the animation of, reverting them to their default state
           toTransform = [clickerImg, superClickerImg, doublePointerImg, cursorImg, superCursorImg, employeeImg, godFingerImg, clickerFusionImg],
 
-        readyToSave = false;
+          readyToSave = false;
         localStorage.removeItem('saveData');
         localStorage.removeItem('shopData');
 
@@ -1290,7 +1310,7 @@ function wipeSave(gamepadActive) {
 }
 
 /**
- * Recalculate the RNG variable used to determine buffs. Automatically called every second.
+ * Recalculate the RNG variable used to determine buffs. Automatically called every second. Passed through the error handler.
  */
 function buffRNGCalc() {
   try {
@@ -1357,7 +1377,7 @@ function buffRNGCalc() {
 }
 
 /**
- * Revert any active buffs.
+ * Revert any active buffs. Passed through the error handler.
  */
 function buffRemoval() {
   try {
@@ -1376,7 +1396,7 @@ function buffRemoval() {
 }
 
 /**
- * Multiply the player's stat values by a tenth of their coins per second and round stats.
+ * Multiply the player's stat values by a tenth of their coins per second and round stats. Passed through the error handler.
  */
 function cpsClick() {
   try {
@@ -1390,7 +1410,7 @@ function cpsClick() {
 }
 
 /**
- * Modify the red and green color variables used to create a 'pulsing' effect on shop items and achievements
+ * Modify the red and green color variables used to create a 'pulsing' effect on shop items and achievements. Passed through the error handler.
  */
 function rgChange() {
   try {
@@ -1699,7 +1719,7 @@ superClickerBuy.addEventListener('click', function () {
     if (shop.SuperClickersOwned == 1) {
       superClickerImg.style.animation = 'superclickermov 2s forwards';
       setTimeout(function () {
-        superClickerImg.style.transform = 'translate3d(44vw, 2vw, 0) rotate(175deg)';
+        superClickerImg.style.transform = 'translate3d(44.5vw, 2vw, 0) rotate(175deg)';
         superClickerImg.style.animation = 'superclickerclick 0.5s 0.5s infinite ease-in alternate';
       }, 3000);
     }
@@ -1743,7 +1763,7 @@ doublePointerBuy.addEventListener('click', function () {
     if (shop.DoublePointersOwned == 1) {
       doublePointerImg.style.animation = 'doublepointermov 2s forwards';
       setTimeout(function () {
-        doublePointerImg.style.transform = 'translate3d(39.8vw, 6.9vw, 0) rotate(90deg)';
+        doublePointerImg.style.transform = 'translate3d(40.2vw, 6.9vw, 0) rotate(90deg)';
         doublePointerImg.style.animation = 'doublepointerclick 0.5s 0.5s infinite ease-in alternate';
       }, 3000);
     }
@@ -2014,7 +2034,13 @@ window.addEventListener('beforeunload', function (event) {
   event.stopImmediatePropagation();
   $('.bg').remove();
   $('.coinparticle').remove();
-  buff == 'none' && (doAutosave || debug) ? saveGame() : event.preventDefault();
+  if (buff == 'none' && (doAutosave || debug)) {
+    saveGame();
+  } else if (navigator.userAgent.indexOf('Electron') < 0) event.preventDefault();
+  else {
+    savingString.textContent = 'Cannot refresh when a buff is active.';
+    event.preventDefault();
+  }
 });
 
 // Vibrate the connected gamepad twice and set it up for input polling
@@ -2439,6 +2465,9 @@ setInterval(function () {
     // DPad Right - Scroll to the right through the achievements list
     if (dpadRight && init.GameStarted && !buttonPressed && achievementsPanel.style.display == 'block') { buttonPressed = true; if (gpAchIndex < 24) gpAchIndex++; lib.achLabelSwitch(gpAchIndex); }
   }
+
+  // Experimental readjustment of shop icons, allowing for proper centering of shop strings
+  //if (clickerBuy.)
 }, 1);
 
 // Dispatch flag that specifies the game's code has finished loading

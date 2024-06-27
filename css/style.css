@@ -1,321 +1,17 @@
 /*
  Todo: make elements properly centered
- Todo: seperate keyframes from the main stylesheet into a new 'keyframes.css'
 */
 
-/* Font Awesome lib */
+/* Imports */
 
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+@import url("./keyframes.css");
 
 /* Courier font face (Not all systems have this, so it is defined here.) */
 
 @font-face {
   font-family: 'CourierReg';
   src: url('Courier.woff');
-}
-
-/* Animations */
-
-@keyframes coinOpacity {
-  from {
-    opacity: 0%;
-  }
-
-  to {
-    opacity: 100%;
-  }
-}
-
-@keyframes bgmove {
-  from {
-    opacity: 40%;
-    transform: translate3d(0, 0, 0)
-  }
-
-  to {
-    opacity: 0%;
-    transform: translate3d(0, 22vw, 0)
-  }
-}
-
-@keyframes titlestrsmov {
-  100% {
-    transform: translate3d(0, 71.5vh, 0);
-  }
-}
-
-@keyframes btmstringmov {
-  from {
-    transform: translate3d(0, 0, 0)
-  }
-
-  to {
-    transform: translate3d(0, -2.5vw, 0)
-  }
-}
-
-@keyframes dbgstringmov {
-  from {
-    transform: translate3d(0, 0, 0)
-  }
-
-  to {
-    transform: translate3d(0, -2vw, 0)
-  }
-}
-
-@keyframes smallCoinMove1 {
-  from {
-    transform: translate3d(0, 0, 0);
-    rotate: 0deg;
-  }
-
-  to {
-    transform: translate3d(14vw, 0, 0);
-    rotate: 270deg;
-  }
-}
-
-@keyframes smallCoinMove2 {
-  from {
-    transform: translate3d(0, 0, 0);
-    rotate: 0deg;
-  }
-
-  to {
-    transform: translate3d(-14vw, 0, 0);
-    rotate: 270deg;
-  }
-}
-
-@keyframes smallCoinMove3 {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg)
-  }
-
-  to {
-    transform: translate3d(14vw, 0, 0) rotate(360deg)
-  }
-}
-
-@keyframes smallCoinMove4 {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg)
-  }
-
-  to {
-    transform: translate3d(-14vw, 0, 0) rotate(-360deg)
-  }
-}
-
-@keyframes smallCoinSpin1 {
-  from {
-    transform: rotate(0deg) translate3d(14vw, 0, 0)
-  }
-
-  to {
-    transform: rotate(360deg) translate3d(14vw, 0, 0)
-  }
-}
-
-@keyframes smallCoinSpin2 {
-  from {
-    transform: rotate(0deg) translate3d(-14vw, 0, 0)
-  }
-
-  to {
-    transform: rotate(360deg) translate3d(-14vw, 0, 0)
-  }
-}
-
-@keyframes smallCoinSpin3 {
-  from {
-    transform: rotate(0deg) translate3d(14vw, 0, 0)
-  }
-
-  to {
-    transform: rotate(360deg) translate3d(14vw, 0, 0)
-  }
-}
-
-@keyframes smallCoinSpin4 {
-  from {
-    transform: rotate(0deg) translate3d(-14vw, 0, 0)
-  }
-
-  to {
-    transform: rotate(360deg) translate3d(-14vw, 0, 0)
-  }
-}
-
-@keyframes tsclickermov {
-  from {
-    transform: translate3d(0, 71.5vh, 0) rotate(0deg);
-    opacity: 0%;
-  }
-
-  to {
-    transform: translate3d(4vw, 68.3vh, 0) rotate(320deg);
-    opacity: 100%;
-  }
-}
-
-@keyframes startmov {
-  from {
-    transform: translate3d(0, 0, 0)
-  }
-
-  to {
-    transform: translate3d(0, -4.7vw, 0)
-  }
-}
-
-@keyframes coinpartmov {
-  from {
-    opacity: 100%;
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-
-  to {
-    opacity: 0%;
-    transform: translate3d(0, 1.4vw, 0) rotate(720deg);
-  }
-}
-
-@keyframes clickermov {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg)
-  }
-
-  to {
-    transform: translate3d(35.5vw, 7.2vw, 0) rotate(172deg)
-  }
-}
-
-@keyframes clickerclick {
-  from {
-    transform: translate3d(35.5vw, 7.2vw, 0) rotate(172deg)
-  }
-
-  to {
-    transform: translate3d(35.2vw, 6.9vw, 0) rotate(172deg)
-  }
-}
-
-@keyframes superclickermov {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg)
-  }
-
-  to {
-    transform: translate3d(44vw, 2vw, 0) rotate(175deg)
-  }
-}
-
-@keyframes superclickerclick {
-  from {
-    transform: translate3d(44vw, 2vw, 0) rotate(175deg)
-  }
-
-  to {
-    transform: translate3d(44.3vw, 1.7vw, 0) rotate(175deg)
-  }
-}
-
-@keyframes doublepointermov {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg)
-  }
-
-  to {
-    transform: translate3d(39.8vw, 6.9vw, 0) rotate(90deg)
-  }
-}
-
-@keyframes doublepointerclick {
-  from {
-    transform: translate3d(39.8vw, 6.9vw, 0) rotate(90deg)
-  }
-
-  to {
-    transform: translate3d(39.8vw, 7.5vw, 0) rotate(90deg)
-  }
-}
-
-@keyframes cursormov {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-    height: 3vw;
-    width: 3vw;
-  }
-
-  to {
-    transform: translate3d(72.5vw, 29vw, 0) rotate(23deg);
-    height: 1.5vw;
-    width: 1.5vw;
-  }
-}
-
-@keyframes supercursormov {
-  from {
-    transform: translate3d(0, 0, 0);
-    height: 3vw;
-    width: 3vw;
-  }
-
-  to {
-    transform: translate3d(74.5vw, 24vw, 0);
-    height: 1.5vw;
-    width: 1.5vw;
-  }
-}
-
-@keyframes employeemov {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(39.9vw, -5vw, 0);
-  }
-}
-
-@keyframes employeerock {
-  from {
-    transform: translate3d(39.9vw, -5vw, 0);
-  }
-
-  to {
-    transform: translate3d(39.9vw, -4.4vw, 0);
-  }
-}
-
-@keyframes godfingermov {
-  from {
-    transform: translate3d(0, 0, 0);
-    height: 3vw;
-    width: 3vw;
-  }
-
-  to {
-    transform: translate3d(76.5vw, 14vw, 0);
-    height: 1.5vw;
-    width: 1.5vw;
-  }
-}
-
-@keyframes clickerfusionmov {
-  from {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-    height: 3vw;
-    width: 3vw;
-  }
-
-  to {
-    transform: translate3d(78.5vw, 9.4vw, 0) rotate(45deg);
-    height: 1.5vw;
-    width: 1.5vw;
-  }
 }
 
 body {
@@ -562,7 +258,7 @@ a {
 }
 
 #runningbrowserstring {
-  left: 31.5vw;
+  left: 31vw;
   width: 37vw;
 }
 
@@ -575,7 +271,7 @@ a {
 
 #betastring {
   font-size: 2.5vw;
-  top: -24.5vh;
+  top: -26.5vh;
   left: 44.2vw;
 }
 
@@ -583,7 +279,7 @@ a {
   font-size: 1.5vw;
   width: 37vw;
   height: 37vw;
-  top: -17vh;
+  top: -19.5vh;
   left: 31.2vw;
 }
 
@@ -600,7 +296,7 @@ a {
   opacity: 0%;
   height: 4vw;
   width: 4vw;
-  top: -34vh;
+  top: -35.2vh;
   left: 48.1vw;
   animation: titlestrsmov 1.5s forwards, tsclickermov 1.5s 1s forwards;
   cursor: default;
@@ -701,11 +397,11 @@ a {
 }
 
 #leftborder {
-  left: 30vw;
+  left: 29vw;
 }
 
 #rightborder {
-  left: 68.5vw;
+  left: 69.5vw;
 }
 
 #achievementslabel {
