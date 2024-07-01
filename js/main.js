@@ -5,8 +5,8 @@
 //
 //                                                   Spoilers ahead!
 //
-//			                     This project is licensed under the GNU General Public License.
-//					                                For more info, see docs/COPYING
+//                           This project is licensed under the GNU General Public License.
+//                                           For more info, see docs/COPYING
 //*********************************************************************************************************************
 //*********************************************************************************************************************
 
