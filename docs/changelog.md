@@ -124,3 +124,10 @@ If your gamepad is detected, it's name should appear near the bottom of the scre
 - The number formatter can now detect which number is too large to truncate using an exponent, and only truncate the offending number instead of all values.
 - Removed the background music.
 - There is now an Electron version of the app alongside the website.
+- There is no longer a debug input screen.
+- Fixed indent issues with the debug console's help command
+- The Clicker Fusion now requires the God Finger as well as the first two cursors.
+## Keybind changes
+- The debug screen toggle is now Alt-D
+- The debug mode keybind is now Ctrl-Alt-D
+- The debug mode + debug autoplay keybind is now Ctrl-Alt-B

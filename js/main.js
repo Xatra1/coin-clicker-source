@@ -197,10 +197,6 @@ const sourceNote = document.getElementById('sourcenote'),
   //             Debug screen
   //***************************************/
 
-  debugKeyInputScreen = document.getElementById('debuginputscreen'),
-  debugKeyInput = document.getElementById('debugkeyinput'),
-  debugKeySubmit = document.getElementById('debugkeysubmit'),
-  incorrectKeyLabel = document.getElementById('incorrectkeyentered'),
   debugScreen = document.getElementById('debugscreen'),
   cmdForm = document.getElementById('debugconsinput'),
   commandInput = document.getElementById('debugcmdinput'),
@@ -210,6 +206,7 @@ const sourceNote = document.getElementById('sourcenote'),
   //***************************************/
 
   achievementsButton = document.getElementById('achievementsbutton'),
+  achievementsButtonIcon = document.getElementById('achievementsbtnicon'),
   achievementsLabel = document.getElementById('achievementslabel'),
   achievementsPanel = document.getElementById('achievementsscreen'),
   achNameStr = document.getElementById('achievementnamestring'),
@@ -398,6 +395,7 @@ var stats = new baseStats(),
   // Achievement screen variables
   achStr = 'none',
   gpAchIndex = 0,
+  newAchUnlocked = false,
 
   // Audio variables
   volume = 1.0,
@@ -487,18 +485,18 @@ var stats = new baseStats(),
    */
   man = String.raw`Coin Clicker Debug Console
   
-  clear - Clears the console.
-  echo - Outputs the given arguments.
-  help - Displays this manual.
-  exec - Executes JavaScript code.
-  eval - An alias for exec, has the same function.
-  pizza - Tells you how many $30 pizzas you could buy with your current amount of coins.
-  rmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass 'all' to log all of them.
-  clhis - Clears the command history.
-  exit - Hides the debug console. You can press Alt+Y to show the console again after running this command.
+clear - Clears the console.
+echo - Outputs the given arguments.
+help - Displays this manual.
+exec - Executes JavaScript code.
+eval - An alias for exec, has the same function.
+pizza - Tells you how many $30 pizzas you could buy with your current amount of coins.
+rmsg - Displays a random message. You can also log a specific message by passing an argument with a value of 1-25, or pass 'all' to log all of them.
+clhis - Clears the command history.
+exit - Hides the debug console. You can press Alt+Y to show the console again after running this command.
   
-  Typing any command into the console that isn't recognized will have the same effect as using the 'exec' or 'eval' commands.
-  `,
+Typing any command into the console that isn't recognized will have the same effect as using the 'exec' or 'eval' commands.
+`,
 
   // Save and shop data
   saveData = [],
@@ -526,7 +524,6 @@ settingsPanel.style.display = 'none';
 upgradeShopPanel.style.display = 'none';
 
 // Empty the values of debug inputs.
-debugKeyInput.value = '';
 commandInput.value = '';
 
 // Set the values of setting input boxes to their defaults.
@@ -745,7 +742,7 @@ function updateScreen() {
       } else if (uShop.SuperCursorUnlocked) { superCursorGroup.style.display = 'block'; uShop.CursorCost = 'Owned.'; }
 
       // Employee
-      if (uShop.CursorOwned && uShop.SuperCursorOwned && !uShop.EmployeeUnlocked) {
+      if (uShop.CursorOwned && uShop.SuperCursorOwned && !uShop.EmployeeUnlocked && uShop.GodFingerUnlocked) {
         if (init.DataLoaded) { sfx2.play(); unlockString.style.display = 'block'; unlockString.textContent = 'Employee unlocked!'; }
         employeeGroup.style.display = 'block';
         uShop.EmployeeUnlocked = !uShop.EmployeeUnlocked; //True
@@ -774,7 +771,10 @@ function updateScreen() {
           if (init.DataLoaded && i > 1 && i < 24) sfx3.play();
           ach[i][3] = true;
           stats.AchievementsUnlocked++;
-          if (init.DataLoaded) unlockString.textContent = `Achievement Unlocked: ${ach[i][0]}`;
+          if (init.DataLoaded) {
+            unlockString.textContent = `Achievement Unlocked: ${ach[i][0]}`;
+            newAchUnlocked = true;
+          }
           setTimeout(function () { unlockString.style.display = 'block'; }, 1);
           SHT = 500;
         }
@@ -1423,6 +1423,12 @@ function rgChange() {
     //******************************************************************************/
     //                Create a pulsing effect on achievement icons
     //******************************************************************************/
+    if (newAchUnlocked) {
+      achievementsButton.style.borderInlineColor = `rgb(${red}, 0, 0)`;
+      achievementsButton.style.borderBlockColor = `rgb(${red}, 0, 0)`;
+      achievementsButtonIcon.style.color = `rgb(${red}, 0, 0)`;
+    }
+
     forTheWorthy.style.borderInlineColor = `rgb(0, ${green}, 0)`;
     forTheWorthy.style.borderBlockColor = `rgb(0, ${green}, 0)`;
     ftwIcon.style.color = `rgb(0, ${green}, 0)`;
@@ -1440,31 +1446,6 @@ function rgChange() {
 
     // Cause the icon of the corresponding item to pulse green if the player has enough clicks to buy it, and set back to black when bought.
     for (let i = 0; i < costArray.length - 1; i++) stats.Clicks >= costArray[i] ? costStringArr[i].style.color = `rgb(0, ${green}, 0)` : costStringArr[i].style.color = 'rgb(0, 0, 0)';
-  } catch (error) { errorHandler(error); }
-}
-
-//*********************************************************************************************************************/
-//   todo: Remove this function in a later version of the game and allow anyone to access debug mode without a key.
-//*********************************************************************************************************************/
-function createBase64Key() {
-  try {
-    if (!init.GameStarted || debug) {
-      generatedKey = 'debug';
-      let addArray = ['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-      for (let i = 45; i > 0; i--) {
-        let val = lib.rng(1, addArray.length - 1);
-        generatedKey += addArray[val];
-        if (i == 1) {
-          let base64key = btoa(generatedKey);
-          key.textContent = base64key;
-          key.id = 'key';
-          console.log(`Unencoded: ${generatedKey}`);
-          console.log(`Base64: ${base64key}`);
-          debugConsole += `Unencoded: ${generatedKey}\n`;
-          debugConsole += `Base64: ${base64key}\n`;
-        }
-      }
-    }
   } catch (error) { errorHandler(error); }
 }
 
@@ -1523,7 +1504,7 @@ function commandInterpret() {
 
     // Mimic keyboard input and send the proper keybind to exit debug mode.
     case 'exit':
-      document.dispatchEvent(new KeyboardEvent('keydown', { 'key': 'y', 'altKey': true }));
+      document.dispatchEvent(new KeyboardEvent('keydown', { 'key': 'd', 'altKey': true }));
       break;
 
   }
@@ -1556,8 +1537,6 @@ function commandAssemble() {
 
 startButton.addEventListener('click', () => {
   sfx.play();
-  // todo: Remove this line in a future version as debug mode access keys are going to be removed.
-  if (generatedKey != 'debug') key.style.display = 'none';
 
   // Hide the title screen and display necessary panels
   titleScreen.style.display = 'none';
@@ -1574,14 +1553,6 @@ startButton.addEventListener('click', () => {
   loadGame();
   randomMsg();
 
-  // todo: Remove the source note string
-  sourceNote.textContent = `Debug states: ${debug}, ${debugAutoplay}`;
-  sourceNote.style.position = 'fixed';
-  if (screenWidth == 1920) sourceNote.style.top = '52vw';
-  else sourceNote.style.top = '51vw';
-  sourceNote.style.animation = 'dbgstringmov 1s ease-out forwards';
-  sourceNote.className = 'hasanim';
-
   // Unlock all shop items right away if debug mode is enabled using the respective keybind.
   if (debug) {
     shop.SuperClickerUnlocked = !shop.SuperClickerUnlocked; //True
@@ -1590,11 +1561,7 @@ startButton.addEventListener('click', () => {
     uShop.EmployeeUnlocked = !uShop.EmployeeUnlocked; //True
     uShop.GodFingerUnlocked = !uShop.GodFingerUnlocked; //True
     uShop.ClickerFusionUnlocked = !uShop.ClickerFusionUnlocked //True
-    //todo: remove this line
-    game.appendChild(sourceNote);
   }
-  //todo: remove this line
-  if (debugAutoplay) game.appendChild(sourceNote);
 
   // Display the borders and get their offsets
   $('.borders').css('display', 'block');
@@ -1940,23 +1907,6 @@ clickerFusionBuy.addEventListener('click', function () {
   }
 });
 
-// todo: Remove this event listener as it will become useless once debug keys are irrelevant
-debugKeySubmit.addEventListener('click', function (event) {
-  event.preventDefault();
-  let dmkInput;
-  try { dmkInput = atob(debugKeyInput.value); }
-  catch (error) { dmkInput = debugKeyInput.value; }
-  if (dmkInput == generatedKey) {
-    debugKeyInputScreen.style.display = 'none';
-    debugScreen.style.display = 'block';
-    keyEntered = !keyEntered; //True
-  } else {
-    incorrectKeyLabel.style.display = 'block';
-    incorrectKeyLabel.textContent = 'Incorrect key.';
-    SHT = 500;
-  }
-});
-
 // Save button event listeners
 saveButton.addEventListener('click', function () { sfx.play(); manualSave = true; saveGame(); }); // Click
 saveButton.addEventListener('mouseover', function () { savingString.style.top = '4vw'; }); // Hover
@@ -1964,7 +1914,16 @@ saveButton.addEventListener('mouseleave', function () { savingString.style.top =
 wipeSaveButton.addEventListener('click', function () { sfx.play(); wipeSave(); }); // Wipe save
 
 // Achievements
-achievementsButton.addEventListener('click', function () { game.style.display = 'none'; achievementsPanel.style.display = 'block'; let index = 0; lib.achLabelSwitch(index); });
+achievementsButton.addEventListener('click', function () {
+  game.style.display = 'none';
+  achievementsPanel.style.display = 'block';
+  lib.achLabelSwitch(0);
+  newAchUnlocked = false;
+  achievementsButton.style.borderInlineColor = 'rgb(0, 0, 0)';
+  achievementsButton.style.borderBlockColor = 'rgb(0, 0, 0)';
+  achievementsButtonIcon.style.color = 'rgb(0, 0, 0)';
+});
+
 backToGame.addEventListener('click', function () { sfx.play(); game.style.display = 'block'; achievementsPanel.style.display = 'none'; });
 journeyBegins.addEventListener('click', function () { lib.achLabelSwitch(0); });
 aGoodStart.addEventListener('click', function () { lib.achLabelSwitch(1); });
@@ -2130,42 +2089,33 @@ document.addEventListener('loadevt', function () {
 
 document.addEventListener('keydown', function (event) {
   try {
-    // todo: remove this line
-    titleScreen.appendChild(key);
     // Ctrl-S to save
     if ((event.key == 's' || event.key == 'S') && event.ctrlKey && debugScreenState == 'closed' && !debugAutoplay) {
       event.preventDefault();
       manualSave = true;
       saveGame();
 
-      // todo: remove the key generator keybind
-    } else if ((event.key == 'y' || event.key == 'Y') && event.ctrlKey) {
-      event.preventDefault();
-      createBase64Key();
-
-      // Alt-Y to toggle the debug screen
-    } else if ((event.key == 'y' || event.key == 'Y') && event.altKey) {
+      // Alt-D to toggle the debug screen
+    } else if ((event.key == 'd' || event.key == 'D') && event.altKey) {
       event.preventDefault();
 
-      // Open the debug input screen, or skip it if a key was already entered
+      // Open the debug screen
       if (init.GameStarted && debugScreenState == 'closed' && game.style.display == 'block') {
+        debugScreen.style.display = 'block'
         debugScreenState = 'open';
         game.style.display = 'none';
-        // todo: remove this
-        if (!keyEntered) debugKeyInputScreen.style.display = 'block'; else if (keyEntered) debugScreen.style.display = 'block';
 
-        // Close the debug/debug input screen
+        // Close the debug screen
       } else if (init.GameStarted && debugScreenState == 'open' && game.style.display == 'none') {
-        debugScreenState = 'closed';
-        debugKeyInputScreen.style.display = 'none';
         debugScreen.style.display = 'none';
+        debugScreenState = 'closed';
         game.style.display = 'block';
       }
       // Allow the starting animation to be skipped with the space bar
     } else if (event.key == ' ' && titleScreen.style.display == 'block') startButton.click();
 
-    // Ctrl-Alt-F to enable debug mode
-    else if ((event.key == 'f' || event.key == 'F') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
+    // Ctrl-Alt-D to enable debug mode
+    else if ((event.key == 'd' || event.key == 'D') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
       debug = !debug; //True
       doAutosave = !doAutosave; //False
@@ -2177,12 +2127,12 @@ document.addEventListener('keydown', function (event) {
       prompting = !prompting; //True
       let prompt = confirm('Debug autoplay is purely for testing and your save will be wiped upon the next page load if you use it. Are you sure? (Pressing cancel will not affect your save.)');
       if (prompt) {
-        debugAutoplay = !debugAutoplay; /*True*/
+        debugAutoplay = !debugAutoplay; //True
         startButton.click();
       } else prompting = !prompting //False
 
-      // Ctrl-Alt-C to enable both debug mode and debug autoplay
-    } else if ((event.key == 'c' || event.key == 'C') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
+      // Ctrl-Alt-D to enable both debug mode and debug autoplay
+    } else if ((event.key == 'b' || event.key == 'B') && event.ctrlKey && event.altKey && titleScreen.style.display == 'block') {
       event.preventDefault();
       debug = !debug; //True
       doAutosave = !doAutosave; //False
@@ -2204,7 +2154,7 @@ document.addEventListener('keydown', function (event) {
     else if ((event.key == 'u' || event.key == 'U') && shopPanel.style.display == 'block' && debugKeyInputScreen.style.display != 'block' && debugScreen.style.display != 'block') upgradeButton.click();
     else if ((event.key == 'u' || event.key == 'U') && shopPanel.style.display == 'none' && debugKeyInputScreen.style.display != 'block' && debugScreen.style.display != 'block') upgradeRTS.click();
     // B to toggle autobuy
-    else if ((event.key == 'b' || event.key == 'B') && init.GameStarted && event.target != debugKeyInput && event.target != commandInput) autoBuyBtn.click();
+    else if ((event.key == 'b' || event.key == 'B') && init.GameStarted && event.target != commandInput) autoBuyBtn.click();
 
     // Arrow keys to shift through the debug command history
     else if (event.key == 'ArrowUp') {
@@ -2287,7 +2237,6 @@ setInterval(function () {
   if (SHT == 0) {
     savingString.textContent = '';
     unlockString.textContent = '';
-    incorrectKeyLabel.textContent = '';
     if (!debugAutoplay) readyToSave = true;
     SHT = 500;
   }

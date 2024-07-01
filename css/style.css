@@ -370,7 +370,7 @@ a {
 #savingstring {
   width: 37vw;
   top: 2.6vw;
-  left: 30.6vw;
+  left: 31vw;
 }
 
 #saveinfo {
@@ -412,14 +412,14 @@ a {
   height: 3vw;
   width: 3vw;
   top: 0.5vw;
-  left: 31vw;
+  left: 30vw;
 }
 
 #achievementsbtnicon {
   height: 3.2vw;
   width: 3.2vw;
   top: 0.5vw;
-  left: 30.9vw;
+  left: 29.9vw;
 }
 
 #settingslabel {
@@ -431,11 +431,10 @@ a {
   height: 3vw;
   width: 3vw;
   top: 0.5vw;
-  left: 64.7vw;
+  left: 65.7vw;
 }
 
 #fpslabel {
-  /* The style.display value of this property cannot be modified unless it is declared here. */
   display: none;
   top: -0.5vw;
 }

@@ -16,7 +16,7 @@ The game is also available for play [here.](https://coin-clicker.surge.sh)
 If you want to get a **legacy** release of the game (a build that came out prior to build 3.11rb), check [here.](https://github.com/Xatra1/coin-clicker-archive)  
   
 # Credits
-Icons made by Font Awesome, with the exception of "septillionachievements.png", which is made by IconsMind.  
+Icons made by Font Awesome.  
 Sound effects obtained from Pixabay.  
   
 All development was done by me. Some parts of the code were taken from answers over on [Stack Overflow.](https://stackoverflow.com)
