@@ -127,6 +127,7 @@ If your gamepad is detected, it's name should appear near the bottom of the scre
 - There is no longer a debug input screen.
 - Fixed indent issues with the debug console's help command
 - The Clicker Fusion now requires the God Finger as well as the first two cursors.
+- Redesigned the coin.
 ## Keybind changes
 - The debug screen toggle is now Alt-D
 - The debug mode keybind is now Ctrl-Alt-D
