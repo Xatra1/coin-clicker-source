@@ -1,3 +1,5 @@
+# This project has been discontinued.
+
 # Notes
 **This game is not compatible with Internet Explorer. Support is not planned.**  
 
